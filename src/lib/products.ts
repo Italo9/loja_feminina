@@ -63,6 +63,23 @@ export async function getCategories(): Promise<
   })
 }
 
+export async function searchProducts(query: string): Promise<Product[]> {
+  if (!query.trim()) return []
+  return prisma.product.findMany({
+    where: {
+      active: true,
+      OR: [
+        { name: { contains: query } },
+        { description: { contains: query } },
+        { tags: { contains: query } },
+      ],
+    },
+    include: { images: true, variants: true, category: true },
+    orderBy: { createdAt: "desc" },
+    take: 20,
+  })
+}
+
 export async function getCategoryImages(): Promise<
   { id: string; name: string; slug: string; image: string | null }[]
 > {
