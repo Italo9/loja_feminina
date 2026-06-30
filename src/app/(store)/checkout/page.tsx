@@ -19,6 +19,8 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [paymentMethod, setPaymentMethod] = useState("pix")
+  const [payerEmail, setPayerEmail] = useState("")
+  const [payerName, setPayerName] = useState("")
 
   const [address, setAddress] = useState({
     receiver: "",
@@ -62,11 +64,17 @@ export default function CheckoutPage() {
       })),
       address,
       paymentMethod,
+      payerEmail: payerEmail.trim() || undefined,
+      payerName: payerName.trim() || undefined,
     })
 
     if (result.ok) {
       clearCart()
-      router.push(`/pedido/${result.orderId}/confirmado`)
+      if (result.initPoint) {
+        window.location.href = result.initPoint
+      } else {
+        router.push(`/pedido/${result.orderId}/confirmado`)
+      }
     } else {
       setError(result.error ?? "Erro ao criar pedido. Tente novamente.")
     }
@@ -151,6 +159,22 @@ export default function CheckoutPage() {
             </div>
           </div>
 
+          {/* Dados do comprador */}
+          <div className="surface p-5 space-y-4 !rounded-2xl">
+            <h2 className="display-sm flex items-center gap-2">
+              <CreditCard className="w-5 h-5 text-rose-400" />
+              Seus dados
+            </h2>
+            <div>
+              <label className="block text-[11px] font-semibold uppercase tracking-wider text-espresso-400 mb-1">Nome completo</label>
+              <input value={payerName} onChange={(e) => setPayerName(e.target.value)} className="input-clean" placeholder="Seu nome" />
+            </div>
+            <div>
+              <label className="block text-[11px] font-semibold uppercase tracking-wider text-espresso-400 mb-1">Email</label>
+              <input value={payerEmail} onChange={(e) => setPayerEmail(e.target.value)} type="email" className="input-clean" placeholder="seu@email.com" />
+            </div>
+          </div>
+
           {/* Pagamento */}
           <div className="surface p-5 space-y-4 !rounded-2xl">
             <h2 className="display-sm flex items-center gap-2">
@@ -224,11 +248,11 @@ export default function CheckoutPage() {
             ) : (
               <Lock className="w-4 h-4" />
             )}
-            {loading ? "Processando..." : "Finalizar Pedido"}
+            {loading ? "Processando..." : "Ir para pagamento"}
           </button>
 
-          <p className="text-center text-[11px] text-espresso-400">
-            Seus dados estão protegidos. Pagamento seguro via SSL.
+          <p className="text-center text-[11px] text-espresso-400 space-x-4">
+            <span>Pagamento seguro via Mercado Pago</span>
           </p>
         </form>
       </div>

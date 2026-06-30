@@ -2,6 +2,7 @@
 
 import { prisma } from "./db"
 import { revalidatePath } from "next/cache"
+import { createMercadoPagoPreference } from "./mercadopago"
 
 interface AddressInput {
   receiver: string
@@ -30,9 +31,11 @@ export async function createCheckoutOrder(input: {
   items: CartItemInput[]
   address: AddressInput
   paymentMethod: string
+  payerEmail?: string
+  payerName?: string
   notes?: string
 }) {
-  const { userId, items, address, paymentMethod, notes } = input
+  const { userId, items, address, paymentMethod, payerEmail, payerName, notes } = input
 
   if (!items.length) return { ok: false, error: "Carrinho vazio" }
 
@@ -115,5 +118,27 @@ export async function createCheckoutOrder(input: {
   }
 
   revalidatePath("/admin/pedidos")
-  return { ok: true, orderId: order.id }
+
+  // Criar preferência Mercado Pago
+  let initPoint: string | null = null
+  try {
+    const mp = await createMercadoPagoPreference({
+      orderId: order.id,
+      items: items.map((item) => ({
+        id: item.productId,
+        title: item.name,
+        description: item.variantInfo ?? undefined,
+        pictureUrl: item.image ?? undefined,
+        quantity: item.quantity,
+        unitPrice: item.price,
+      })),
+      payerEmail,
+      payerName,
+    })
+    initPoint = mp.initPoint ?? null
+  } catch {
+    // Mercado Pago pode não estar configurado — pedido fica como pendente
+  }
+
+  return { ok: true, orderId: order.id, initPoint }
 }
