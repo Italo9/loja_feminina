@@ -1,9 +1,22 @@
+import type { Metadata } from "next"
 import { Hero } from "@/components/store/Hero"
 import { ProductSection } from "@/components/store/ProductSection"
 import { CategorySection } from "@/components/store/CategorySection"
 import { InstagramSection } from "@/components/store/InstagramSection"
 import { TestimonialsSection } from "@/components/store/TestimonialsSection"
+import { NewsletterForm } from "@/components/store/NewsletterForm"
 import { getFeaturedProducts, getNewProducts } from "@/lib/products"
+import { store } from "@/lib/config"
+
+export const metadata: Metadata = {
+  title: `${store.name} — ${store.tagline}`,
+  description: store.description,
+  openGraph: {
+    title: `${store.name} — ${store.tagline}`,
+    description: store.description,
+    type: "website",
+  },
+}
 
 export default async function HomePage() {
   const [featured, newProducts] = await Promise.all([
@@ -50,16 +63,7 @@ export default async function HomePage() {
           <p className="body-lg mb-6">
             Cadastre-se e receba ofertas exclusivas em primeira mão.
           </p>
-          <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Seu melhor e-mail"
-              className="flex-1 px-5 py-3.5 rounded-full bg-white border border-cream-200 text-espresso-700 placeholder:text-espresso-300 text-[16px] focus:outline-none focus:border-rose-300 shadow-sm transition-colors"
-            />
-            <button type="submit" className="btn-rose">
-              Cadastrar
-            </button>
-          </form>
+          <NewsletterForm />
         </div>
       </section>
     </>
