@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { store } from "@/lib/config"
 
@@ -26,10 +27,13 @@ export function ProductGallery({ images, productName }: Props) {
   return (
     <div>
       <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-cream-200 mb-3">
-        <img
+        <Image
           src={images[active].url}
           alt={images[active].alt ?? productName}
-          className="w-full h-full object-cover"
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover"
         />
         {hasMultiple && (
           <>
@@ -49,11 +53,11 @@ export function ProductGallery({ images, productName }: Props) {
             <button
               key={img.id}
               onClick={() => setActive(i)}
-              className={`flex-shrink-0 w-16 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+              className={`relative flex-shrink-0 w-16 h-20 rounded-lg overflow-hidden border-2 transition-all ${
                 i === active ? "border-rose-500" : "border-transparent opacity-60 hover:opacity-100"
               }`}
             >
-              <img src={img.url} alt={img.alt ?? `${productName} ${i + 1}`} className="w-full h-full object-cover" />
+              <Image src={img.url} alt={img.alt ?? `${productName} ${i + 1}`} fill sizes="80px" className="object-cover" />
             </button>
           ))}
         </div>
