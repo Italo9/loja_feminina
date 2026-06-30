@@ -87,13 +87,6 @@ export function ChatWidget() {
   }, [messages, loading])
 
   useEffect(() => {
-    const handler = () => setOpen(true)
-    window.addEventListener("chat:open", handler)
-    return () => window.removeEventListener("chat:open", handler)
-  }, [])
-
-  // Open chat callback for external buttons
-  useEffect(() => {
     const handler = () => { setOpen(true); setMinimized(false); setUnread(0) }
     window.addEventListener("chat:open", handler)
     return () => window.removeEventListener("chat:open", handler)
