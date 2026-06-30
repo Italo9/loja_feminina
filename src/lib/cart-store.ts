@@ -10,6 +10,7 @@ export interface CartItem {
   quantity: number
   variantInfo: string | null
   maxStock: number
+  source: string
 }
 
 interface CartState {

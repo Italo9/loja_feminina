@@ -9,6 +9,7 @@ interface Props {
     slug: string
     price: number
     images: { url: string }[]
+    source?: string
   }
 }
 
@@ -27,6 +28,7 @@ export function AddToCartButton({ product }: Props) {
           quantity: 1,
           variantInfo: null,
           maxStock: 99,
+          source: product.source ?? "own",
         },
       })
     )

@@ -70,6 +70,21 @@ model Category {
   createdAt   DateTime   @default(now())
 }
 
+model Supplier {
+  id          String          @id @default(cuid())
+  name        String
+  slug        String          @unique
+  apiUrl      String?
+  apiKey      String?
+  webhookSecret String?
+  active      Boolean         @default(true)
+  notes       String?
+  products    Product[]
+  dropshipOrders DropshipOrder[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
 model Product {
   id           String           @id @default(cuid())
   name         String
@@ -78,7 +93,11 @@ model Product {
   price        Float
   compareAt    Float?
   cost         Float?
+  markup       Float            @default(0)
   sku          String?
+  source       String           @default("own")
+  supplierId   String?
+  supplier     Supplier?        @relation(fields: [supplierId], references: [id])
   active       Boolean          @default(true)
   featured     Boolean          @default(false)
   categoryId   String
@@ -129,22 +148,23 @@ model Address {
 }
 
 model Order {
-  id              String        @id @default(cuid())
+  id              String          @id @default(cuid())
   userId          String?
-  user            User?         @relation(fields: [userId], references: [id])
-  status          String        @default("pending")
+  user            User?           @relation(fields: [userId], references: [id])
+  status          String          @default("pending")
   subtotal        Float
-  shippingCost    Float         @default(0)
-  discount        Float         @default(0)
+  shippingCost    Float           @default(0)
+  discount        Float           @default(0)
   total           Float
   paymentMethod   String?
-  paymentStatus   String        @default("pending")
+  paymentStatus   String          @default("pending")
   shippingAddress String
   trackingCode    String?
   notes           String?
   items           OrderItem[]
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  dropshipItems   DropshipOrder[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }
 
 model OrderItem {
@@ -158,4 +178,22 @@ model OrderItem {
   price       Float
   quantity    Int
   image       String?
+  source      String  @default("own")
+}
+
+model DropshipOrder {
+  id             String   @id @default(cuid())
+  orderId        String
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  supplierId     String
+  supplier       Supplier @relation(fields: [supplierId], references: [id])
+  status         String   @default("pending")
+  externalId     String?
+  trackingCode   String?
+  subtotal       Float
+  shippingCost   Float     @default(0)
+  total          Float
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

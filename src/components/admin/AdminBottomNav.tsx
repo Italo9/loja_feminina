@@ -2,12 +2,13 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Package, ShoppingBag, Settings, MessageCircle } from "lucide-react"
+import { LayoutDashboard, Package, ShoppingBag, Settings, MessageCircle, Truck } from "lucide-react"
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/produtos", label: "Produtos", icon: Package },
   { href: "/admin/pedidos", label: "Pedidos", icon: ShoppingBag },
+  { href: "/admin/fornecedores", label: "Fornecedores", icon: Truck },
   { href: "/admin/whatsapp", label: "WhatsApp", icon: MessageCircle },
   { href: "/admin/config", label: "Config", icon: Settings },
 ]

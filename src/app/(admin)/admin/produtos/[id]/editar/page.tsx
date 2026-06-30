@@ -11,6 +11,7 @@ export default async function EditProductPage({ params }: Props) {
   if (!product) notFound()
 
   const categories = await prisma.category.findMany({ where: { parentId: null }, orderBy: { order: "asc" } })
+  const suppliers = await prisma.supplier.findMany({ where: { active: true }, orderBy: { name: "asc" } })
 
   return (
     <div>
@@ -31,6 +32,11 @@ export default async function EditProductPage({ params }: Props) {
             description: formData.get("description") as string,
             price: parseFloat(formData.get("price") as string),
             compareAt: formData.get("compareAt") ? parseFloat(formData.get("compareAt") as string) : null,
+            cost: formData.get("cost") ? parseFloat(formData.get("cost") as string) : null,
+            markup: formData.get("markup") ? parseFloat(formData.get("markup") as string) : 0,
+            source: (formData.get("source") as string) || "own",
+            supplierId: (formData.get("supplierId") as string) || null,
+            sku: (formData.get("sku") as string) || null,
             categoryId: formData.get("categoryId") as string,
             badge: (formData.get("badge") as string) || null,
             featured: formData.get("featured") === "true",
@@ -50,15 +56,57 @@ export default async function EditProductPage({ params }: Props) {
           <textarea name="description" required rows={4} defaultValue={product.description} className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px] resize-none" />
         </div>
 
+        {/* Origem do produto */}
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Origem</label>
+          <div className="flex gap-3">
+            <label className={`flex-1 flex items-center gap-2 p-3 rounded-xl border-2 cursor-pointer ${product.source === "own" ? "border-rose-300 bg-rose-50" : "border-pearl-200 bg-white"}`}>
+              <input type="radio" name="source" value="own" defaultChecked={product.source === "own"} className="sr-only" />
+              <span className="text-sm font-medium text-espresso-700">Estoque próprio</span>
+            </label>
+            <label className={`flex-1 flex items-center gap-2 p-3 rounded-xl border-2 cursor-pointer ${product.source === "dropship" ? "border-rose-300 bg-rose-50" : "border-pearl-200 bg-white"}`}>
+              <input type="radio" name="source" value="dropship" defaultChecked={product.source === "dropship"} className="sr-only" />
+              <span className="text-sm font-medium text-espresso-700">Dropship</span>
+            </label>
+          </div>
+        </div>
+
+        {/* Fornecedor (dropship) */}
+        {suppliers.length > 0 && (
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Fornecedor (dropship)</label>
+            <select name="supplierId" defaultValue={product.supplierId ?? ""} className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px]">
+              <option value="">Nenhum (estoque próprio)</option>
+              {suppliers.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+            </select>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Preço (R$)</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Preço de venda (R$)</label>
             <input name="price" type="number" step="0.01" required defaultValue={product.price} className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px]" />
           </div>
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Preço original</label>
             <input name="compareAt" type="number" step="0.01" defaultValue={product.compareAt ?? ""} className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px]" />
           </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Custo (R$)</label>
+            <input name="cost" type="number" step="0.01" defaultValue={product.cost ?? ""} className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px]" />
+          </div>
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Markup (%)</label>
+            <input name="markup" type="number" step="0.01" defaultValue={product.markup ?? ""} className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px]" placeholder="100 a 1550" />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">SKU</label>
+          <input name="sku" defaultValue={product.sku ?? ""} className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px]" />
         </div>
 
         <div>

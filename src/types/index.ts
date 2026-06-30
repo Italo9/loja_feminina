@@ -6,7 +6,11 @@ export interface Product {
   price: number
   compareAt: number | null
   cost: number | null
+  markup: number
   sku: string | null
+  source: string
+  supplierId: string | null
+  supplier?: Supplier | null
   active: boolean
   featured: boolean
   categoryId: string
@@ -47,6 +51,18 @@ export interface Category {
   order: number
 }
 
+export interface Supplier {
+  id: string
+  name: string
+  slug: string
+  apiUrl: string | null
+  apiKey: string | null
+  webhookSecret: string | null
+  active: boolean
+  notes: string | null
+  createdAt: Date
+}
+
 export interface CartItem {
   productId: string
   variantId: string | null
@@ -56,6 +72,7 @@ export interface CartItem {
   quantity: number
   variantInfo: string | null
   maxStock: number
+  source: string
 }
 
 export interface OrderWithItems {
@@ -77,6 +94,16 @@ export interface OrderWithItems {
     price: number
     quantity: number
     image: string | null
+    source: string
+  }[]
+  dropshipItems?: {
+    id: string
+    supplierId: string
+    supplier: { name: string }
+    status: string
+    externalId: string | null
+    trackingCode: string | null
+    total: number
   }[]
   createdAt: Date
 }

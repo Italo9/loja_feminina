@@ -407,6 +407,28 @@ body {
   transform: scale(0.98);
 }
 
+/* Input limpo */
+.input-clean {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: white;
+  border: 1px solid var(--color-cream-200);
+  font-size: 1rem;
+  color: var(--color-espresso-900);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-clean::placeholder {
+  color: var(--color-espresso-300);
+}
+
+.input-clean:focus {
+  border-color: var(--color-rose-300);
+  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.1);
+}
+
 /* Card */
 .surface {
   background: white;
