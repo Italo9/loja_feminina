@@ -308,7 +308,16 @@ export async function handleEnd(sessionId: string) {
   return { ok: true }
 }
 
+let sweepIntervalId: ReturnType<typeof setInterval> | null = null
+
 // Limpeza periódica
 if (typeof setInterval !== "undefined") {
-  setInterval(sweepTimeouts, 30000)
+  sweepIntervalId = setInterval(sweepTimeouts, 30000)
+}
+
+export function stopSweepInterval() {
+  if (sweepIntervalId !== null) {
+    clearInterval(sweepIntervalId)
+    sweepIntervalId = null
+  }
 }
