@@ -16,7 +16,6 @@ export function AddToCartButton({ product }: Props) {
   const image = product.images?.[0]?.url ?? null
 
   const handleAdd = () => {
-    // Dispatch custom event for cart context
     window.dispatchEvent(
       new CustomEvent("cart:add", {
         detail: {
@@ -31,7 +30,6 @@ export function AddToCartButton({ product }: Props) {
         },
       })
     )
-    // Brief feedback
     const btn = document.activeElement as HTMLElement
     if (btn) {
       const orig = btn.textContent
@@ -43,7 +41,7 @@ export function AddToCartButton({ product }: Props) {
   return (
     <button
       onClick={handleAdd}
-      className="flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-berry-600 hover:bg-berry-500 text-white font-bold text-[15px] transition-all active:scale-[0.97]"
+      className="btn-rose w-full text-[15px]"
     >
       <ShoppingBag className="w-4 h-4" />
       Comprar

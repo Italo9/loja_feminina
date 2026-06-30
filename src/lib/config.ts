@@ -15,18 +15,18 @@ function readList(key: string, fallback: string): string[] {
 }
 
 export const store = {
-  name: readEnv("NEXT_PUBLIC_STORE_NAME", "Jóia"),
-  shortName: readEnv("NEXT_PUBLIC_STORE_SHORT_NAME", "Jóia"),
-  tagline: readEnv("NEXT_PUBLIC_STORE_TAGLINE", "Moda Feminina"),
+  name: readEnv("NEXT_PUBLIC_STORE_NAME", "Lumière"),
+  shortName: readEnv("NEXT_PUBLIC_STORE_SHORT_NAME", "Lumière"),
+  tagline: readEnv("NEXT_PUBLIC_STORE_TAGLINE", "Moda Feminina de Luxo"),
   description: readEnv(
     "NEXT_PUBLIC_STORE_DESCRIPTION",
-    "Peças exclusivas que vestem sua personalidade. Moda feminina com curadoria.",
+    "Peças exclusivas com curadoria especial. Sofisticação e exclusividade em cada detalhe.",
   ),
   city: readEnv("NEXT_PUBLIC_STORE_CITY", "Salvador, BA"),
   whatsapp: readEnv("NEXT_PUBLIC_STORE_WHATSAPP", "5571991673902"),
   phone: readEnv("NEXT_PUBLIC_STORE_PHONE", "(71) 99167-3902"),
-  email: readEnv("NEXT_PUBLIC_STORE_EMAIL", "contato@joia.com.br"),
-  instagram: readEnv("NEXT_PUBLIC_STORE_INSTAGRAM", "joia"),
+  email: readEnv("NEXT_PUBLIC_STORE_EMAIL", "contato@lumiere.com.br"),
+  instagram: readEnv("NEXT_PUBLIC_STORE_INSTAGRAM", "lumiere"),
   payments: readList("NEXT_PUBLIC_STORE_PAYMENTS", "Visa,Mastercard,Elo,Pix,Boleto"),
   shippingInfo: readEnv(
     "NEXT_PUBLIC_STORE_SHIPPING",

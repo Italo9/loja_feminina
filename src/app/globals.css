@@ -1,98 +1,71 @@
 @import "tailwindcss";
 
 /* ================================================================
-   JÓIA BRASILEIRA — Design System
-   Inspirado em pedras preciosas brasileiras: ametista, topázio, ouro
+   LUMIÈRE — Design System
+   Feminino · Dourado + Rosa · Premium
    ================================================================ */
 
 @theme inline {
-  /* ---- Cores Primárias ---- */
-  --color-berry-50: #fdf2f6;
-  --color-berry-100: #fce7ef;
-  --color-berry-200: #f9cfe0;
-  --color-berry-300: #f3a6c5;
-  --color-berry-400: #e970a0;
-  --color-berry-500: #d9447d;
-  --color-berry-600: #c42a64;
-  --color-berry-700: #9b1f4e;
-  --color-berry-800: #7b1d3f;
-  --color-berry-900: #651c36;
-  --color-berry-950: #3a0a1b;
+  /* ---- Rose (primário feminino) ---- */
+  --color-rose-50: #fef1f6;
+  --color-rose-100: #fde2ed;
+  --color-rose-200: #fbc6db;
+  --color-rose-300: #f89ac1;
+  --color-rose-400: #f26ea2;
+  --color-rose-500: #e84584; /* rosa principal */
+  --color-rose-600: #d62a6d;
+  --color-rose-700: #b81a55;
+  --color-rose-800: #9a1949;
+  --color-rose-900: #7f1a40;
 
-  /* ---- Topázio Imperial (dourado quente) ---- */
-  --color-topaz-50: #fefce8;
-  --color-topaz-100: #fef7c4;
-  --color-topaz-200: #fded8a;
-  --color-topaz-300: #fbdc46;
-  --color-topaz-400: #f5c518;
-  --color-topaz-500: #d49e0b;
-  --color-topaz-600: #b07a07;
-  --color-topaz-700: #8c580d;
-  --color-topaz-800: #744612;
-  --color-topaz-900: #633a15;
-  --color-topaz-950: #3a1e06;
+  /* ---- Gold (acento luxo) ---- */
+  --color-gold-50: #fef9ec;
+  --color-gold-100: #fcf0d4;
+  --color-gold-200: #f8e0a9;
+  --color-gold-300: #f2cb70;
+  --color-gold-400: #e8b134;
+  --color-gold-500: #c9921f; /* dourado principal */
+  --color-gold-600: #a57418;
+  --color-gold-700: #835718;
+  --color-gold-800: #6b451a;
+  --color-gold-900: #5b3b1a;
 
-  /* ---- Pérola / Creme quente ---- */
-  --color-pearl-50: #fdfbf7;
-  --color-pearl-100: #fbf7f2;
-  --color-pearl-200: #f5ede1;
-  --color-pearl-300: #efe0c9;
-  --color-pearl-400: #e5cfa8;
-  --color-pearl-500: #d8b885;
-  --color-pearl-600: #c9a066;
-  --color-pearl-700: #a8834c;
-  --color-pearl-800: #8a6b40;
-  --color-pearl-900: #715837;
-  --color-pearl-950: #3d2e1b;
+  /* ---- Cream (fundos claros) ---- */
+  --color-cream-50: #fefdfb;
+  --color-cream-100: #faf6f0; /* fundo da página */
+  --color-cream-200: #f2eadb;
+  --color-cream-300: #e3d6c0;
+  --color-cream-400: #cbb99b;
+  --color-cream-500: #b19f7d;
 
-  /* ---- Areia (fundo suave) ---- */
-  --color-sand-50: #faf8f4;
-  --color-sand-100: #f4efe7;
-  --color-sand-200: #e8ddd1;
-  --color-sand-300: #d7c7b3;
-  --color-sand-400: #c3aa8e;
-  --color-sand-500: #b39373;
-  --color-sand-600: #a67f62;
-  --color-sand-700: #8b6952;
-  --color-sand-800: #725746;
-  --color-sand-900: #5d483b;
-  --color-sand-950: #31241e;
+  /* ---- Blush (superfícies rosadas) ---- */
+  --color-blush-50: #fef7fa;
+  --color-blush-100: #fdeaf2;
+  --color-blush-200: #fad0e3;
+  --color-blush-300: #f4a8c8;
 
-  /* ---- Expresso (texto) ---- */
-  --color-espresso-50: #f7f5f4;
-  --color-espresso-100: #ede8e5;
-  --color-espresso-200: #dbd1cc;
-  --color-espresso-300: #bfb0a8;
-  --color-espresso-400: #9a877e;
-  --color-espresso-500: #7d6c64;
-  --color-espresso-600: #655750;
-  --color-espresso-700: #504540;
-  --color-espresso-800: #423a36;
-  --color-espresso-900: #2d1f1a;
-  --color-espresso-950: #1c1311;
-
-  /* ---- Sálvia (UI secundária) ---- */
-  --color-sage-50: #f5f7f3;
-  --color-sage-100: #e8ede4;
-  --color-sage-200: #d2dccb;
-  --color-sage-300: #b2c4a8;
-  --color-sage-400: #8b9d83;
-  --color-sage-500: #708266;
-  --color-sage-600: #58684f;
-  --color-sage-700: #465340;
-  --color-sage-800: #3a4435;
-  --color-sage-900: #323a2e;
-  --color-sage-950: #191f16;
+  /* ---- Espresso (texto escuro) ---- */
+  --color-espresso-50: #f8f7f5;
+  --color-espresso-100: #edeae3;
+  --color-espresso-200: #d9d1c5;
+  --color-espresso-300: #bdb09e;
+  --color-espresso-400: #9c8e7a;
+  --color-espresso-500: #7a6e5e;
+  --color-espresso-600: #5c5245;
+  --color-espresso-700: #3d362d; /* texto principal */
+  --color-espresso-800: #2a2520;
+  --color-espresso-900: #1a1714;
+  --color-espresso-950: #0f0d0b;
 
   /* ---- Fontes ---- */
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "Jost", system-ui, -apple-system, sans-serif;
+  --font-mono: "Jost", system-ui, sans-serif;
 
-  /* ---- Sombras ---- */
-  --shadow-soft: 0 2px 16px rgba(45, 31, 26, 0.06);
-  --shadow-card: 0 4px 24px rgba(45, 31, 26, 0.08);
-  --shadow-lift: 0 8px 40px rgba(45, 31, 26, 0.12);
+  /* ---- Sombras (suaves, premium) ---- */
+  --shadow-soft: 0 2px 16px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lift: 0 8px 40px rgba(0, 0, 0, 0.12);
 }
 
 /* ================================================================
@@ -108,12 +81,18 @@ html {
 }
 
 body {
-  background-color: var(--color-pearl-100);
-  color: var(--color-espresso-900);
+  background-color: var(--color-cream-100);
+  color: var(--color-espresso-700);
   font-family: var(--font-body);
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100dvh;
+}
+
+::selection {
+  background: var(--color-rose-200);
+  color: var(--color-rose-800);
 }
 
 /* ================================================================
@@ -122,68 +101,110 @@ body {
 
 .display-xl {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.5rem, 5.5vw, 5rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: var(--color-espresso-800);
 }
 
 .display-lg {
   font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  color: var(--color-espresso-800);
 }
 
 .display-md {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  font-weight: 600;
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  font-weight: 500;
   line-height: 1.2;
+  color: var(--color-espresso-800);
 }
 
 .display-sm {
   font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 500;
-  line-height: 1.3;
+  line-height: 1.35;
+  color: var(--color-espresso-800);
 }
 
 .body-lg {
-  font-size: clamp(1rem, 1.5vw, 1.125rem);
-  line-height: 1.7;
-  color: var(--color-espresso-700);
+  font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+  line-height: 1.75;
+  font-weight: 300;
+  color: var(--color-espresso-500);
 }
 
 .body-base {
   font-size: 0.9375rem;
-  line-height: 1.65;
+  line-height: 1.7;
+  font-weight: 300;
+  color: var(--color-espresso-500);
 }
 
 .body-sm {
   font-size: 0.8125rem;
-  line-height: 1.5;
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--color-rose-500);
 }
 
 .price-lg {
-  font-family: var(--font-mono);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-family: var(--font-body);
+  font-size: 1.625rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .price-md {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 1.125rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .price-sm {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 0.9375rem;
   font-weight: 500;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(
+    110deg,
+    var(--color-gold-400),
+    var(--color-gold-600) 50%,
+    var(--color-gold-400)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.text-gradient-rose {
+  background: linear-gradient(
+    110deg,
+    var(--color-rose-400),
+    var(--color-rose-600) 50%,
+    var(--color-rose-400)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 /* ================================================================
@@ -191,14 +212,8 @@ body {
    ================================================================ */
 
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
@@ -207,45 +222,23 @@ body {
 }
 
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(155, 31, 78, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 12px rgba(155, 31, 78, 0);
-  }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 69, 132, 0.3); }
+  50% { box-shadow: 0 0 0 12px rgba(232, 69, 132, 0); }
 }
 
 @keyframes shimmer {
@@ -253,8 +246,14 @@ body {
   100% { transform: translateX(100%); }
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
 .animate-fade-up {
-  animation: fadeUp 0.6s ease forwards;
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-fade-in {
@@ -270,10 +269,13 @@ body {
 }
 
 .animate-slide-up {
-  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Stagger delays para grids */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
 .stagger-1 { animation-delay: 0.05s; }
 .stagger-2 { animation-delay: 0.1s; }
 .stagger-3 { animation-delay: 0.15s; }
@@ -287,21 +289,14 @@ body {
    SCROLLBAR
    ================================================================ */
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-cream-200); }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-pearl-300);
+  background: var(--color-rose-200);
   border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-pearl-400);
+  background: var(--color-rose-300);
 }
 
 /* ================================================================
@@ -309,68 +304,169 @@ body {
    ================================================================ */
 
 .section-padding {
-  padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 2rem);
+  padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 3vw, 2rem);
 }
 
 .container-narrow {
-  max-width: 1280px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 0 clamp(1rem, 3vw, 2rem);
 }
 
-/* Linha decorativa fina como detalhe editorial */
 .rule {
   height: 1px;
-  background: var(--color-pearl-300);
+  background: linear-gradient(to right, transparent, var(--color-cream-300), transparent);
   border: none;
   margin: 0;
 }
 
-/* Chip de badge */
-.badge-novidade {
-  background: var(--color-berry-500);
+.hairline-gold {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-gold-400), transparent);
+  border: none;
+}
+
+/* Botão rosa (primário) */
+.btn-rose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-rose-500);
   color: white;
-  font-size: 0.6875rem;
-  font-weight: 700;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  font-size: 0.875rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 999px;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 12px rgba(232, 69, 132, 0.25);
+}
+
+.btn-rose:hover {
+  background: var(--color-rose-600);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(232, 69, 132, 0.35);
+}
+
+.btn-rose:active {
+  transform: scale(0.98);
+}
+
+/* Botão dourado (secundário/acento) */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-gold-500);
+  color: white;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  font-size: 0.875rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 999px;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 12px rgba(201, 146, 31, 0.25);
+}
+
+.btn-gold:hover {
+  background: var(--color-gold-400);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(201, 146, 31, 0.35);
+}
+
+.btn-gold:active {
+  transform: scale(0.98);
+}
+
+/* Botão outline rosa */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--color-rose-600);
+  border: 1.5px solid var(--color-rose-300);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  font-size: 0.875rem;
+  padding: 0.8rem 1.75rem;
+  border-radius: 999px;
+  transition: all 0.25s ease;
+}
+
+.btn-outline:hover {
+  border-color: var(--color-rose-500);
+  color: var(--color-rose-500);
+  background: var(--color-rose-50);
+}
+
+.btn-outline:active {
+  transform: scale(0.98);
+}
+
+/* Card */
+.surface {
+  background: white;
+  border: 1px solid var(--color-cream-200);
+  border-radius: 1.25rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.surface:hover {
+  border-color: var(--color-rose-200);
+  box-shadow: var(--shadow-card);
+}
+
+/* Badges */
+.badge-novidade {
+  background: white;
+  color: var(--color-espresso-700);
+  font-size: 0.625rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   padding: 3px 10px;
   border-radius: 999px;
+  border: 1px solid var(--color-cream-300);
+  backdrop-filter: blur(4px);
 }
 
 .badge-oferta {
-  background: var(--color-topaz-500);
-  color: var(--color-espresso-950);
-  font-size: 0.6875rem;
-  font-weight: 700;
+  background: var(--color-rose-500);
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   padding: 3px 10px;
   border-radius: 999px;
 }
 
 /* ================================================================
-   CHAT WIDGET
+   CHAT WIDGET (tom claro)
    ================================================================ */
 
 .chat-bubble-user {
-  background: var(--color-berry-500);
+  background: var(--color-rose-500);
   color: white;
   border-radius: 18px 18px 4px 18px;
 }
 
 .chat-bubble-assistant {
   background: white;
-  color: var(--color-espresso-900);
+  color: var(--color-espresso-700);
   border-radius: 18px 18px 18px 4px;
-  border: 1px solid var(--color-pearl-200);
+  border: 1px solid var(--color-cream-200);
 }
 
 .typing-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-berry-300);
+  background: var(--color-rose-300);
   animation: pulse-glow 1.4s ease-in-out infinite;
 }
 

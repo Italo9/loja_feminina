@@ -7,17 +7,17 @@ export default async function CatalogPage() {
   const [products, categories] = await Promise.all([getNewProducts(), getCategories()])
 
   return (
-    <div className="bg-pearl-100 min-h-screen">
+    <div className="bg-cream-100 min-h-screen">
       <div className="container-narrow py-8">
-        <Link href="/" className="inline-flex items-center gap-1 text-sm text-espresso-500 hover:text-berry-600 transition-colors mb-6">
+        <Link href="/" className="inline-flex items-center gap-1 text-sm text-espresso-400 hover:text-rose-500 transition-colors mb-6">
           <ChevronLeft className="w-4 h-4" /> Home
         </Link>
-        <h1 className="display-lg text-espresso-900 mb-6">Catálogo Completo</h1>
+        <h1 className="display-lg mb-6">Catálogo Completo</h1>
 
         {categories.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8 overflow-x-auto pb-2">
             {categories.map(cat => (
-              <Link key={cat.slug} href={`/categoria/${cat.slug}`} className="flex-shrink-0 px-4 py-2 rounded-full bg-white border border-pearl-200 text-espresso-600 text-sm font-medium hover:border-berry-300 transition-colors">
+              <Link key={cat.slug} href={`/categoria/${cat.slug}`} className="flex-shrink-0 px-4 py-2 rounded-full bg-white border border-cream-200 text-espresso-500 text-sm font-medium hover:border-rose-300 hover:text-rose-500 transition-colors shadow-sm">
                 {cat.name}
               </Link>
             ))}

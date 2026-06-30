@@ -30,11 +30,11 @@ export function ProductCard({ product }: { product: Product }) {
           : null
 
   return (
-    <div className="group animate-fade-up">
-      {/* Image */}
+    <div className="group">
+      {/* Imagem */}
       <Link
         href={`/produto/${product.slug}`}
-        className="relative block aspect-[3/4] overflow-hidden rounded-2xl bg-pearl-200 mb-3"
+        className="relative block aspect-[3/4] overflow-hidden rounded-2xl bg-cream-200 mb-4"
         onMouseEnter={() => {
           if (secondImage) setImgIdx(1)
         }}
@@ -44,74 +44,74 @@ export function ProductCard({ product }: { product: Product }) {
           <img
             src={mainImage}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
             onError={() => setImgError(true)}
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-berry-100 to-pearl-200">
-            <span className="display-sm text-berry-300">Jóia</span>
+          <div className="w-full h-full flex items-center justify-center bg-cream-200">
+            <span className="font-[family-name:var(--font-display)] text-2xl text-cream-400">
+              {product.name.charAt(0)}
+            </span>
           </div>
         )}
 
         {/* Badge */}
         {badgeLabel && (
           <span
-            className={`absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${
-              product.badge === "oferta"
-                ? "bg-topaz-500 text-espresso-950"
-                : "bg-berry-600 text-white"
+            className={`absolute top-3 left-3 ${
+              product.badge === "oferta" ? "badge-oferta" : "badge-novidade"
             }`}
           >
             {badgeLabel}
           </span>
         )}
 
-        {/* Like button */}
+        {/* Favoritar */}
         <button
           onClick={(e) => {
             e.preventDefault()
             setLiked(!liked)
           }}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur flex items-center justify-center transition-all hover:bg-white"
+          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/70 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white shadow-sm"
           aria-label="Favoritar"
         >
           <Heart
             className={`w-4 h-4 transition-colors ${
               liked
-                ? "fill-berry-500 text-berry-500"
+                ? "fill-rose-500 text-rose-500"
                 : "text-espresso-500"
             }`}
           />
         </button>
 
-        {/* Quick add - mobile touch */}
+        {/* Quick add to cart */}
         <button
           onClick={(e) => {
             e.preventDefault()
             // TODO: adicionar ao carrinho
           }}
-          className="absolute bottom-3 right-3 w-10 h-10 rounded-full bg-white shadow-card flex items-center justify-center transition-all hover:bg-berry-600 hover:text-white md:opacity-0 md:group-hover:opacity-100"
+          className="absolute bottom-3 left-3 right-3 py-3 bg-white/80 backdrop-blur-md text-espresso-700 text-[10px] uppercase tracking-[0.15em] font-semibold rounded-full flex items-center justify-center gap-2 transition-all duration-300 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 hover:bg-rose-500 hover:text-white shadow-sm"
           aria-label="Adicionar ao carrinho"
         >
-          <ShoppingBag className="w-4 h-4" />
+          <ShoppingBag className="w-3.5 h-3.5" />
+          Adicionar
         </button>
       </Link>
 
       {/* Info */}
-      <div className="px-1">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-espresso-400 mb-1">
+      <div className="text-center px-1">
+        <p className="text-[10px] uppercase tracking-[0.18em] text-rose-400/80 mb-1.5 font-medium">
           {product.category?.name ?? ""}
         </p>
         <Link href={`/produto/${product.slug}`}>
-          <h3 className="text-[15px] font-semibold text-espresso-900 leading-snug mb-1.5 line-clamp-2 hover:text-berry-600 transition-colors">
+          <h3 className="font-[family-name:var(--font-display)] text-lg text-espresso-800 leading-snug mb-2 line-clamp-2 hover:text-rose-500 transition-colors">
             {product.name}
           </h3>
         </Link>
 
-        {/* Price */}
-        <div className="flex items-baseline gap-2 flex-wrap">
-          <span className="price-md text-espresso-900">
+        <div className="flex items-baseline gap-2 justify-center flex-wrap">
+          <span className="price-md text-espresso-700">
             R$ {product.price.toFixed(2)}
           </span>
           {hasDiscount && (
@@ -121,9 +121,8 @@ export function ProductCard({ product }: { product: Product }) {
           )}
         </div>
 
-        {/* Parcelamento */}
         {product.price > 30 && (
-          <p className="text-[11px] text-espresso-400 mt-0.5">
+          <p className="text-[11px] text-espresso-400 mt-1">
             ou 3x de R$ {(product.price / 3).toFixed(2)}
           </p>
         )}

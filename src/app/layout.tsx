@@ -1,39 +1,35 @@
 import type { Metadata } from "next"
-import { Fraunces, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google"
+import { Cormorant_Garamond, Jost } from "next/font/google"
 import "./globals.css"
 import { ChatWidget } from "@/components/chat/ChatWidget"
+import { store } from "@/lib/config"
 
-const fraunces = Fraunces({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
   weight: ["300", "400", "500", "600", "700"],
 })
 
-const plusJakarta = Plus_Jakarta_Sans({
+const jost = Jost({
   subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
-})
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
+  weight: ["300", "400", "500", "600"],
 })
 
 export const metadata: Metadata = {
   title: {
-    default: "Jóia — Moda Feminina Exclusiva",
-    template: "%s | Jóia",
+    default: `${store.name} — Moda Feminina de Luxo`,
+    template: `%s | ${store.name}`,
   },
   description:
-    "Peças exclusivas que vestem sua personalidade. Moda feminina com curadoria especial.",
-  metadataBase: new URL("https://joia.com.br"),
+    "Peças exclusivas com curadoria especial. Sofisticação e exclusividade em cada detalhe.",
+  metadataBase: new URL("https://lumiere.com.br"),
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    siteName: "Jóia",
+    siteName: store.name,
   },
 }
 
@@ -45,7 +41,9 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${fraunces.variable} ${plusJakarta.variable} ${jetbrains.variable} h-full`}
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={`${cormorant.variable} ${jost.variable} h-full`}
     >
       <head>
         <meta

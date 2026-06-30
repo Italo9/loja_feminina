@@ -25,6 +25,7 @@ async function main() {
     { name: "Moda Praia", slug: "moda-praia", image: "https://images.unsplash.com/photo-1570976447647-2633b1f6c5a1?w=400&q=80", order: 4 },
     { name: "Conjuntos", slug: "conjuntos", image: "https://images.unsplash.com/photo-1551048632-24e444b48a3e?w=400&q=80", order: 5 },
     { name: "Acessórios", slug: "acessorios", image: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=400&q=80", order: 6 },
+    { name: "Coleções", slug: "colecoes", image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80", order: 7 },
   ]
 
   for (const cat of categories) {

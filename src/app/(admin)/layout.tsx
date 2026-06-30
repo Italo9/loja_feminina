@@ -9,7 +9,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (role !== "ADMIN") redirect("/login")
 
   return (
-    <div className="min-h-screen bg-sand-100 pb-20">
+    <div className="min-h-screen bg-cream-100 pb-20">
       <AdminTopBar />
       <main className="container-narrow py-4">{children}</main>
       <AdminBottomNav />

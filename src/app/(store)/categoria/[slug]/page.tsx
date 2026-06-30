@@ -15,18 +15,18 @@ export default async function CategoryPage({ params }: Props) {
   if (!category && products.length === 0) notFound()
 
   return (
-    <div className="bg-pearl-100 min-h-screen">
+    <div className="bg-cream-100 min-h-screen">
       <div className="container-narrow py-8">
-        <Link href="/" className="inline-flex items-center gap-1 text-sm text-espresso-500 hover:text-berry-600 transition-colors mb-6">
+        <Link href="/" className="inline-flex items-center gap-1 text-sm text-espresso-400 hover:text-rose-500 transition-colors mb-6">
           <ChevronLeft className="w-4 h-4" /> Home
         </Link>
 
-        <h1 className="display-lg text-espresso-900 mb-2">{category?.name ?? slug}</h1>
+        <h1 className="display-lg mb-2">{category?.name ?? slug}</h1>
         {category?.children && category.children.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8">
-            <Link href={`/categoria/${slug}`} className="px-4 py-2 rounded-full bg-berry-600 text-white text-sm font-bold">Todos</Link>
+            <Link href={`/categoria/${slug}`} className="px-4 py-2 rounded-full bg-rose-500 text-white text-sm font-semibold">Todos</Link>
             {category.children.map(sub => (
-              <Link key={sub.slug} href={`/categoria/${sub.slug}`} className="px-4 py-2 rounded-full bg-white border border-pearl-200 text-espresso-600 text-sm font-medium hover:border-berry-300 transition-colors">
+              <Link key={sub.slug} href={`/categoria/${sub.slug}`} className="px-4 py-2 rounded-full bg-white border border-cream-200 text-espresso-500 text-sm font-medium hover:border-rose-300 hover:text-rose-500 transition-colors shadow-sm">
                 {sub.name}
               </Link>
             ))}
@@ -39,9 +39,9 @@ export default async function CategoryPage({ params }: Props) {
           </div>
         ) : (
           <div className="text-center py-20">
-            <p className="display-sm text-espresso-400 mb-2">Nenhum produto encontrado</p>
-            <p className="body-base text-espresso-400 mb-6">Esta categoria ainda não tem produtos.</p>
-            <Link href="/catalogo" className="inline-flex items-center gap-2 bg-berry-600 text-white font-semibold px-6 py-3 rounded-full text-sm hover:bg-berry-500 transition-colors">
+            <p className="display-sm mb-2">Nenhum produto encontrado</p>
+            <p className="body-base mb-6">Esta categoria ainda não tem produtos.</p>
+            <Link href="/catalogo" className="btn-rose">
               Ver catálogo completo
             </Link>
           </div>

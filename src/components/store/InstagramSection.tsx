@@ -10,45 +10,35 @@ const MOCK_POSTS = [
 
 export function InstagramSection() {
   return (
-    <section className="section-padding bg-sand-100">
+    <section className="section-padding bg-white">
       <div className="container-narrow">
         <div className="text-center mb-10">
-          <a
-            href={`https://instagram.com/${store.instagram}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-espresso-600 hover:text-berry-600 transition-colors mb-3"
-          >
-            <Camera className="w-5 h-5" />
-            <span className="text-sm font-semibold">
-              @{store.instagram}
-            </span>
-          </a>
-          <h2 className="display-lg text-espresso-900 mb-2">
-            Siga nosso Instagram
+          <p className="eyebrow mb-4">Siga-nos</p>
+          <h2 className="display-lg mb-3">
+            <span className="italic text-gradient-rose">@{store.instagram}</span>
           </h2>
-          <p className="body-lg text-espresso-500">
+          <p className="body-lg">
             Looks, lançamentos e bastidores em primeira mão
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {MOCK_POSTS.map((post, i) => (
             <a
               key={post.id}
               href={`https://instagram.com/${store.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
-              className={`group relative aspect-square rounded-2xl overflow-hidden bg-pearl-200 animate-fade-up stagger-${i + 1}`}
+              className={`group relative aspect-square overflow-hidden rounded-2xl bg-cream-200 animate-fade-up stagger-${i + 1}`}
             >
               <img
                 src={post.image}
                 alt={`Instagram post ${i + 1}`}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-espresso-950/0 group-hover:bg-espresso-950/20 transition-all flex items-center justify-center">
-                <Camera className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-espresso-800/0 group-hover:bg-espresso-800/40 transition-all duration-300 flex items-center justify-center">
+                <Camera className="w-7 h-7 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </a>
           ))}

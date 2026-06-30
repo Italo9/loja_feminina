@@ -14,23 +14,23 @@ steps:
     args:
       - build
       - -t
-      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/joia/web:${SHORT_SHA}"
+      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:${SHORT_SHA}"
       - -t
-      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/joia/web:latest"
+      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest"
       - .
 
   - name: "gcr.io/cloud-builders/docker"
     args:
       - push
-      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/joia/web:${SHORT_SHA}"
+      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:${SHORT_SHA}"
 
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
       - run
       - deploy
-      - joia-web
-      - --image=southamerica-east1-docker.pkg.dev/$PROJECT_ID/joia/web:${SHORT_SHA}
+      - lumiere-web
+      - --image=southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:${SHORT_SHA}
       - --region=southamerica-east1
       - --platform=managed
       - --allow-unauthenticated
@@ -43,10 +43,13 @@ steps:
       - --set-secrets=NVIDIA_API_KEY=nvidia-api-key:latest
       - --set-secrets=AUTH_SECRET=auth-secret:latest
       - --set-secrets=STRIPE_SECRET_KEY=stripe-secret-key:latest
+      - --set-secrets=STRIPE_WEBHOOK_SECRET=stripe-webhook-secret:latest
       - --set-secrets=DATABASE_URL=database-url:latest
+      - --set-secrets=GOOGLE_CLIENT_ID=google-client-id:latest
+      - --set-secrets=GOOGLE_CLIENT_SECRET=google-client-secret:latest
 
 images:
-  - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/joia/web:${SHORT_SHA}"
-  - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/joia/web:latest"
+  - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:${SHORT_SHA}"
+  - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest"
 
 timeout: 1200s
