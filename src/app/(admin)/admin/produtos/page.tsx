@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { Plus, Pencil, EyeOff, Package } from "lucide-react"
 import { prisma } from "@/lib/db"
@@ -32,8 +33,8 @@ export default async function AdminProductsPage() {
             const image = product.images?.[0]?.url
             return (
               <div key={product.id} className="surface p-3 flex items-center gap-3">
-                <div className="w-14 h-18 rounded-lg overflow-hidden bg-cream-200 flex-shrink-0">
-                  {image ? <img src={image} alt={product.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-xs text-espresso-300">Sem foto</div>}
+                <div className="relative w-14 h-18 rounded-lg overflow-hidden bg-cream-200 flex-shrink-0">
+                  {image ? <Image src={image} alt={product.name} fill sizes="56px" className="object-cover" /> : <div className="w-full h-full flex items-center justify-center text-xs text-espresso-300">Sem foto</div>}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
