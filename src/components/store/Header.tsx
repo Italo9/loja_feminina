@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Search, Heart, ShoppingBag, Menu, X } from "lucide-react"
 import Link from "next/link"
 import { store } from "@/lib/config"
+import { useCartStore } from "@/lib/cart-store"
 
 const NAV_LINKS = [
   { label: "Vestidos", href: "/categoria/vestidos" },
@@ -18,6 +19,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const cartCount = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0))
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -109,9 +111,11 @@ export function Header() {
               aria-label="Carrinho"
             >
               <ShoppingBag className="w-[18px] h-[18px]" />
-              <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">
-                0
-              </span>
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
