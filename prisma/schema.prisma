@@ -147,6 +147,20 @@ model Address {
   receiver     String
 }
 
+model Coupon {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  type        String    @default("percentage")
+  value       Float
+  minValue    Float?
+  maxUses     Int?
+  usedCount   Int       @default(0)
+  active      Boolean   @default(true)
+  startsAt    DateTime?
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+}
+
 model Order {
   id              String          @id @default(cuid())
   userId          String?
@@ -161,6 +175,7 @@ model Order {
   shippingAddress String
   trackingCode    String?
   notes           String?
+  couponCode      String?
   items           OrderItem[]
   dropshipItems   DropshipOrder[]
   createdAt       DateTime        @default(now())
@@ -179,6 +194,12 @@ model OrderItem {
   quantity    Int
   image       String?
   source      String  @default("own")
+}
+
+model Newsletter {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
 }
 
 model DropshipOrder {
