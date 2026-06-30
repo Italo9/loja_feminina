@@ -12,8 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Relay é um servidor Node.js standalone (não Next.js)
-    "relay/**",
+    // Baileys exige require() dinâmico e any types
+    "src/lib/whatsapp.ts",
   ]),
 ]);
 
