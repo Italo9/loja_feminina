@@ -22,6 +22,10 @@ export default async function EditProductPage({ params }: Props) {
 
       <form action={async (formData: FormData) => {
         "use server"
+        const { auth } = await import("@/lib/auth")
+        const session = await auth()
+        const role = (session?.user as { role?: string })?.role
+        if (role !== "ADMIN") throw new Error("Unauthorized")
         const { prisma } = await import("@/lib/db")
         const { revalidatePath } = await import("next/cache")
         const { redirect } = await import("next/navigation")
