@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Cormorant_Garamond, Jost } from "next/font/google"
 import "./globals.css"
 import { ChatWidget } from "@/components/chat/ChatWidget"
+import { OrganizationJsonLd } from "@/components/store/JsonLd"
 import { store } from "@/lib/config"
 
 const cormorant = Cormorant_Garamond({
@@ -20,12 +21,11 @@ const jost = Jost({
 
 export const metadata: Metadata = {
   title: {
-    default: `${store.name} — Moda Feminina de Luxo`,
+    default: `${store.name} — ${store.tagline}`,
     template: `%s | ${store.name}`,
   },
-  description:
-    "Peças exclusivas com curadoria especial. Sofisticação e exclusividade em cada detalhe.",
-  metadataBase: new URL("https://lumiere.com.br"),
+  description: store.description,
+  metadataBase: new URL(store.url),
   openGraph: {
     type: "website",
     locale: "pt_BR",
@@ -52,6 +52,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col antialiased">
+        <OrganizationJsonLd />
         <ChatWidget />
         {children}
       </body>
