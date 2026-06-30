@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { ShoppingBag } from "lucide-react"
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function AddToCartButton({ product }: Props) {
+  const [added, setAdded] = useState(false)
   const image = product.images?.[0]?.url ?? null
 
   const handleAdd = () => {
@@ -32,12 +34,8 @@ export function AddToCartButton({ product }: Props) {
         },
       })
     )
-    const btn = document.activeElement as HTMLElement
-    if (btn) {
-      const orig = btn.textContent
-      btn.textContent = "Adicionado!"
-      setTimeout(() => { btn.textContent = orig }, 1500)
-    }
+    setAdded(true)
+    setTimeout(() => setAdded(false), 1500)
   }
 
   return (
@@ -46,7 +44,7 @@ export function AddToCartButton({ product }: Props) {
       className="btn-rose w-full text-[15px]"
     >
       <ShoppingBag className="w-4 h-4" />
-      Comprar
+      {added ? "Adicionado!" : "Comprar"}
     </button>
   )
 }
