@@ -1,30 +1,80 @@
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { ChevronLeft, Truck, Shield } from "lucide-react"
-import Link from "next/link"
-import { getProductBySlug } from "@/lib/products"
+import { Truck, Shield } from "lucide-react"
+import { prisma } from "@/lib/db"
+import { getProductBySlug, getRelatedProducts } from "@/lib/products"
+import { store } from "@/lib/config"
 
 import { ProductGallery } from "@/components/store/ProductGallery"
 import { ProductVariants } from "@/components/store/ProductVariants"
 import { AddToCartButton } from "@/components/store/AddToCartButton"
 import { OpenChatButton } from "@/components/store/OpenChatButton"
+import { ProductCard } from "@/components/store/ProductCard"
+import { ProductJsonLd } from "@/components/store/JsonLd"
+import { Breadcrumbs } from "@/components/store/Breadcrumbs"
+
+export const revalidate = 60
+
+export async function generateStaticParams() {
+  const products = await prisma.product.findMany({
+    where: { active: true },
+    select: { slug: true },
+    orderBy: { createdAt: "desc" },
+    take: 50,
+  })
+  return products.map((p) => ({ slug: p.slug }))
+}
 
 interface Props { params: Promise<{ slug: string }> }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const product = await getProductBySlug(slug)
+  if (!product) return {}
+
+  const title = `${product.name} — ${store.name}`
+  const description = product.description.slice(0, 160)
+  const firstImage = product.images?.[0]?.url
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      images: firstImage ? [{ url: firstImage }] : [],
+    },
+  }
+}
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params
   const product = await getProductBySlug(slug)
   if (!product) notFound()
 
+  const related = await getRelatedProducts(product.id, product.categoryId, 4)
+
   const hasDiscount = product.compareAt && product.compareAt > product.price
   const discountPercent = hasDiscount ? Math.round(((product.compareAt! - product.price) / product.compareAt!) * 100) : 0
 
+  const imageUrls = product.images?.map((img) => img.url) ?? []
+
   return (
     <div className="bg-cream-100 min-h-screen">
+      <ProductJsonLd
+        name={product.name}
+        description={product.description}
+        images={imageUrls}
+        price={product.price}
+        slug={product.slug}
+      />
       <div className="container-narrow py-6">
-        <Link href="/catalogo" className="inline-flex items-center gap-1 text-sm text-espresso-400 hover:text-rose-500 transition-colors mb-6">
-          <ChevronLeft className="w-4 h-4" />
-          Voltar
-        </Link>
+        <Breadcrumbs items={[
+          { label: "Catálogo", href: "/catalogo" },
+          { label: product.category?.name ?? "Produto", href: product.category?.slug ? `/categoria/${product.category.slug}` : undefined },
+          { label: product.name },
+        ]} />
 
         <div className="grid md:grid-cols-2 gap-8 md:gap-12">
           <ProductGallery images={product.images} productName={product.name} />
@@ -79,6 +129,20 @@ export default async function ProductPage({ params }: Props) {
             </div>
           </div>
         </div>
+
+        {related.length > 0 && (
+          <>
+            <hr className="rule my-12" />
+            <section>
+              <h3 className="display-sm mb-6">Produtos relacionados</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {related.map((p) => (
+                  <ProductCard key={p.id} product={p} />
+                ))}
+              </div>
+            </section>
+          </>
+        )}
       </div>
     </div>
   )
