@@ -33,10 +33,16 @@ export default async function ContaPage() {
 
             <div className="pt-4 border-t border-cream-200">
               <Link
-                href="/admin/pedidos"
+                href="/conta/pedidos"
                 className="block py-3 text-espresso-600 hover:text-rose-500 transition-colors"
               >
                 Meus Pedidos
+              </Link>
+              <Link
+                href="/conta/enderecos"
+                className="block py-3 text-espresso-600 hover:text-rose-500 transition-colors"
+              >
+                Meus Endereços
               </Link>
               <Link
                 href="/carrinho"
