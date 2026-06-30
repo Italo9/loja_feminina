@@ -3,6 +3,10 @@ import type { NextRequest } from "next/server"
 import { auth } from "@/lib/auth"
 
 export async function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith("/admin/api")) {
+    return NextResponse.next()
+  }
+
   const session = await auth()
   const role = (session?.user as { role?: string })?.role
 
