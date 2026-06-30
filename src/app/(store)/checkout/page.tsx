@@ -2,10 +2,11 @@
 
 import { useState, type FormEvent } from "react"
 import { useRouter } from "next/navigation"
-import { ChevronLeft, Lock, CreditCard, Banknote, Truck, ShoppingBag } from "lucide-react"
+import { ChevronLeft, Lock, CreditCard, Banknote, Truck, ShoppingBag, Ticket } from "lucide-react"
 import Link from "next/link"
 import { useCartStore } from "@/lib/cart-store"
 import { createCheckoutOrder } from "@/lib/checkout"
+import { getAddressByCep, FREE_SHIPPING_THRESHOLD } from "@/lib/shipping"
 
 const PAYMENT_METHODS = [
   { value: "pix", label: "Pix", icon: Banknote, description: "Pagamento instantâneo" },
@@ -21,6 +22,13 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState("pix")
   const [payerEmail, setPayerEmail] = useState("")
   const [payerName, setPayerName] = useState("")
+  const [cepLoading, setCepLoading] = useState(false)
+  const [shipping, setShipping] = useState<{ cost: number; days: number } | null>(null)
+  const [couponCode, setCouponCode] = useState("")
+  const [couponDiscount, setCouponDiscount] = useState(0)
+  const [couponValidating, setCouponValidating] = useState(false)
+  const [couponError, setCouponError] = useState<string | null>(null)
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null)
 
   const [address, setAddress] = useState({
     receiver: "",
@@ -33,8 +41,47 @@ export default function CheckoutPage() {
     zipCode: "",
   })
 
-  const total = subtotal()
+  const subtotalValue = subtotal()
+  const shippingCost = shipping?.cost ?? 0
+  const total = Math.max(subtotalValue + shippingCost - couponDiscount, 0)
   const dropshipItems = items.filter((i) => i.source === "dropship")
+
+  const handleCepBlur = async () => {
+    const cep = address.zipCode.replace(/\D/g, "")
+    if (cep.length !== 8) return
+
+    setCepLoading(true)
+    try {
+      const data = await getAddressByCep(cep)
+      if (data) {
+        setAddress((prev) => ({
+          ...prev,
+          street: data.street || prev.street,
+          neighborhood: data.neighborhood || prev.neighborhood,
+          city: data.city || prev.city,
+          state: data.state || prev.state,
+        }))
+      }
+
+      const res = await fetch("/api/shipping/calculate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cep,
+          items: items.map((i) => ({ weight: i.price, quantity: i.quantity })),
+          subtotal: subtotalValue,
+        }),
+      })
+      if (res.ok) {
+        const result = await res.json()
+        setShipping({ cost: result.cost, days: result.days })
+      }
+    } catch {
+      // silently fail — user can type address manually
+    } finally {
+      setCepLoading(false)
+    }
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -64,6 +111,8 @@ export default function CheckoutPage() {
       })),
       address,
       paymentMethod,
+      shippingCost,
+      couponCode: appliedCoupon ?? undefined,
       payerEmail: payerEmail.trim() || undefined,
       payerName: payerName.trim() || undefined,
     })
@@ -142,9 +191,19 @@ export default function CheckoutPage() {
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-espresso-400 mb-1">Bairro *</label>
                 <input value={address.neighborhood} onChange={(e) => setAddress({ ...address, neighborhood: e.target.value })} required className="input-clean" placeholder="Bairro" />
               </div>
-              <div>
+              <div className="relative">
                 <label className="block text-[11px] font-semibold uppercase tracking-wider text-espresso-400 mb-1">CEP *</label>
-                <input value={address.zipCode} onChange={(e) => setAddress({ ...address, zipCode: e.target.value })} required className="input-clean" placeholder="00000-000" />
+                <input
+                  value={address.zipCode}
+                  onChange={(e) => setAddress({ ...address, zipCode: e.target.value })}
+                  onBlur={handleCepBlur}
+                  required
+                  className="input-clean pr-8"
+                  placeholder="00000-000"
+                />
+                {cepLoading && (
+                  <span className="absolute right-2 top-[30px] w-4 h-4 border-2 border-rose-400 border-t-transparent rounded-full animate-spin" />
+                )}
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -209,6 +268,76 @@ export default function CheckoutPage() {
             </div>
           </div>
 
+          {/* Cupom */}
+          <div className="surface p-5 space-y-4 !rounded-2xl">
+            <h2 className="display-sm flex items-center gap-2">
+              <Ticket className="w-5 h-5 text-rose-400" />
+              Cupom de desconto
+            </h2>
+            {appliedCoupon ? (
+              <div className="flex items-center justify-between p-3 rounded-xl bg-green-50 border border-green-200">
+                <div>
+                  <p className="text-sm font-semibold text-green-700 font-mono">{appliedCoupon}</p>
+                  <p className="text-xs text-green-600">Desconto de R$ {couponDiscount.toFixed(2)}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAppliedCoupon(null)
+                    setCouponDiscount(0)
+                    setCouponCode("")
+                    setCouponError(null)
+                  }}
+                  className="text-xs font-semibold text-green-700 hover:text-red-600 transition-colors"
+                >
+                  Remover
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                  className="input-clean flex-1"
+                  placeholder="Código do cupom"
+                />
+                <button
+                  type="button"
+                  disabled={!couponCode.trim() || couponValidating}
+                  onClick={async () => {
+                    setCouponError(null)
+                    setCouponValidating(true)
+                    try {
+                      const res = await fetch("/api/coupon/validate", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ code: couponCode.trim(), subtotal: subtotalValue }),
+                      })
+                      const data = await res.json()
+                      if (data.valid) {
+                        setAppliedCoupon(couponCode.trim().toUpperCase())
+                        setCouponDiscount(data.discount)
+                        setCouponError(null)
+                      } else {
+                        setCouponError(data.error ?? "Cupom inválido.")
+                      }
+                    } catch {
+                      setCouponError("Erro ao validar cupom.")
+                    } finally {
+                      setCouponValidating(false)
+                    }
+                  }}
+                  className="btn-outline text-sm py-2.5 px-4 flex-shrink-0 disabled:opacity-50"
+                >
+                  {couponValidating ? "..." : "Aplicar"}
+                </button>
+              </div>
+            )}
+            {couponError && (
+              <p className="text-xs text-red-600">{couponError}</p>
+            )}
+          </div>
+
           {/* Resumo */}
           <div className="surface p-5 space-y-3 !rounded-2xl">
             <h2 className="display-sm">Resumo do pedido</h2>
@@ -228,12 +357,41 @@ export default function CheckoutPage() {
               ))}
             </div>
             <div className="flex justify-between items-center pt-2 border-t border-cream-200">
+              <span className="text-sm text-espresso-500">Subtotal</span>
+              <span className="text-sm text-espresso-700">R$ {subtotalValue.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-espresso-500">Frete</span>
+              <span className="text-sm text-espresso-700">
+                {shipping ? (
+                  shipping.cost === 0 ? (
+                    <span className="text-rose-500 font-medium">Grátis</span>
+                  ) : (
+                    `R$ ${shipping.cost.toFixed(2)}`
+                  )
+                ) : (
+                  <span className="text-espresso-400">—</span>
+                )}
+              </span>
+            </div>
+            {shipping && shipping.cost > 0 && subtotalValue < FREE_SHIPPING_THRESHOLD && (
+              <p className="text-[11px] text-cream-500">
+                Adicione mais R$ {(FREE_SHIPPING_THRESHOLD - subtotalValue).toFixed(2)} para ganhar frete grátis
+              </p>
+            )}
+            {couponDiscount > 0 && (
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-green-600">Desconto</span>
+                <span className="text-sm text-green-600 font-medium">- R$ {couponDiscount.toFixed(2)}</span>
+              </div>
+            )}
+            <div className="flex justify-between items-center pt-2 border-t border-cream-200">
               <span className="text-sm font-medium text-espresso-700">Total</span>
               <span className="price-lg text-espresso-800">R$ {total.toFixed(2)}</span>
             </div>
             {dropshipItems.length > 0 && (
               <p className="text-[11px] text-rose-500">
-                {dropshipItems.length} {dropshipItems.length === 1 ? "item é" : "itens são"} dropship e {"serão"} enviados pelo fornecedor.
+                {dropshipItems.length} {dropshipItems.length === 1 ? "item é" : "itens são"} dropship e serão enviados pelo fornecedor.
               </p>
             )}
           </div>
