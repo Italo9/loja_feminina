@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Heart, ShoppingBag } from "lucide-react"
 import Link from "next/link"
 import { Product } from "@/types"
@@ -9,6 +10,7 @@ export function ProductCard({ product }: { product: Product }) {
   const [liked, setLiked] = useState(false)
   const [imgError, setImgError] = useState(false)
   const [imgIdx, setImgIdx] = useState(0)
+  const [added, setAdded] = useState(false)
 
   const mainImage = product.images?.[imgIdx]?.url ?? null
   const secondImage = product.images?.[1]?.url ?? null
@@ -41,12 +43,13 @@ export function ProductCard({ product }: { product: Product }) {
         onMouseLeave={() => setImgIdx(0)}
       >
         {mainImage && !imgError ? (
-          <img
+          <Image
             src={mainImage}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+            fill
+            sizes="(max-width: 768px) 50vw, 25vw"
+            className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
             onError={() => setImgError(true)}
-            loading="lazy"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-cream-200">
@@ -89,13 +92,33 @@ export function ProductCard({ product }: { product: Product }) {
         <button
           onClick={(e) => {
             e.preventDefault()
-            // TODO: adicionar ao carrinho
+            window.dispatchEvent(
+              new CustomEvent("cart:add", {
+                detail: {
+                  productId: product.id,
+                  variantId: null,
+                  name: product.name,
+                  image: mainImage,
+                  price: product.price,
+                  quantity: 1,
+                  variantInfo: null,
+                  maxStock: 99,
+                  source: product.source ?? "own",
+                },
+              })
+            )
+            setAdded(true)
+            setTimeout(() => setAdded(false), 1500)
           }}
-          className="absolute bottom-3 left-3 right-3 py-3 bg-white/80 backdrop-blur-md text-espresso-700 text-[10px] uppercase tracking-[0.15em] font-semibold rounded-full flex items-center justify-center gap-2 transition-all duration-300 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 hover:bg-rose-500 hover:text-white shadow-sm"
+          className={`absolute bottom-3 left-3 right-3 py-3 backdrop-blur-md text-[10px] uppercase tracking-[0.15em] font-semibold rounded-full flex items-center justify-center gap-2 transition-all duration-300 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 shadow-sm ${
+            added
+              ? "bg-rose-500 text-white"
+              : "bg-white/80 text-espresso-700 hover:bg-rose-500 hover:text-white"
+          }`}
           aria-label="Adicionar ao carrinho"
         >
           <ShoppingBag className="w-3.5 h-3.5" />
-          Adicionar
+          {added ? "Adicionado!" : "Adicionar"}
         </button>
       </Link>
 
