@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { ShoppingBag, X, Minus, Plus, Trash2, ArrowRight } from "lucide-react"
 import { useCartStore } from "@/lib/cart-store"
@@ -47,8 +48,8 @@ export function CartSheet() {
             <ul className="space-y-4">
               {items.map((item) => (
                 <li key={`${item.productId}-${item.variantId}`} className="flex gap-3 bg-cream-50 rounded-xl p-3 border border-cream-200">
-                  <div className="w-20 h-24 rounded-lg overflow-hidden bg-cream-200 flex-shrink-0">
-                    {item.image && <img src={item.image} alt={item.name} className="w-full h-full object-cover" />}
+                  <div className="relative w-20 h-24 rounded-lg overflow-hidden bg-cream-200 flex-shrink-0">
+                    {item.image && <Image src={item.image} alt={item.name} fill sizes="80px" className="object-cover" />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-espresso-800 line-clamp-2">{item.name}</p>
@@ -79,7 +80,7 @@ export function CartSheet() {
               <span className="text-sm text-espresso-500">Subtotal</span>
               <span className="price-md text-espresso-800">R$ {total.toFixed(2)}</span>
             </div>
-            <p className="text-[11px] text-espresso-400 mb-3">Frete calculado no checkout</p>
+            <p className="text-[11px] text-espresso-400 mb-3">Frete grátis acima de R$ 250</p>
             <Link
               href="/checkout"
               onClick={() => setOpen(false)}
