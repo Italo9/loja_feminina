@@ -1,6 +1,8 @@
+import Image from "next/image"
 import { prisma } from "@/lib/db"
 import { revalidatePath } from "next/cache"
 import { notFound } from "next/navigation"
+import { auth } from "@/lib/auth"
 import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
 
@@ -28,6 +30,9 @@ export default async function OrderDetailPage({ params }: Props) {
 
   async function advanceStatus() {
     "use server"
+    const session = await auth()
+    const role = (session?.user as { role?: string })?.role
+    if (role !== "ADMIN") throw new Error("Unauthorized")
     await prisma.order.update({
       where: { id },
       data: { status: NEXT_STATUS[o.status] ?? o.status },
@@ -37,6 +42,9 @@ export default async function OrderDetailPage({ params }: Props) {
 
   async function cancelOrder() {
     "use server"
+    const session = await auth()
+    const role = (session?.user as { role?: string })?.role
+    if (role !== "ADMIN") throw new Error("Unauthorized")
     await prisma.order.update({
       where: { id },
       data: { status: "cancelled" },
@@ -46,6 +54,9 @@ export default async function OrderDetailPage({ params }: Props) {
 
   async function saveTracking(formData: FormData) {
     "use server"
+    const session = await auth()
+    const role = (session?.user as { role?: string })?.role
+    if (role !== "ADMIN") throw new Error("Unauthorized")
     const code = formData.get("tracking") as string
     if (code) {
       await prisma.order.update({
@@ -97,7 +108,7 @@ export default async function OrderDetailPage({ params }: Props) {
         </div>
         {o.items.map((item) => (
           <div key={item.id} className="flex items-center gap-3 p-3 border-b border-pearl-100 last:border-0">
-            {item.image && <img src={item.image} alt={item.productName} className="w-12 h-16 rounded-lg object-cover bg-pearl-100" />}
+            {item.image && <Image src={item.image} alt={item.productName} width={48} height={64} className="rounded-lg object-cover bg-pearl-100" />}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-espresso-900 truncate">{item.productName}</p>
               {item.variantInfo && <p className="text-xs text-espresso-400">{item.variantInfo}</p>}
