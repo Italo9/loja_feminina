@@ -1,13 +1,14 @@
 import Link from "next/link"
-import { ChevronLeft, Heart } from "lucide-react"
+import { Heart } from "lucide-react"
+import { Breadcrumbs } from "@/components/store/Breadcrumbs"
+
+export const dynamic = "force-static"
 
 export default function FavoritesPage() {
   return (
     <div className="bg-cream-100 min-h-screen">
       <div className="container-narrow py-8">
-        <Link href="/" className="inline-flex items-center gap-1 text-sm text-espresso-400 hover:text-rose-500 transition-colors mb-8">
-          <ChevronLeft className="w-4 h-4" /> Home
-        </Link>
+        <Breadcrumbs items={[{ label: "Favoritos" }]} />
 
         <div className="text-center py-16">
           <Heart className="w-12 h-12 text-rose-200 mx-auto mb-4" />
