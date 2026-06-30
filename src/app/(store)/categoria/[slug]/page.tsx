@@ -1,46 +1,107 @@
 import { notFound } from "next/navigation"
-import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
-import { getProductsByCategory, getCategories } from "@/lib/products"
+import { getCatalogProducts, getCategories } from "@/lib/products"
 import { ProductCard } from "@/components/store/ProductCard"
+import { Pagination } from "@/components/store/Pagination"
+import { FilterBar } from "@/components/store/FilterBar"
+import { Breadcrumbs } from "@/components/store/Breadcrumbs"
 
-interface Props { params: Promise<{ slug: string }> }
+export const revalidate = 60
 
-export default async function CategoryPage({ params }: Props) {
+interface Props {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export default async function CategoryPage({ params, searchParams }: Props) {
   const { slug } = await params
-  const products = await getProductsByCategory(slug)
-  const allCategories = await getCategories()
-  const category = allCategories.find(c => c.slug === slug)
+  const sp = await searchParams
+
+  const page = Number(sp.page) || 1
+  const sort = (sp.sort as string) || "newest"
+  const minPrice = sp.minPrice ? Number(sp.minPrice) : undefined
+  const maxPrice = sp.maxPrice ? Number(sp.maxPrice) : undefined
+
+  const [result, allCategories] = await Promise.all([
+    getCatalogProducts({ page, perPage: 12, sort, minPrice, maxPrice, categorySlug: slug }),
+    getCategories(),
+  ])
+
+  const { products, total, pages: totalPages } = result
+  const category = allCategories.find((c) => c.slug === slug)
 
   if (!category && products.length === 0) notFound()
+
+  const currentSearch = new URLSearchParams()
+  if (sort !== "newest") currentSearch.set("sort", sort)
+  if (minPrice !== undefined) currentSearch.set("minPrice", String(minPrice))
+  if (maxPrice !== undefined) currentSearch.set("maxPrice", String(maxPrice))
+
+  const buildHref = (p: number) => {
+    const params = new URLSearchParams(currentSearch)
+    if (p > 1) params.set("page", String(p))
+    else params.delete("page")
+    const qs = params.toString()
+    return `/categoria/${slug}${qs ? `?${qs}` : ""}`
+  }
 
   return (
     <div className="bg-cream-100 min-h-screen">
       <div className="container-narrow py-8">
-        <Link href="/" className="inline-flex items-center gap-1 text-sm text-espresso-400 hover:text-rose-500 transition-colors mb-6">
-          <ChevronLeft className="w-4 h-4" /> Home
-        </Link>
+        <Breadcrumbs items={[{ label: category?.name ?? slug }]} />
 
         <h1 className="display-lg mb-2">{category?.name ?? slug}</h1>
         {category?.children && category.children.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-8">
-            <Link href={`/categoria/${slug}`} className="px-4 py-2 rounded-full bg-rose-500 text-white text-sm font-semibold">Todos</Link>
-            {category.children.map(sub => (
-              <Link key={sub.slug} href={`/categoria/${sub.slug}`} className="px-4 py-2 rounded-full bg-white border border-cream-200 text-espresso-500 text-sm font-medium hover:border-rose-300 hover:text-rose-500 transition-colors shadow-sm">
+          <div className="flex flex-wrap gap-2 mb-6">
+            <Link
+              href={`/categoria/${slug}`}
+              className="px-4 py-2 rounded-full bg-rose-500 text-white text-sm font-semibold"
+            >
+              Todos
+            </Link>
+            {category.children.map((sub) => (
+              <Link
+                key={sub.slug}
+                href={`/categoria/${sub.slug}`}
+                className="px-4 py-2 rounded-full bg-white border border-cream-200 text-espresso-500 text-sm font-medium hover:border-rose-300 hover:text-rose-500 transition-colors shadow-sm"
+              >
                 {sub.name}
               </Link>
             ))}
           </div>
         )}
 
+        <FilterBar
+          currentSort={sort}
+          currentMinPrice={minPrice}
+          currentMaxPrice={maxPrice}
+          baseUrl={`/categoria/${slug}`}
+          currentSearch={currentSearch.toString()}
+        />
+
+        <p className="text-sm text-espresso-400 mb-4">
+          {total} {total === 1 ? "produto encontrado" : "produtos encontrados"}
+        </p>
+
         {products.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {products.map(p => <ProductCard key={p.id} product={p} />)}
-          </div>
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+              {products.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              buildHref={buildHref}
+            />
+          </>
         ) : (
           <div className="text-center py-20">
             <p className="display-sm mb-2">Nenhum produto encontrado</p>
-            <p className="body-base mb-6">Esta categoria ainda não tem produtos.</p>
+            <p className="body-base mb-6">
+              Esta categoria não tem produtos com os filtros selecionados.
+            </p>
             <Link href="/catalogo" className="btn-rose">
               Ver catálogo completo
             </Link>
