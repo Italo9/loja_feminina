@@ -1,5 +1,6 @@
 export async function register() {
-  // WhatsApp agora roda no relay (servidor standalone no Railway/Docker).
-  // O Next.js (Vercel/serverless) apenas faz proxy via src/lib/relay.ts.
-  // Nenhuma conexão Baileys é iniciada aqui.
+  if (process.env.NEXT_RUNTIME === "nodejs") {
+    const { connectWhatsApp } = await import("@/lib/whatsapp")
+    await connectWhatsApp()
+  }
 }
