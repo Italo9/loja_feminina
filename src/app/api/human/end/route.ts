@@ -1,17 +1,11 @@
-import { NextRequest, NextResponse } from "next/server"
-import { relayPost, relayEnabled } from "@/lib/relay"
+import { NextResponse } from "next/server"
+import { handleEnd } from "@/lib/whatsapp"
 
-export const runtime = "nodejs"
-export const dynamic = "force-dynamic"
-
-export async function POST(req: NextRequest) {
-  const body = await req.json()
-  if (!relayEnabled()) {
-    return NextResponse.json({ ok: false })
+export async function POST(req: Request) {
+  const { sessionId } = await req.json()
+  if (!sessionId) {
+    return NextResponse.json({ ok: false, error: "dados incompletos" }, { status: 400 })
   }
-  const result = await relayPost("/end", body)
-  if (!result) {
-    return NextResponse.json({ ok: false })
-  }
+  const result = await handleEnd(sessionId)
   return NextResponse.json(result)
 }
