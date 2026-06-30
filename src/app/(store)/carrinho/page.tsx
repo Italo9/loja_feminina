@@ -1,5 +1,3 @@
-"use client"
-
 import Link from "next/link"
 import { ChevronLeft, ShoppingBag } from "lucide-react"
 
@@ -17,13 +15,10 @@ export default function CartPage() {
           <p className="body-base mb-6">
             Clique no ícone do carrinho no topo da página para ver seus itens.
           </p>
-          <button
-            onClick={() => window.dispatchEvent(new Event("cart:open"))}
-            className="btn-rose"
-          >
+          <Link href="/" className="btn-rose">
             <ShoppingBag className="w-4 h-4" />
-            Abrir carrinho
-          </button>
+            Ver loja
+          </Link>
         </div>
       </div>
     </div>
