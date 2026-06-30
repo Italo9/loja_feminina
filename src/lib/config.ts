@@ -36,6 +36,7 @@ export const store = {
     "NEXT_PUBLIC_STORE_HOURS",
     "Seg a Sex, 9h às 18h",
   ),
+  url: readEnv("NEXT_PUBLIC_SITE_URL", "https://lumiere.com.br"),
   developerName: readEnv("NEXT_PUBLIC_DEVELOPER_NAME", "Ítalo Lima"),
   developerUrl: readEnv("NEXT_PUBLIC_DEVELOPER_URL", "https://italolima.com.br"),
 }
