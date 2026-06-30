@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Camera } from "lucide-react"
 import { store } from "@/lib/config"
 
@@ -31,11 +32,12 @@ export function InstagramSection() {
               rel="noopener noreferrer"
               className={`group relative aspect-square overflow-hidden rounded-2xl bg-cream-200 animate-fade-up stagger-${i + 1}`}
             >
-              <img
+              <Image
                 src={post.image}
                 alt={`Instagram post ${i + 1}`}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                loading="lazy"
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-espresso-800/0 group-hover:bg-espresso-800/40 transition-all duration-300 flex items-center justify-center">
                 <Camera className="w-7 h-7 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
