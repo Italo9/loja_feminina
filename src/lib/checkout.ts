@@ -1,8 +1,10 @@
 "use server"
 
 import { prisma } from "./db"
+import { auth } from "./auth"
 import { revalidatePath } from "next/cache"
 import { createMercadoPagoPreference } from "./mercadopago"
+import { validateCoupon } from "./admin-actions"
 
 interface AddressInput {
   receiver: string
@@ -31,28 +33,65 @@ export async function createCheckoutOrder(input: {
   items: CartItemInput[]
   address: AddressInput
   paymentMethod: string
+  shippingCost?: number
+  couponCode?: string
   payerEmail?: string
   payerName?: string
   notes?: string
 }) {
-  const { userId, items, address, paymentMethod, payerEmail, payerName, notes } = input
+  const { userId, items, address, paymentMethod, shippingCost = 0, couponCode, payerEmail, payerName, notes } = input
+
+  const session = await auth()
+  if (userId && session?.user?.id && userId !== session.user.id) {
+    return { ok: false, error: "Usuário não autorizado" }
+  }
 
   if (!items.length) return { ok: false, error: "Carrinho vazio" }
 
+  // Validate prices server-side
+  for (const item of items) {
+    const product = await prisma.product.findUnique({
+      where: { id: item.productId },
+      select: { id: true, price: true, variants: { select: { id: true, price: true } } },
+    })
+    if (!product) {
+      return { ok: false, error: `Produto ${item.productId} não encontrado` }
+    }
+    const expectedPrice = item.variantId
+      ? (product.variants.find(v => v.id === item.variantId)?.price ?? product.price)
+      : product.price
+    if (Math.abs(item.price - expectedPrice) > 0.01) {
+      return { ok: false, error: `Preço do item "${item.name}" não confere` }
+    }
+  }
+
   const addressStr = JSON.stringify(address)
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0)
-  const shippingCost = 0
-  const total = subtotal + shippingCost
+
+  let discount = 0
+  let validCouponCode: string | null = null
+
+  if (couponCode) {
+    const validation = await validateCoupon(couponCode, subtotal)
+    if (validation.valid) {
+      discount = validation.discount
+      validCouponCode = couponCode.toUpperCase().trim()
+    }
+  }
+
+  const total = Math.max(subtotal + shippingCost - discount, 0)
 
   const order = await prisma.order.create({
     data: {
       userId: userId ?? null,
       subtotal,
       shippingCost,
+      discount,
       total,
       paymentMethod,
       paymentStatus: "pending",
       shippingAddress: addressStr,
+      couponCode: validCouponCode,
       notes: notes ?? null,
       items: {
         create: items.map((item) => ({
@@ -84,12 +123,16 @@ export async function createCheckoutOrder(input: {
 
   // Agrupar dropship por fornecedor e criar DropshipOrder
   if (dropshipItems.length > 0) {
+    const productIds = dropshipItems.map((i) => i.productId)
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, supplierId: true, cost: true },
+    })
+    const productMap = new Map(products.map((p) => [p.id, p]))
+
     const bySupplier = new Map<string, { supplierId: string; subtotal: number }>()
     for (const item of dropshipItems) {
-      const product = await prisma.product.findUnique({
-        where: { id: item.productId },
-        select: { supplierId: true, cost: true },
-      })
+      const product = productMap.get(item.productId)
       if (product?.supplierId) {
         const existing = bySupplier.get(product.supplierId)
         const itemTotal = (product.cost ?? 0) * item.quantity
@@ -115,6 +158,13 @@ export async function createCheckoutOrder(input: {
         },
       })
     }
+  }
+
+  if (validCouponCode) {
+    await prisma.coupon.update({
+      where: { code: validCouponCode },
+      data: { usedCount: { increment: 1 } },
+    })
   }
 
   revalidatePath("/admin/pedidos")
