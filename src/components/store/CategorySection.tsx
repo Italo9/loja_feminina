@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { getCategoryImages } from "@/lib/products"
 
@@ -25,11 +26,12 @@ export async function CategorySection() {
               className={`group relative aspect-[3/4] overflow-hidden rounded-2xl bg-cream-200 animate-fade-up stagger-${(i % 8) + 1}`}
             >
               {cat.image ? (
-                <img
+                <Image
                   src={cat.image}
                   alt={cat.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-cream-200">
