@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lumière — Loja Virtual
 
-## Getting Started
+Loja virtual feminina white-label. A mesma base de código serve múltiplas lojas via variáveis de ambiente.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **Tailwind CSS v4**
+- **Prisma** (SQLite dev / PostgreSQL produção)
+- **Auth.js v5** (NextAuth)
+- **Stripe** (pagamentos)
+- **Baileys** (WhatsApp in-process)
+- **Zustand** (carrinho)
+
+## Rodar local
 
 ```bash
+npm install
+cp .env.example .env
+# Ajuste as variáveis no .env
+npx prisma migrate dev --name init
+npx prisma db seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Admin
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/admin` — painel administrativo
+- `/admin/produtos` — gerenciar produtos
+- `/admin/pedidos` — gerenciar pedidos
+- `/admin/whatsapp` — conectar WhatsApp
+- `/admin/config` — configurações da loja
 
-## Learn More
+Usuário padrão (seed):
+- Email: `admin@lumiere.com.br`
+- Senha: `admin123`
 
-To learn more about Next.js, take a look at the following resources:
+## WhatsApp (atendimento humano)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. No `.env`: `WHATSAPP_ENABLED=true`
+2. Acesse `/admin/whatsapp`
+3. Escaneie o QR code com o WhatsApp do atendente
+4. O chat widget no site terá a opção "Falar com humano"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy (Google Cloud Run)
 
-## Deploy on Vercel
+```bash
+gcloud builds submit --config cloudbuild.yaml
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+O projeto usa `output: "standalone"` e `cloudbuild.yaml` já configurado.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Variáveis de ambiente no Cloud Run
+
+```
+DATABASE_URL=postgres://...   # PostgreSQL (Cloud SQL)
+AUTH_SECRET=...
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+NVIDIA_API_KEY=nvapi-...
+WHATSAPP_ENABLED=true
+WHATSAPP_ATTENDANT_NUMBER=...
+WHATSAPP_AUTH_DIR=./.whatsapp-auth
+```
+
+O volume `.whatsapp-auth` precisa ser persistente (Cloud Run não mantém arquivos entre deploys — use um volume Cloud Storage ou mantenha o QR escaneado).
