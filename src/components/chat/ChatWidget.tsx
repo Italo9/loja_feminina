@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
-import { X, Send, UserRound, Sparkles, MessageCircle } from "lucide-react"
+import { X, Send, UserRound, Sparkles } from "lucide-react"
 import type { ChatMessage } from "@/types"
 import { assistant, store } from "@/lib/config"
 
@@ -29,8 +29,8 @@ const SUGGESTIONS = [
 
 function JadeAvatar() {
   return (
-    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-      <Sparkles className="w-4 h-4 text-white" />
+    <div className="w-8 h-8 rounded-full bg-[#DCA7A7] flex items-center justify-center flex-shrink-0 shadow-sm">
+      <Sparkles className="w-4 h-4 text-[#C9A66B]" />
     </div>
   )
 }
@@ -271,16 +271,16 @@ export function ChatWidget() {
           style={
             pos
               ? { left: pos.x, top: pos.y, right: "auto", bottom: "auto" }
-              : { right: "1rem", bottom: "5rem" }
+              : { right: "1.25rem", bottom: "5rem" }
           }
         >
-          <div className="bg-white rounded-full px-4 py-2 shadow-card text-sm font-semibold text-espresso-700 whitespace-nowrap animate-fade-up border border-cream-200">
+          <div className="bg-white/90 backdrop-blur-sm rounded-full px-4 py-2.5 shadow-soft text-sm font-medium text-[#6B4A4F] whitespace-nowrap animate-fade-up border border-[#F6D8D6]/50">
             {PILL_PHRASES[pillIndex]}
           </div>
-          <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-rose-500 to-rose-400 shadow-lift flex items-center justify-center transition-transform group-hover:scale-110">
-            <MessageCircle className="w-6 h-6 text-white" />
+          <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-[#DCA7A7] to-[#F6D8D6] shadow-lift flex items-center justify-center transition-transform group-hover:scale-110">
+            <Sparkles className="w-6 h-6 text-[#C9A66B]" />
             {unread > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#25d366] text-white text-[10px] font-bold flex items-center justify-center shadow">
+              <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#C9A66B] text-white text-[10px] font-bold flex items-center justify-center shadow">
                 {unread}
               </span>
             )}
@@ -290,28 +290,32 @@ export function ChatWidget() {
 
       {open && !minimized && (
         <>
-          <div className="fixed inset-0 z-[84] bg-espresso-900/20 md:bg-transparent" onClick={() => { setMinimized(true); setOpen(false) }} />
-          <div className="fixed inset-0 z-[85] md:inset-auto md:right-4 md:bottom-24 md:w-[380px] md:h-[600px] md:rounded-2xl overflow-hidden shadow-lift animate-slide-up bg-white flex flex-col border md:border-cream-200">
+          <div className="fixed inset-0 z-[84] bg-[#6B4A4F]/20 md:bg-transparent" onClick={() => { setMinimized(true); setOpen(false) }} />
+          <div className="fixed inset-0 z-[85] md:inset-auto md:right-4 md:bottom-24 md:w-[380px] md:h-[600px] md:rounded-2xl overflow-hidden shadow-lift animate-slide-up bg-white flex flex-col border border-[#F6D8D6]/30">
           {/* Header */}
-          <div className={`flex items-center justify-between p-4 border-b text-white ${isHumanMode ? "bg-[#075e54] border-[#075e54]" : "bg-rose-500 border-cream-200"}`}>
+          <div className={`flex items-center justify-between p-4 border-b text-white ${isHumanMode ? "bg-[#6B4A4F] border-[#6B4A4F]" : "bg-[#F6D8D6] border-[#F6D8D6]"}`}>
             <div className="flex items-center gap-3">
               {isHumanMode ? (
                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
                   <UserRound className="w-4 h-4 text-white" />
                 </div>
               ) : (
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-4 h-4 text-[#C9A66B]" />
                 </div>
               )}
               <div>
-                <p className="text-sm font-bold">{isHumanMode ? "Atendente" : assistant.name}</p>
-                <p className="text-[10px] opacity-80">{isHumanMode ? "Modo humano · WhatsApp" : assistant.role}</p>
+                <p className="font-[family-name:var(--font-display)] text-base font-medium tracking-wide">
+                  {isHumanMode ? "Atendente" : `${assistant.name} — sua stylist virtual`}
+                </p>
+                <p className="text-[10px] opacity-70 font-light tracking-wide">
+                  {isHumanMode ? "Modo humano · WhatsApp" : assistant.role}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-1">
               {isHumanMode && (
-                <button onClick={endHuman} className="p-1.5 rounded-full hover:bg-white/20 transition-colors text-[10px] font-semibold uppercase tracking-wider">
+                <button onClick={endHuman} className="px-2.5 py-1 rounded-full hover:bg-white/20 transition-colors text-[10px] font-medium uppercase tracking-wider">
                   Encerrar
                 </button>
               )}
@@ -322,12 +326,12 @@ export function ChatWidget() {
           </div>
 
           {/* Body */}
-          <div ref={scrollRef} className={`flex-1 overflow-y-auto p-4 space-y-4 ${isHumanMode ? "bg-[#e5ddd5]" : "bg-cream-50"}`}>
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#FFF6F2]">
             {messages.map((msg) => (
               <div key={msg.id} className={`flex items-end gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 {msg.role === "assistant" && (
                   msg.human ? (
-                    <div className="w-8 h-8 rounded-full bg-[#075e54] flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <div className="w-8 h-8 rounded-full bg-[#6B4A4F] flex items-center justify-center flex-shrink-0 shadow-sm">
                       <UserRound className="w-4 h-4 text-white" />
                     </div>
                   ) : (
@@ -336,11 +340,11 @@ export function ChatWidget() {
                 )}
                 <div className={
                   msg.role === "user"
-                    ? `max-w-[80%] px-4 py-2.5 text-sm leading-relaxed ${isHumanMode ? "bg-[#d9fdd3] text-espresso-800" : "chat-bubble-user"} rounded-[18px_18px_4px_18px]`
-                    : `max-w-[85%] px-4 py-2.5 text-sm leading-relaxed whitespace-pre-line ${isHumanMode ? "bg-white text-espresso-700 shadow-sm" : "chat-bubble-assistant"} rounded-[18px_18px_18px_4px]`
+                    ? `max-w-[80%] px-4 py-2.5 text-sm leading-relaxed bg-[#DCA7A7] text-white rounded-2xl rounded-br-md`
+                    : `max-w-[85%] px-4 py-2.5 text-sm leading-relaxed whitespace-pre-line bg-rose-50 text-[#6B4A4F] rounded-2xl rounded-bl-md border border-[#F6D8D6]`
                 }>
                   {msg.human && (
-                    <span className="block text-[10px] font-semibold text-[#075e54] mb-0.5">Atendente</span>
+                    <span className="block text-[10px] font-semibold text-[#C9A66B] mb-0.5">Atendente</span>
                   )}
                   {msg.content}
                   <span className="block text-right mt-1 text-[10px] opacity-40">
@@ -353,16 +357,16 @@ export function ChatWidget() {
             {loading && (
               <div className="flex items-end gap-2">
                 {isHumanMode ? (
-                  <div className="w-8 h-8 rounded-full bg-[#075e54] flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <div className="w-8 h-8 rounded-full bg-[#6B4A4F] flex items-center justify-center flex-shrink-0 shadow-sm">
                     <UserRound className="w-4 h-4 text-white" />
                   </div>
                 ) : (
                   <JadeAvatar />
                 )}
-                <div className={`px-4 py-3 flex items-center gap-1 ${isHumanMode ? "bg-white shadow-sm" : "chat-bubble-assistant"} rounded-[18px_18px_18px_4px]`}>
-                  <span className="typing-dot" />
-                  <span className="typing-dot" />
-                  <span className="typing-dot" />
+                <div className="px-4 py-3 flex items-center gap-1 bg-rose-50 border border-[#F6D8D6] rounded-2xl rounded-bl-md">
+                  <span className="w-2 h-2 rounded-full bg-[#C9A66B] animate-[pulse-glow_1.4s_ease-in-out_infinite]" />
+                  <span className="w-2 h-2 rounded-full bg-[#C9A66B] animate-[pulse-glow_1.4s_ease-in-out_0.2s_infinite]" />
+                  <span className="w-2 h-2 rounded-full bg-[#C9A66B] animate-[pulse-glow_1.4s_ease-in-out_0.4s_infinite]" />
                 </div>
               </div>
             )}
@@ -371,8 +375,8 @@ export function ChatWidget() {
             {mode === "askName" && (
               <form onSubmit={handleNameSubmit} className="flex items-end gap-2">
                 <JadeAvatar />
-                <div className="chat-bubble-assistant max-w-[85%] px-4 py-3 space-y-2">
-                  <p className="text-sm">Como você gostaria de ser chamada?</p>
+                <div className="bg-rose-50 border border-[#F6D8D6] max-w-[85%] px-4 py-3 space-y-2 rounded-2xl rounded-bl-md">
+                  <p className="text-sm text-[#6B4A4F]">Como você gostaria de ser chamada?</p>
                   <div className="flex gap-2">
                     <input
                       ref={nameInputRef}
@@ -380,9 +384,9 @@ export function ChatWidget() {
                       value={clientName}
                       onChange={(e) => setClientName(e.target.value)}
                       placeholder="Seu nome"
-                      className="flex-1 bg-cream-50 border border-cream-200 rounded-full px-3 py-1.5 text-sm text-espresso-700 focus:outline-none focus:border-rose-300"
+                      className="flex-1 bg-white border border-[#F6D8D6] rounded-full px-3 py-1.5 text-sm text-[#6B4A4F] placeholder:text-[#B58FA2] focus:outline-none focus:border-[#C9A66B]"
                     />
-                    <button type="submit" disabled={!clientName.trim()} className="px-4 py-1.5 bg-rose-500 text-white text-sm font-semibold rounded-full disabled:opacity-50">
+                    <button type="submit" disabled={!clientName.trim()} className="px-4 py-1.5 bg-[#DCA7A7] text-white text-sm font-medium rounded-full disabled:opacity-50 hover:bg-[#B58FA2] transition-colors">
                       OK
                     </button>
                   </div>
@@ -393,28 +397,28 @@ export function ChatWidget() {
 
           {/* Suggestions / human UI */}
           {!loading && mode !== "askName" && (
-            <div className="px-3 py-2 flex gap-1.5 overflow-x-auto border-t border-cream-200 flex-shrink-0 bg-white">
+            <div className="px-3 py-2.5 flex gap-1.5 overflow-x-auto border-t border-[#F6D8D6]/30 flex-shrink-0 bg-white">
               {!isHumanMode ? (
                 <>
                   {whatsappOnline ? (
-                    <button onClick={askForHuman} className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-full bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 transition-colors whitespace-nowrap">
-                      <UserRound className="w-3.5 h-3.5" />
+                    <button onClick={askForHuman} className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-full bg-[#FFF6F2] text-[#6B4A4F] border border-[#DCA7A7]/40 hover:bg-[#F6D8D6]/30 transition-colors whitespace-nowrap">
+                      <UserRound className="w-3.5 h-3.5 text-[#C9A66B]" />
                       Falar com humano
                     </button>
                   ) : (
-                    <span className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-cream-100 text-espresso-300 border border-cream-200 whitespace-nowrap cursor-not-allowed">
+                    <span className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-cream-100 text-[#B58FA2] border border-cream-200 whitespace-nowrap cursor-not-allowed">
                       <UserRound className="w-3.5 h-3.5" />
                       Atendente offline
                     </span>
                   )}
                   {SUGGESTIONS.slice(0, 2).map((s) => (
-                    <button key={s.prompt} onClick={() => sendMessage(s.prompt)} className="flex-shrink-0 text-xs font-medium px-3 py-2 rounded-full bg-cream-100 text-espresso-600 border border-cream-200 hover:bg-cream-200 transition-colors whitespace-nowrap">
+                    <button key={s.prompt} onClick={() => sendMessage(s.prompt)} className="flex-shrink-0 text-xs font-medium px-3 py-2 rounded-full bg-[#FFF6F2] text-[#6B4A4F] border border-[#F6D8D6]/40 hover:bg-[#F6D8D6]/20 transition-colors whitespace-nowrap">
                       {s.label}
                     </button>
                   ))}
                 </>
               ) : (
-                <p className="text-xs text-[#075e54] font-medium py-2 w-full text-center">
+                <p className="text-xs text-[#C9A66B] font-medium py-2 w-full text-center">
                   Você está falando com um atendente humano via WhatsApp
                 </p>
               )}
@@ -423,7 +427,7 @@ export function ChatWidget() {
 
           {/* Input */}
           {mode !== "askName" && (
-            <div className={`px-3 pt-3 border-t flex items-center gap-2 flex-shrink-0 pb-safe ${isHumanMode ? "bg-[#f0f0f0] border-[#e0e0e0]" : "bg-white border-cream-200"}`}>
+            <div className="px-3 pt-2.5 pb-3 border-t border-[#F6D8D6]/30 flex items-center gap-2 flex-shrink-0 pb-safe bg-white">
               <input
                 ref={inputRef}
                 type="text"
@@ -433,19 +437,19 @@ export function ChatWidget() {
                 placeholder={placeholder}
                 disabled={loading}
                 enterKeyHint="send"
-                className={`flex-1 rounded-full px-4 py-2.5 text-[16px] focus:outline-none disabled:opacity-50 ${isHumanMode ? "bg-white border border-[#e0e0e0] text-espresso-700 placeholder:text-espresso-300" : "bg-cream-50 border border-cream-200 text-espresso-700 placeholder:text-espresso-300 focus:ring-2 focus:ring-rose-200"}`}
+                className="flex-1 rounded-full px-4 py-2.5 text-[16px] bg-[#FFF6F2] border border-[#F6D8D6] text-[#6B4A4F] placeholder:text-[#B58FA2] focus:outline-none focus:border-[#C9A66B] focus:ring-2 focus:ring-[#C9A66B]/15 disabled:opacity-50"
               />
               <button
                 onClick={() => sendMessage(input)}
                 disabled={!input.trim() || loading}
                 aria-label="Enviar"
-                className={`w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
                   input.trim() && !loading
-                    ? isHumanMode ? "bg-[#075e54] text-white hover:bg-[#054d44]" : "bg-rose-500 text-white hover:bg-rose-600"
-                    : isHumanMode ? "bg-[#e0e0e0] text-espresso-300 cursor-not-allowed" : "bg-cream-200 text-espresso-300 cursor-not-allowed"
+                    ? "bg-[#DCA7A7] text-white hover:bg-[#B58FA2] shadow-sm"
+                    : "bg-[#F6D8D6]/40 text-[#B58FA2]/40 cursor-not-allowed"
                 }`}
               >
-                <Send className="w-5 h-5" />
+                <Send className="w-4 h-4" />
               </button>
             </div>
           )}

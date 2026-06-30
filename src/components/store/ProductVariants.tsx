@@ -24,13 +24,13 @@ export function ProductVariants({ variants }: Props) {
   if (variants.length === 0) return null
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {colors.length > 0 && (
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-espresso-400 mb-3">
-            Cor: <span className="text-espresso-700">{selectedColor}</span>
+          <p className="text-sm font-medium text-plum-600 mb-3 font-[family-name:var(--font-body)]">
+            Cor: <span className="text-plum-800">{selectedColor}</span>
           </p>
-          <div className="flex flex-wrap gap-2.5">
+          <div className="flex flex-wrap gap-3">
             {colors.map(color => {
               const variant = variants.find(v => v.color === color)
               const isSelected = selectedColor === color
@@ -38,8 +38,10 @@ export function ProductVariants({ variants }: Props) {
                 <button
                   key={color}
                   onClick={() => { setSelectedColor(color); setSelectedSize(null) }}
-                  className={`w-9 h-9 rounded-full border-2 transition-all ${
-                    isSelected ? "border-rose-500 scale-110 ring-2 ring-rose-200" : "border-cream-300 hover:border-cream-400"
+                  className={`w-12 h-12 rounded-full border-2 transition-all ${
+                    isSelected
+                      ? "border-gold-400 ring-2 ring-gold-200 scale-110"
+                      : "border-cream-300 hover:border-cream-400"
                   }`}
                   style={{ backgroundColor: variant?.colorHex ?? "#ccc" }}
                   aria-label={color}
@@ -53,7 +55,7 @@ export function ProductVariants({ variants }: Props) {
 
       {sizes.length > 0 && (
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-espresso-400 mb-3">Tamanho</p>
+          <p className="text-sm font-medium text-plum-600 mb-3 font-[family-name:var(--font-body)]">Tamanho</p>
           <div className="flex flex-wrap gap-2">
             {sizes.map(size => {
               const variant = variants.find(v => v.size === size && (!selectedColor || v.color === selectedColor))
@@ -64,12 +66,12 @@ export function ProductVariants({ variants }: Props) {
                   key={size}
                   onClick={() => available && setSelectedSize(size)}
                   disabled={!available}
-                  className={`min-w-[44px] h-11 px-3 rounded-xl text-sm font-medium transition-all ${
+                  className={`min-w-[48px] h-11 px-4 rounded-xl text-sm font-medium transition-all ${
                     !available
-                      ? "bg-cream-100 text-espresso-300 line-through cursor-not-allowed"
+                      ? "bg-cream-50 text-cream-300 cursor-not-allowed"
                       : isSelected
-                        ? "bg-rose-500 text-white shadow-md"
-                        : "bg-white text-espresso-600 border border-cream-200 hover:border-rose-300"
+                        ? "bg-blush-400 text-white shadow-sm"
+                        : "bg-white text-plum-600 border border-cream-200 hover:border-blush-300"
                   }`}
                 >
                   {size}

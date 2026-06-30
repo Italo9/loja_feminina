@@ -2,70 +2,80 @@
 
 /* ================================================================
    LUMIÈRE — Design System
-   Feminino · Dourado + Rosa · Premium
+   Feminino · Pérola + Blush + Dourado · Premium
    ================================================================ */
 
 @theme inline {
-  /* ---- Rose (primário feminino) ---- */
-  --color-rose-50: #fef1f6;
-  --color-rose-100: #fde2ed;
-  --color-rose-200: #fbc6db;
-  --color-rose-300: #f89ac1;
-  --color-rose-400: #f26ea2;
-  --color-rose-500: #e84584; /* rosa principal */
-  --color-rose-600: #d62a6d;
-  --color-rose-700: #b81a55;
-  --color-rose-800: #9a1949;
-  --color-rose-900: #7f1a40;
+  /* Pearl — fundo principal */
+  --color-pearl-50: #fffaf7;
+  --color-pearl-100: #FFF6F2;
+  --color-pearl-200: #f5e9e0;
+  --color-pearl-300: #e8d5c8;
 
-  /* ---- Gold (acento luxo) ---- */
-  --color-gold-50: #fef9ec;
-  --color-gold-100: #fcf0d4;
-  --color-gold-200: #f8e0a9;
-  --color-gold-300: #f2cb70;
-  --color-gold-400: #e8b134;
-  --color-gold-500: #c9921f; /* dourado principal */
-  --color-gold-600: #a57418;
-  --color-gold-700: #835718;
-  --color-gold-800: #6b451a;
-  --color-gold-900: #5b3b1a;
+  /* Rose — hover e superfícies */
+  --color-rose-50: #fff5f4;
+  --color-rose-100: #fde8e7;
+  --color-rose-200: #F6D8D6;
+  --color-rose-300: #edc0be;
 
-  /* ---- Cream (fundos claros) ---- */
-  --color-cream-50: #fefdfb;
-  --color-cream-100: #faf6f0; /* fundo da página */
-  --color-cream-200: #f2eadb;
-  --color-cream-300: #e3d6c0;
-  --color-cream-400: #cbb99b;
-  --color-cream-500: #b19f7d;
+  /* Blush — botões primários */
+  --color-blush-50: #fdf7f7;
+  --color-blush-100: #f9ebeb;
+  --color-blush-200: #f0d8d8;
+  --color-blush-300: #e6c4c4;
+  --color-blush-400: #DCA7A7;
+  --color-blush-500: #cf9292;
+  --color-blush-600: #B58FA2;
+  --color-blush-700: #a07a8e;
 
-  /* ---- Blush (superfícies rosadas) ---- */
-  --color-blush-50: #fef7fa;
-  --color-blush-100: #fdeaf2;
-  --color-blush-200: #fad0e3;
-  --color-blush-300: #f4a8c8;
+  /* Mauve — hover */
+  --color-mauve-50: #f8f6f7;
+  --color-mauve-100: #eae5e7;
+  --color-mauve-200: #d8cfd2;
+  --color-mauve-300: #c4b5ba;
+  --color-mauve-400: #B58FA2;
+  --color-mauve-500: #a07a8e;
+  --color-mauve-600: #8a6878;
 
-  /* ---- Espresso (texto escuro) ---- */
-  --color-espresso-50: #f8f7f5;
-  --color-espresso-100: #edeae3;
-  --color-espresso-200: #d9d1c5;
-  --color-espresso-300: #bdb09e;
-  --color-espresso-400: #9c8e7a;
-  --color-espresso-500: #7a6e5e;
-  --color-espresso-600: #5c5245;
-  --color-espresso-700: #3d362d; /* texto principal */
-  --color-espresso-800: #2a2520;
-  --color-espresso-900: #1a1714;
-  --color-espresso-950: #0f0d0b;
+  /* Nude — detalhes */
+  --color-nude-50: #faf7f4;
+  --color-nude-100: #f2ece5;
+  --color-nude-200: #e6dbcf;
+  --color-nude-300: #D7C2B3;
+  --color-nude-400: #c4a997;
+  --color-nude-500: #ad927f;
 
-  /* ---- Fontes ---- */
+  /* Gold — premium */
+  --color-gold-50: #fdfaf5;
+  --color-gold-100: #f8f2e5;
+  --color-gold-200: #f0e3cb;
+  --color-gold-300: #e6cfaa;
+  --color-gold-400: #D7BA82;
+  --color-gold-500: #C9A66B;
+  --color-gold-600: #b08f54;
+  --color-gold-700: #8f7140;
+
+  /* Plum — texto */
+  --color-plum-50: #f7f5f5;
+  --color-plum-100: #e8e3e3;
+  --color-plum-200: #d2c8c9;
+  --color-plum-300: #b5a6a8;
+  --color-plum-400: #988587;
+  --color-plum-500: #7d6b6d;
+  --color-plum-600: #6B4A4F;
+  --color-plum-700: #54393d;
+  --color-plum-800: #3d282b;
+  --color-plum-900: #2a1a1c;
+
+  /* Fontes */
   --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-body: "Jost", system-ui, -apple-system, sans-serif;
   --font-mono: "Jost", system-ui, sans-serif;
 
-  /* ---- Sombras (suaves, premium) ---- */
-  --shadow-soft: 0 2px 16px rgba(0, 0, 0, 0.06);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
-  --shadow-lift: 0 8px 40px rgba(0, 0, 0, 0.12);
+  /* Sombras (ultra suaves, premium) */
+  --shadow-soft: 0 2px 12px rgba(107, 74, 79, 0.04);
+  --shadow-card: 0 4px 20px rgba(107, 74, 79, 0.06);
+  --shadow-lift: 0 8px 32px rgba(107, 74, 79, 0.08);
 }
 
 /* ================================================================
@@ -81,8 +91,8 @@ html {
 }
 
 body {
-  background-color: var(--color-cream-100);
-  color: var(--color-espresso-700);
+  background-color: var(--color-pearl-100);
+  color: var(--color-plum-600);
   font-family: var(--font-body);
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
@@ -92,7 +102,7 @@ body {
 
 ::selection {
   background: var(--color-rose-200);
-  color: var(--color-rose-800);
+  color: var(--color-plum-700);
 }
 
 /* ================================================================
@@ -102,55 +112,56 @@ body {
 .display-xl {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 5.5vw, 5rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.04;
   letter-spacing: -0.01em;
-  color: var(--color-espresso-800);
+  color: var(--color-plum-700);
 }
 
 .display-lg {
   font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.005em;
-  color: var(--color-espresso-800);
+  color: var(--color-plum-700);
 }
 
 .display-md {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.2;
-  color: var(--color-espresso-800);
+  color: var(--color-plum-700);
 }
 
 .display-sm {
   font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.35;
-  color: var(--color-espresso-800);
+  color: var(--color-plum-700);
 }
 
 .body-lg {
   font-size: clamp(0.95rem, 1.3vw, 1.1rem);
-  line-height: 1.75;
+  line-height: 1.85;
   font-weight: 300;
-  color: var(--color-espresso-500);
+  color: var(--color-plum-500);
 }
 
 .body-base {
   font-size: 0.9375rem;
-  line-height: 1.7;
+  line-height: 1.8;
   font-weight: 300;
-  color: var(--color-espresso-500);
+  color: var(--color-plum-500);
 }
 
 .body-sm {
   font-size: 0.8125rem;
-  line-height: 1.55;
+  line-height: 1.65;
   font-weight: 300;
+  color: var(--color-plum-400);
 }
 
 .eyebrow {
@@ -158,7 +169,7 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.25em;
-  color: var(--color-rose-500);
+  color: var(--color-gold-500);
 }
 
 .price-lg {
@@ -197,9 +208,9 @@ body {
 .text-gradient-rose {
   background: linear-gradient(
     110deg,
-    var(--color-rose-400),
-    var(--color-rose-600) 50%,
-    var(--color-rose-400)
+    var(--color-blush-300),
+    var(--color-blush-500) 50%,
+    var(--color-blush-300)
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -237,8 +248,8 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 69, 132, 0.3); }
-  50% { box-shadow: 0 0 0 12px rgba(232, 69, 132, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 167, 167, 0.35); }
+  50% { box-shadow: 0 0 0 12px rgba(220, 167, 167, 0); }
 }
 
 @keyframes shimmer {
@@ -249,6 +260,11 @@ body {
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { transform: scale(1); box-shadow: 0 8px 32px rgba(107, 74, 79, 0.08); }
+  50% { transform: scale(1.03); box-shadow: 0 12px 40px rgba(107, 74, 79, 0.12); }
 }
 
 .animate-fade-up {
@@ -290,7 +306,7 @@ body {
    ================================================================ */
 
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--color-cream-200); }
+::-webkit-scrollbar-track { background: var(--color-pearl-200); }
 ::-webkit-scrollbar-thumb {
   background: var(--color-rose-200);
   border-radius: 3px;
@@ -315,7 +331,7 @@ body {
 
 .rule {
   height: 1px;
-  background: linear-gradient(to right, transparent, var(--color-cream-300), transparent);
+  background: linear-gradient(to right, transparent, var(--color-nude-300), transparent);
   border: none;
   margin: 0;
 }
@@ -332,21 +348,21 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: var(--color-rose-500);
+  background: var(--color-blush-400);
   color: white;
   font-weight: 500;
   letter-spacing: 0.04em;
   font-size: 0.875rem;
   padding: 0.85rem 1.75rem;
   border-radius: 999px;
-  transition: all 0.25s ease;
-  box-shadow: 0 2px 12px rgba(232, 69, 132, 0.25);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 12px rgba(107, 74, 79, 0.06);
 }
 
 .btn-rose:hover {
-  background: var(--color-rose-600);
+  background: var(--color-mauve-400);
   transform: translateY(-1px);
-  box-shadow: 0 4px 18px rgba(232, 69, 132, 0.35);
+  box-shadow: 0 4px 20px rgba(107, 74, 79, 0.08);
 }
 
 .btn-rose:active {
@@ -366,14 +382,14 @@ body {
   font-size: 0.875rem;
   padding: 0.85rem 1.75rem;
   border-radius: 999px;
-  transition: all 0.25s ease;
-  box-shadow: 0 2px 12px rgba(201, 146, 31, 0.25);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 12px rgba(107, 74, 79, 0.06);
 }
 
 .btn-gold:hover {
   background: var(--color-gold-400);
   transform: translateY(-1px);
-  box-shadow: 0 4px 18px rgba(201, 146, 31, 0.35);
+  box-shadow: 0 4px 20px rgba(107, 74, 79, 0.08);
 }
 
 .btn-gold:active {
@@ -387,20 +403,20 @@ body {
   justify-content: center;
   gap: 0.5rem;
   background: transparent;
-  color: var(--color-rose-600);
-  border: 1.5px solid var(--color-rose-300);
+  color: var(--color-blush-500);
+  border: 1.5px solid var(--color-blush-200);
   font-weight: 400;
   letter-spacing: 0.04em;
   font-size: 0.875rem;
   padding: 0.8rem 1.75rem;
   border-radius: 999px;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
 }
 
 .btn-outline:hover {
-  border-color: var(--color-rose-500);
-  color: var(--color-rose-500);
-  background: var(--color-rose-50);
+  border-color: var(--color-mauve-400);
+  color: var(--color-mauve-400);
+  background: var(--color-blush-50);
 }
 
 .btn-outline:active {
@@ -411,30 +427,30 @@ body {
 .input-clean {
   width: 100%;
   padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   background: white;
-  border: 1px solid var(--color-cream-200);
+  border: 1px solid var(--color-pearl-200);
   font-size: 1rem;
-  color: var(--color-espresso-900);
+  color: var(--color-plum-800);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .input-clean::placeholder {
-  color: var(--color-espresso-300);
+  color: var(--color-plum-300);
 }
 
 .input-clean:focus {
-  border-color: var(--color-rose-300);
-  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.1);
+  border-color: var(--color-gold-400);
+  box-shadow: 0 0 0 3px rgba(201, 166, 107, 0.12);
 }
 
 /* Card */
 .surface {
   background: white;
-  border: 1px solid var(--color-cream-200);
-  border-radius: 1.25rem;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  border: 1px solid var(--color-rose-200);
+  border-radius: 1.5rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .surface:hover {
@@ -445,19 +461,19 @@ body {
 /* Badges */
 .badge-novidade {
   background: white;
-  color: var(--color-espresso-700);
+  color: var(--color-plum-600);
   font-size: 0.625rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   padding: 3px 10px;
   border-radius: 999px;
-  border: 1px solid var(--color-cream-300);
+  border: 1px solid var(--color-pearl-300);
   backdrop-filter: blur(4px);
 }
 
 .badge-oferta {
-  background: var(--color-rose-500);
+  background: var(--color-blush-400);
   color: white;
   font-size: 0.625rem;
   font-weight: 600;
@@ -472,23 +488,23 @@ body {
    ================================================================ */
 
 .chat-bubble-user {
-  background: var(--color-rose-500);
+  background: var(--color-blush-400);
   color: white;
   border-radius: 18px 18px 4px 18px;
 }
 
 .chat-bubble-assistant {
   background: white;
-  color: var(--color-espresso-700);
+  color: var(--color-plum-600);
   border-radius: 18px 18px 18px 4px;
-  border: 1px solid var(--color-cream-200);
+  border: 1px solid var(--color-rose-200);
 }
 
 .typing-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-rose-300);
+  background: var(--color-rose-200);
   animation: pulse-glow 1.4s ease-in-out infinite;
 }
 

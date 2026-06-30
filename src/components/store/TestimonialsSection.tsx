@@ -7,13 +7,13 @@ const TESTIMONIALS = [
 
 export function TestimonialsSection() {
   return (
-    <section className="section-padding bg-rose-50/50">
+    <section className="section-padding bg-[#FFF6F2]">
       <div className="container-narrow">
-        <div className="text-center mb-12">
+        <div className="text-center mb-14">
           <p className="eyebrow mb-4">Depoimentos</p>
-          <h2 className="display-lg">
-            O que nossas{" "}
-            <span className="italic text-gradient-rose">clientes</span> dizem
+          <h2 className="display-md">
+            O que{" "}
+            <span className="italic text-[#DCA7A7]">elas</span> dizem
           </h2>
         </div>
 
@@ -21,23 +21,23 @@ export function TestimonialsSection() {
           {TESTIMONIALS.map((t, i) => (
             <figure
               key={t.name}
-              className={`surface p-7 flex flex-col animate-fade-up stagger-${i + 1}`}
+              className={`surface p-7 flex flex-col animate-fade-up stagger-${i + 1} bg-white rounded-2xl border-[#F6D8D6]/30`}
             >
-              <span className="font-[family-name:var(--font-display)] text-5xl leading-none text-rose-200 mb-2">
+              <span className="font-[family-name:var(--font-display)] text-6xl leading-none text-[#F6D8D6] mb-1">
                 &ldquo;
               </span>
-              <blockquote className="body-base text-espresso-600 leading-relaxed flex-1 mb-6">
+              <blockquote className="body-base text-[#6B4A4F]/80 leading-relaxed flex-1 mb-6 italic">
                 {t.text}
               </blockquote>
-              <figcaption className="flex items-center gap-3 pt-4 border-t border-cream-200">
-                <span className="w-9 h-9 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-[family-name:var(--font-display)] text-sm">
+              <figcaption className="flex items-center gap-3 pt-4 border-t border-[#F6D8D6]/40">
+                <span className="w-9 h-9 rounded-full bg-[#FFF6F2] text-[#DCA7A7] flex items-center justify-center font-[family-name:var(--font-display)] text-sm border border-[#F6D8D6]">
                   {t.name.charAt(0)}
                 </span>
                 <div>
-                  <p className="text-[13px] font-medium text-espresso-700">
+                  <p className="text-[13px] font-medium font-[family-name:var(--font-display)] text-[#6B4A4F] tracking-wide">
                     {t.name}
                   </p>
-                  <div className="flex gap-0.5 text-gold-400 text-[10px]">
+                  <div className="flex gap-0.5 text-[#C9A66B] text-[10px]">
                     {"★★★★★".split("").map((s, j) => (
                       <span key={j}>{s}</span>
                     ))}
@@ -45,6 +45,18 @@ export function TestimonialsSection() {
                 </div>
               </figcaption>
             </figure>
+          ))}
+        </div>
+
+        {/* Gold dot indicators */}
+        <div className="flex justify-center items-center gap-2.5 mt-10">
+          {[0, 1, 2, 3].map((i) => (
+            <span
+              key={i}
+              className={`w-2 h-2 rounded-full ${
+                i === 0 ? "bg-[#C9A66B] w-5" : "bg-[#C9A66B]/30"
+              } transition-all duration-300`}
+            />
           ))}
         </div>
       </div>

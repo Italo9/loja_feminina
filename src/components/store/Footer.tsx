@@ -1,53 +1,45 @@
 import Link from "next/link"
 import { Camera } from "lucide-react"
-import { store } from "@/lib/config"
+import { store, whatsappUrl } from "@/lib/config"
 import { OpenChatButton } from "./OpenChatButton"
 
 const COL_LOJA = [
-  { label: "Vestidos", href: "/categoria/vestidos" },
-  { label: "Blusas", href: "/categoria/blusas" },
-  { label: "Calças", href: "/categoria/calcas" },
-  { label: "Acessórios", href: "/categoria/acessorios" },
-  { label: "Coleções", href: "/categoria/colecoes" },
+  { label: "Catálogo", href: "/catalogo" },
+  { label: "Novidades", href: "/categoria/novidades" },
+  { label: "Mais Vendidos", href: "/categoria/mais-vendidos" },
+]
+
+const COL_AJUDA = [
+  { label: "Entrega", href: "/entrega" },
+  { label: "Trocas e Devoluções", href: "/trocas" },
+  { label: "Guia de Medidas", href: "/guia-de-medidas" },
+  { label: "Contato", href: whatsappUrl() },
 ]
 
 const COL_INSTITUCIONAL = [
-  { label: "Sobre nós", href: "/sobre" },
-  { label: "Trocas e devoluções", href: "/trocas" },
-  { label: "Política de privacidade", href: "/privacidade" },
-  { label: "Frete e entrega", href: "/entrega" },
+  { label: "Sobre", href: "/sobre" },
+  { label: "Privacidade", href: "/privacidade" },
 ]
 
 export function Footer() {
   return (
-    <footer className="bg-white border-t border-cream-200 pt-16 pb-8 md:pt-20 md:pb-10">
-      <div className="container-narrow">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6">
-          {/* Marca */}
-          <div className="col-span-2 md:col-span-1">
-            <span className="font-[family-name:var(--font-display)] text-3xl tracking-wider text-espresso-800 mb-5 block">
-              {store.name}
-            </span>
-            <p className="text-sm text-espresso-400 leading-relaxed mb-6 max-w-xs break-words">
-              {store.description}
-            </p>
-            <div className="flex items-center gap-3">
-              <a
-                href={`https://instagram.com/${store.instagram}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full border border-cream-200 flex items-center justify-center text-espresso-400 hover:border-rose-300 hover:text-rose-500 transition-all"
-                aria-label="Instagram"
-              >
-                <Camera className="w-4 h-4" />
-              </a>
-              <OpenChatButton iconOnly />
-            </div>
-          </div>
+    <footer className="bg-white pt-16 pb-8 md:pt-20 md:pb-10 border-t">
+      <hr className="hairline-gold" />
+      <div className="container-narrow pt-16 md:pt-20">
+        {/* Brand statement */}
+        <div className="text-center mb-14">
+          <span className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-[0.08em] text-[#6B4A4F] block mb-3">
+            LUMIÉRE
+          </span>
+          <p className="body-sm text-[#B58FA2] italic">
+            Luz que vem de você ♡
+          </p>
+        </div>
 
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-8 mb-14">
           {/* Loja */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-rose-500 mb-5">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C9A66B] mb-5">
               Loja
             </h4>
             <ul className="space-y-3">
@@ -55,7 +47,26 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-espresso-500 hover:text-rose-500 transition-colors"
+                    className="text-sm text-[#6B4A4F]/70 hover:text-[#DCA7A7] transition-colors"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Ajuda */}
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C9A66B] mb-5">
+              Ajuda
+            </h4>
+            <ul className="space-y-3">
+              {COL_AJUDA.map((l) => (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    className="text-sm text-[#6B4A4F]/70 hover:text-[#DCA7A7] transition-colors"
                   >
                     {l.label}
                   </Link>
@@ -66,7 +77,7 @@ export function Footer() {
 
           {/* Institucional */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-rose-500 mb-5">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C9A66B] mb-5">
               Institucional
             </h4>
             <ul className="space-y-3">
@@ -74,7 +85,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-espresso-500 hover:text-rose-500 transition-colors break-words"
+                    className="text-sm text-[#6B4A4F]/70 hover:text-[#DCA7A7] transition-colors"
                   >
                     {l.label}
                   </Link>
@@ -83,32 +94,44 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contato */}
+          {/* Social + Atendimento */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-rose-500 mb-5">
-              Atendimento
+            <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C9A66B] mb-5">
+              Conecte-se
             </h4>
-            <ul className="space-y-3 text-sm text-espresso-500 break-words">
-              <li>{store.phone}</li>
+            <div className="flex items-center gap-3 mb-5">
+              <a
+                href={`https://instagram.com/${store.instagram}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full border border-[#C9A66B]/30 flex items-center justify-center text-[#C9A66B] hover:bg-[#F6D8D6]/30 hover:border-[#DCA7A7] transition-all"
+                aria-label="Instagram"
+              >
+                <Camera className="w-4 h-4" />
+              </a>
+              <OpenChatButton iconOnly />
+            </div>
+            <ul className="space-y-2.5 text-sm text-[#6B4A4F]/60">
               <li>{store.email}</li>
               <li>{store.city}</li>
-              <li className="pt-1 text-espresso-400">{store.hours}</li>
+              <li className="text-[#6B4A4F]/40">{store.hours}</li>
             </ul>
           </div>
         </div>
 
-        {/* Base */}
-        <div className="mt-12 pt-6 border-t border-cream-200 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-xs tracking-wide text-espresso-400">
+        {/* Bottom bar */}
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-3">
+          <hr className="hairline-gold w-full md:hidden" />
+          <p className="text-xs tracking-wide text-[#6B4A4F]/50">
             &copy; {new Date().getFullYear()} {store.name}. Todos os direitos reservados.
           </p>
-          <p className="text-xs tracking-wide text-espresso-400">
+          <p className="text-xs tracking-wide text-[#6B4A4F]/50">
             Feito com cuidado por{" "}
             <a
               href={store.developerUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-rose-500 hover:text-rose-400 transition-colors"
+              className="text-[#C9A66B] hover:text-[#DCA7A7] transition-colors"
             >
               {store.developerName}
             </a>

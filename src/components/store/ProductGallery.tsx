@@ -16,7 +16,7 @@ export function ProductGallery({ images, productName }: Props) {
 
   if (images.length === 0) {
     return (
-      <div className="aspect-[3/4] rounded-2xl bg-cream-200 flex items-center justify-center">
+      <div className="aspect-[3/4] rounded-2xl bg-cream-100 flex items-center justify-center border border-rose-100">
         <span className="font-[family-name:var(--font-display)] text-2xl text-cream-400">
           {store.name}
         </span>
@@ -26,7 +26,7 @@ export function ProductGallery({ images, productName }: Props) {
 
   return (
     <div>
-      <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-cream-200 mb-3">
+      <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-cream-100 border border-rose-100 mb-4">
         <Image
           src={images[active].url}
           alt={images[active].alt ?? productName}
@@ -37,24 +37,26 @@ export function ProductGallery({ images, productName }: Props) {
         />
         {hasMultiple && (
           <>
-            <button onClick={() => setActive((active - 1 + images.length) % images.length)} className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow-soft hover:bg-white transition-colors">
-              <ChevronLeft className="w-4 h-4 text-espresso-600" />
+            <button onClick={() => setActive((active - 1 + images.length) % images.length)} className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-soft hover:bg-white transition-colors">
+              <ChevronLeft className="w-4 h-4 text-plum-500" />
             </button>
-            <button onClick={() => setActive((active + 1) % images.length)} className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow-soft hover:bg-white transition-colors">
-              <ChevronRight className="w-4 h-4 text-espresso-600" />
+            <button onClick={() => setActive((active + 1) % images.length)} className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-soft hover:bg-white transition-colors">
+              <ChevronRight className="w-4 h-4 text-plum-500" />
             </button>
           </>
         )}
       </div>
 
       {hasMultiple && (
-        <div className="flex gap-2 overflow-x-auto pb-2">
+        <div className="flex gap-3 overflow-x-auto pb-2">
           {images.map((img, i) => (
             <button
               key={img.id}
               onClick={() => setActive(i)}
-              className={`relative flex-shrink-0 w-16 h-20 rounded-lg overflow-hidden border-2 transition-all ${
-                i === active ? "border-rose-500" : "border-transparent opacity-60 hover:opacity-100"
+              className={`relative flex-shrink-0 w-16 h-20 rounded-xl overflow-hidden border-2 transition-all ${
+                i === active
+                  ? "border-gold-400 opacity-100"
+                  : "border-transparent opacity-60 hover:opacity-100"
               }`}
             >
               <Image src={img.url} alt={img.alt ?? `${productName} ${i + 1}`} fill sizes="80px" className="object-cover" />

@@ -6,49 +6,56 @@ import { store, assistant } from "@/lib/config"
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-rose-50 via-cream-100 to-cream-100">
-      {/* Decoração sutil */}
-      <div className="absolute top-20 right-0 w-[35rem] h-[35rem] bg-rose-200/20 rounded-full blur-[120px] -translate-y-1/4 translate-x-1/4" />
-      <div className="absolute bottom-0 left-0 w-[25rem] h-[25rem] bg-gold-300/15 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4" />
+    <section className="relative overflow-hidden bg-[#FFF6F2]">
+      {/* Decorative floating elements */}
+      <span className="absolute top-[12%] left-[8%] text-gold-400/25 text-2xl animate-float pointer-events-none select-none">✦</span>
+      <span className="absolute top-[28%] right-[10%] text-rose-200/40 text-xl animate-float pointer-events-none select-none" style={{ animationDelay: "1.2s" }}>♡</span>
+      <span className="absolute bottom-[22%] left-[14%] text-gold-400/20 text-lg animate-float pointer-events-none select-none" style={{ animationDelay: "2.4s" }}>✦</span>
+      <span className="absolute bottom-[32%] right-[8%] text-rose-200/35 text-base animate-float pointer-events-none select-none" style={{ animationDelay: "3s" }}>♡</span>
+      <span className="absolute top-[45%] left-[5%] text-gold-400/15 text-sm animate-float pointer-events-none select-none" style={{ animationDelay: "1.8s" }}>✦</span>
+      <span className="absolute top-[55%] right-[5%] text-rose-200/25 text-sm animate-float pointer-events-none select-none" style={{ animationDelay: "0.6s" }}>♡</span>
 
-      <div className="relative container-narrow py-20 md:py-32 lg:py-40">
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="eyebrow mb-6 animate-fade-up">
-            Nova Coleção · Verão 2026
-          </p>
+      {/* Ambient glow */}
+      <div className="absolute top-20 right-0 w-[35rem] h-[35rem] bg-rose-100/30 rounded-full blur-[120px] -translate-y-1/4 translate-x-1/4" />
+      <div className="absolute bottom-0 left-0 w-[25rem] h-[25rem] bg-gold-200/15 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4" />
 
-          <h1 className="display-xl mb-6 animate-fade-up stagger-1">
-            Vestir-se é uma forma de{" "}
-            <span className="text-gradient-rose italic">brilhar</span>
-          </h1>
+      <div className="relative container-narrow py-24 md:py-36 lg:py-44 text-center">
+        <p className="eyebrow mb-5 animate-fade-up tracking-[0.28em]">
+          Luz que vem de você <span className="text-rose-400">♡</span>
+        </p>
 
-          <p className="body-lg max-w-lg mx-auto mb-10 animate-fade-up stagger-2">
-            Peças exclusivas, curadoria minuciosa e o requinte que cada
-            mulher merece. Do casual ao sofisticado, vista a sua história.
-          </p>
+        <h1 className="font-[family-name:var(--font-display)] text-[clamp(2.8rem,7vw,6rem)] font-medium leading-[1.02] tracking-[-0.01em] text-[#6B4A4F] mb-5 animate-fade-up stagger-1">
+          {store.name}
+        </h1>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up stagger-3">
-            <Link href="/catalogo" className="btn-rose">
-              Ver Coleção
-            </Link>
-            <button
-              onClick={() => window.dispatchEvent(new Event("chat:open"))}
-              className="btn-outline"
-            >
-              Falar com a {assistant.name}
-            </button>
-          </div>
+        <p className="body-lg max-w-md mx-auto mb-10 animate-fade-up stagger-2 text-[#6B4A4F]/50">
+          {store.tagline}
+        </p>
+
+        {/* Gold accent divider */}
+        <div className="hairline-gold max-w-[160px] mx-auto mb-10 animate-fade-up stagger-3" />
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up stagger-4">
+          <Link href="/catalogo" className="btn-rose">
+            Ver Coleção
+          </Link>
+          <button
+            onClick={() => window.dispatchEvent(new Event("chat:open"))}
+            className="btn-outline"
+          >
+            Falar com a {assistant.name}
+          </button>
         </div>
 
         {/* Trust badges */}
-        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 mt-16 pt-8 border-t border-cream-200 animate-fade-up stagger-4">
+        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 mt-20 pt-8 border-t border-gold-400/15 animate-fade-up stagger-5">
           {[
             { icon: Truck, label: store.shippingInfo },
             { icon: Shield, label: "Compra 100% segura" },
             { icon: CreditCard, label: "Parcele em até 3x" },
           ].map(({ icon: Icon, label }) => (
-            <div key={label} className="flex items-center gap-2.5 text-espresso-400">
-              <Icon className="w-4 h-4 text-rose-400" />
+            <div key={label} className="flex items-center gap-2.5 text-[#6B4A4F]/45">
+              <Icon className="w-4 h-4 text-gold-400/70" />
               <span className="text-[11px] uppercase tracking-[0.15em] font-medium">
                 {label}
               </span>

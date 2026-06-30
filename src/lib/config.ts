@@ -17,10 +17,10 @@ function readList(key: string, fallback: string): string[] {
 export const store = {
   name: readEnv("NEXT_PUBLIC_STORE_NAME", "Lumière"),
   shortName: readEnv("NEXT_PUBLIC_STORE_SHORT_NAME", "Lumière"),
-  tagline: readEnv("NEXT_PUBLIC_STORE_TAGLINE", "Moda Feminina de Luxo"),
+  tagline: readEnv("NEXT_PUBLIC_STORE_TAGLINE", "Para mulheres que brilham naturalmente"),
   description: readEnv(
     "NEXT_PUBLIC_STORE_DESCRIPTION",
-    "Peças exclusivas com curadoria especial. Sofisticação e exclusividade em cada detalhe.",
+    "Lumière — boutique feminina premium. Peças exclusivas com curadoria especial. Luz que vem de você ♡",
   ),
   city: readEnv("NEXT_PUBLIC_STORE_CITY", "Salvador, BA"),
   whatsapp: readEnv("NEXT_PUBLIC_STORE_WHATSAPP", "5571991673902"),

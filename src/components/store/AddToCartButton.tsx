@@ -41,7 +41,9 @@ export function AddToCartButton({ product }: Props) {
   return (
     <button
       onClick={handleAdd}
-      className="btn-rose w-full text-[15px]"
+      className={`btn-rose w-full text-[15px] min-h-12 transition-all duration-300 ${
+        added ? "!bg-blush-400 !shadow-[0_2px_12px_rgba(220,167,167,0.35)]" : ""
+      }`}
     >
       <ShoppingBag className="w-4 h-4" />
       {added ? "Adicionado!" : "Comprar"}

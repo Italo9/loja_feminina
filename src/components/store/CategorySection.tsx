@@ -8,9 +8,9 @@ export async function CategorySection() {
   if (categories.length === 0) return null
 
   return (
-    <section className="section-padding bg-cream-50">
+    <section className="py-16 md:py-24">
       <div className="container-narrow">
-        <div className="text-center mb-12">
+        <div className="text-center mb-14">
           <p className="eyebrow mb-4">Explore</p>
           <h2 className="display-lg">
             Navegue por{" "}
@@ -18,12 +18,12 @@ export async function CategorySection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
           {categories.map((cat, i) => (
             <Link
               key={cat.id}
               href={`/categoria/${cat.slug}`}
-              className={`group relative aspect-[3/4] overflow-hidden rounded-2xl bg-cream-200 animate-fade-up stagger-${(i % 8) + 1}`}
+              className={`group relative aspect-[3/4] overflow-hidden rounded-2xl bg-cream-100 animate-fade-up stagger-${(i % 8) + 1} transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-lg`}
             >
               {cat.image ? (
                 <Image
@@ -31,19 +31,19 @@ export async function CategorySection() {
                   alt={cat.name}
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-cream-200">
-                  <span className="text-2xl text-rose-300">✦</span>
+                <div className="w-full h-full flex items-center justify-center bg-cream-100">
+                  <span className="text-2xl text-gold-300">✦</span>
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-espresso-800/60 via-espresso-800/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-4 text-center">
-                <span className="font-[family-name:var(--font-display)] text-base md:text-lg text-white group-hover:text-rose-200 transition-colors">
+              <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-4 pb-5 text-center">
+                <span className="font-[family-name:var(--font-display)] text-lg md:text-xl text-plum-700 group-hover:text-rose-500 transition-colors">
                   {cat.name}
                 </span>
-                <span className="block mx-auto mt-2 w-6 h-px bg-rose-300 scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                <span className="block mx-auto mt-2 w-8 h-0.5 bg-gold-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
               </div>
             </Link>
           ))}
