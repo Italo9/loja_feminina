@@ -1,8 +1,16 @@
 import Link from "next/link"
+import type { Metadata } from "next"
 import { ChevronLeft, Search } from "lucide-react"
 import { searchProducts } from "@/lib/products"
 import { getUserRegionCookie } from "@/lib/location-server"
 import { ProductCard } from "@/components/store/ProductCard"
+import { store } from "@/lib/config"
+
+export const metadata: Metadata = {
+  title: "Busca",
+  description: `Encontre o que procura na ${store.name}. Busque por vestidos, blusas, calças, moda praia e acessórios.`,
+  robots: { index: false, follow: true },
+}
 
 export default async function BuscaPage({
   searchParams,
