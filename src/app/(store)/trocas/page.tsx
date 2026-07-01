@@ -1,6 +1,13 @@
+import type { Metadata } from "next"
 import { Breadcrumbs } from "@/components/store/Breadcrumbs"
 
 export const dynamic = "force-static"
+
+export const metadata: Metadata = {
+  title: "Trocas e Devoluções",
+  description: "Política de trocas e devoluções. Você tem até 7 dias para solicitar troca ou devolução. Fale com a Jade para assistência.",
+  openGraph: { title: "Trocas e Devoluções — Lumière", type: "website" },
+}
 
 export default function GenericPage() {
   return (
