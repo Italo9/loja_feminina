@@ -25,7 +25,7 @@ steps:
     args:
       - build
       - -t
-      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:${SHORT_SHA}"
+      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID"
       - -t
       - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest"
       - .
@@ -33,7 +33,7 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args:
       - push
-      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:${SHORT_SHA}"
+      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID"
 
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
@@ -41,7 +41,7 @@ steps:
       - run
       - deploy
       - lumiere-web
-      - --image=southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:${SHORT_SHA}
+      - --image=southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID
       - --region=southamerica-east1
       - --platform=managed
       - --allow-unauthenticated
@@ -72,7 +72,7 @@ steps:
       - --set-secrets=GOOGLE_CLIENT_SECRET=lumiere-google-client-secret:latest
 
 images:
-  - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:${SHORT_SHA}"
+  - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID"
   - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest"
 
 timeout: 1200s
