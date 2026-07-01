@@ -39,4 +39,4 @@ EXPOSE 3000
 ENV PORT=8080
 ENV HOSTNAME=0.0.0.0
 
-CMD sh -c "npx prisma db push --skip-generate --accept-data-loss 2>/dev/null; node server.js"
+CMD sh -c "npx prisma db push --skip-generate --accept-data-loss && node server.js"
