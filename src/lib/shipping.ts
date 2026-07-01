@@ -39,14 +39,17 @@ export async function getAddressByCep(
   if (clean.length !== 8) return null
 
   try {
-    const res = await fetch(`https://brasilapi.com.br/api/cep/v2/${clean}`)
+    const res = await fetch(`https://viacep.com.br/ws/${clean}/json/`, {
+      signal: AbortSignal.timeout(5000),
+    })
     if (!res.ok) return null
-    const data: CepResponse = await res.json()
+    const data = await res.json()
+    if (data.erro) return null
     return {
-      street: data.street,
-      neighborhood: data.neighborhood,
-      city: data.city,
-      state: data.state,
+      street: data.logradouro || "",
+      neighborhood: data.bairro || "",
+      city: data.localidade || "",
+      state: data.uf || "",
     }
   } catch {
     return null
