@@ -1,8 +1,15 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { Heart } from "lucide-react"
 import { Breadcrumbs } from "@/components/store/Breadcrumbs"
 
 export const dynamic = "force-static"
+
+export const metadata: Metadata = {
+  title: "Favoritos",
+  description: "Suas peças favoritas na Lumière. Salve os produtos que você mais amou.",
+  robots: { index: false },
+}
 
 export default function FavoritesPage() {
   return (
