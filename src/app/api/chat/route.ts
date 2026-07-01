@@ -2,6 +2,42 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { store, assistant } from "@/lib/config"
 
+const MODELS = [
+  "meta/llama-3.1-8b-instruct",
+  "mistralai/mistral-7b-instruct-v0.3",
+  "google/gemma-2-9b-it",
+  "meta/llama-3.2-3b-instruct",
+  "microsoft/phi-3-mini-128k-instruct",
+]
+
+async function tryModel(apiKey: string, model: string, context: string, text: string): Promise<string | null> {
+  try {
+    const res = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: "system", content: context },
+          { role: "user", content: text },
+        ],
+        max_tokens: 250,
+        temperature: 0.7,
+      }),
+      signal: AbortSignal.timeout(12000),
+    })
+
+    if (!res.ok) return null
+    const data = await res.json()
+    return data.choices?.[0]?.message?.content || null
+  } catch {
+    return null
+  }
+}
+
 async function buildSiteContext(): Promise<string> {
   const [products, categories] = await Promise.all([
     prisma.product.findMany({
@@ -62,32 +98,12 @@ export async function POST(req: Request) {
     })
   }
 
-  try {
-    const res = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "meta/llama-3.1-8b-instruct",
-        messages: [
-          { role: "system", content: context },
-          { role: "user", content: text },
-        ],
-        max_tokens: 300,
-        temperature: 0.7,
-      }),
-      signal: AbortSignal.timeout(15000),
-    })
-
-    const data = await res.json()
-    const reply = data.choices?.[0]?.message?.content || "Desculpe, não entendi. Pode reformular?"
-
-    return NextResponse.json({ reply })
-  } catch {
-    return NextResponse.json({
-      reply: `Oi! Sou a ${assistant.name}. No momento estou com dificuldade, mas você pode ver nosso catálogo em /catalogo ✨`,
-    })
+  for (const model of MODELS) {
+    const reply = await tryModel(apiKey, model, context, text)
+    if (reply) return NextResponse.json({ reply })
   }
+
+  return NextResponse.json({
+    reply: `Oi! Sou a ${assistant.name}. No momento estou com dificuldade, mas você pode ver nosso catálogo em /catalogo ✨`,
+  })
 }
