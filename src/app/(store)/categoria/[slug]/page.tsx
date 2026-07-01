@@ -6,7 +6,7 @@ import { Pagination } from "@/components/store/Pagination"
 import { FilterBar } from "@/components/store/FilterBar"
 import { Breadcrumbs } from "@/components/store/Breadcrumbs"
 
-export const revalidate = 60
+export const dynamic = "force-dynamic"
 
 interface Props {
   params: Promise<{ slug: string }>

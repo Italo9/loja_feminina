@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import { Hero } from "@/components/store/Hero"
 import { ProductSection } from "@/components/store/ProductSection"
+
+export const dynamic = "force-dynamic"
 import { CategorySection } from "@/components/store/CategorySection"
 import { InstagramSection } from "@/components/store/InstagramSection"
 import { TestimonialsSection } from "@/components/store/TestimonialsSection"
