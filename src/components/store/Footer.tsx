@@ -24,13 +24,13 @@ const COL_INSTITUCIONAL = [
 
 export function Footer() {
   return (
-    <footer className="bg-white pt-16 pb-8 md:pt-20 md:pb-10 border-t">
+    <footer className="bg-white pb-8 md:pb-10">
       <hr className="hairline-gold" />
-      <div className="container-narrow pt-16 md:pt-20">
+      <div className="container-narrow pt-14 md:pt-16">
         {/* Brand statement */}
         <div className="text-center mb-14">
-          <span className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-[0.08em] text-[#6B4A4F] block mb-3">
-            LUMIÉRE
+          <span className="font-[family-name:var(--font-display)] text-4xl md:text-5xl tracking-[0.08em] uppercase text-plum-600 block mb-3">
+            {store.name}
           </span>
           <p className="body-sm text-[#B58FA2] italic">
             Luz que vem de você ♡
