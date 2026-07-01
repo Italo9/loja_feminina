@@ -61,8 +61,6 @@ steps:
       - --set-secrets=NVIDIA_API_KEY=lumiere-nvidia-api-key:latest
       - --set-secrets=GOOGLE_CLIENT_ID=lumiere-google-client-id:latest
       - --set-secrets=GOOGLE_CLIENT_SECRET=lumiere-google-client-secret:latest
-      - --set-secrets=SHOPEE_PARTNER_ID=lumiere-shopee-partner-id:latest
-      - --set-secrets=SHOPEE_SECRET_KEY=lumiere-shopee-secret-key:latest
       - --set-secrets=CJ_ACCESS_TOKEN=lumiere-cj-access-token:latest
 
 images:
