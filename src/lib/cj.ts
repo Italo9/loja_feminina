@@ -21,9 +21,10 @@ async function getAccessToken(): Promise<string> {
     throw new Error(`CJ auth failed: ${data.message}`)
   }
 
-  cachedToken = data.data.accessToken
+  const newToken: string = data.data.accessToken
+  cachedToken = newToken
   tokenExpiry = Date.now() + 150 * 24 * 60 * 60 * 1000 // 150 dias
-  return cachedToken
+  return newToken
 }
 
 export interface CjProduct {
@@ -100,15 +101,13 @@ export function extractAffiliateLink(tags: string): string | null {
   return match ? match[1] : null
 }
 
-async function cjGet<T>(path: string, params: Record<string, string | number> = {}): Promise<T> {
+async function cjGet<T>(path: string, params: Record<string, string | number> = {}, retry = true): Promise<T> {
   const token = await getAccessToken()
 
   const url = new URL(`${CJ_API_BASE}${path}`)
   for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, String(v))
   }
-
-  console.log(`[CJ] GET ${url.toString().replace(token, "***")}`)
 
   const res = await fetch(url.toString(), {
     headers: {
@@ -119,11 +118,19 @@ async function cjGet<T>(path: string, params: Record<string, string | number> = 
   })
 
   const text = await res.text()
-  console.log(`[CJ] Status ${res.status}: ${text.slice(0, 300)}`)
 
   if (!res.ok) throw new Error(`CJ API error ${res.status}: ${text.slice(0, 200)}`)
 
-  return JSON.parse(text)
+  const data = JSON.parse(text)
+
+  // Se token expirado/revogado, limpa cache e tenta 1 vez
+  if (retry && data.code === 1600001) {
+    cachedToken = null
+    tokenExpiry = 0
+    return cjGet<T>(path, params, false)
+  }
+
+  return data
 }
 
 export async function getProducts(
