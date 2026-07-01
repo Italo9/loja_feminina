@@ -61,7 +61,7 @@ steps:
       - --set-secrets=NVIDIA_API_KEY=lumiere-nvidia-api-key:latest
       - --set-secrets=GOOGLE_CLIENT_ID=lumiere-google-client-id:latest
       - --set-secrets=GOOGLE_CLIENT_SECRET=lumiere-google-client-secret:latest
-      - --set-secrets=CJ_ACCESS_TOKEN=lumiere-cj-access-token:latest
+      - --set-secrets=CJ_API_KEY=lumiere-cj-api-key:latest
 
 images:
   - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID

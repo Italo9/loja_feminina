@@ -1,5 +1,31 @@
 const CJ_API_BASE = "https://developers.cjdropshipping.com/api2.0/v1"
 
+let cachedToken: string | null = null
+let tokenExpiry = 0
+
+async function getAccessToken(): Promise<string> {
+  if (cachedToken && Date.now() < tokenExpiry) return cachedToken
+
+  const apiKey = process.env.CJ_API_KEY
+  if (!apiKey) throw new Error("CJ_API_KEY not configured")
+
+  const res = await fetch(`${CJ_API_BASE}/authentication/getAccessToken`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ apiKey }),
+    signal: AbortSignal.timeout(10000),
+  })
+
+  const data = await res.json()
+  if (data.code !== 200 || !data.data?.accessToken) {
+    throw new Error(`CJ auth failed: ${data.message}`)
+  }
+
+  cachedToken = data.data.accessToken
+  tokenExpiry = Date.now() + 150 * 24 * 60 * 60 * 1000 // 150 dias
+  return cachedToken
+}
+
 export interface CjProduct {
   pid: string
   productNameEn: string
@@ -23,12 +49,6 @@ interface CjListResponse {
     total: number
     list: CjProduct[]
   }
-}
-
-function getCjToken(): string {
-  const token = process.env.CJ_ACCESS_TOKEN
-  if (!token) throw new Error("CJ_ACCESS_TOKEN not configured")
-  return token
 }
 
 // "Women's Clothing" = só moda feminina
@@ -81,11 +101,15 @@ export function extractAffiliateLink(tags: string): string | null {
 }
 
 async function cjGet<T>(path: string, params: Record<string, string | number> = {}): Promise<T> {
-  const token = getCjToken()
+  const token = await getAccessToken()
+
   const url = new URL(`${CJ_API_BASE}${path}`)
   for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, String(v))
   }
+
+  console.log(`[CJ] GET ${url.toString().replace(token, "***")}`)
+
   const res = await fetch(url.toString(), {
     headers: {
       "CJ-Access-Token": token,
@@ -93,8 +117,13 @@ async function cjGet<T>(path: string, params: Record<string, string | number> = 
     },
     signal: AbortSignal.timeout(15000),
   })
-  if (!res.ok) throw new Error(`CJ API error: ${res.status}`)
-  return res.json()
+
+  const text = await res.text()
+  console.log(`[CJ] Status ${res.status}: ${text.slice(0, 300)}`)
+
+  if (!res.ok) throw new Error(`CJ API error ${res.status}: ${text.slice(0, 200)}`)
+
+  return JSON.parse(text)
 }
 
 export async function getProducts(
@@ -178,7 +207,9 @@ interface CjOrderResponse {
 export async function createCjOrder(
   order: CjCreateOrderRequest,
 ): Promise<CjOrderResponse> {
-  const token = getCjToken()
+  const token = await getAccessToken()
+  if (!token) throw new Error("CJ auth failed")
+
   const res = await fetch(`${CJ_API_BASE}/shopping/createOrder`, {
     method: "POST",
     headers: {
