@@ -32,12 +32,18 @@ export interface CjProduct {
   productNameEn: string
   productSku: string
   productImage: string
-  sellPrice: number
+  sellPrice: number | string
   listedNum: number
   categoryId: string
   categoryName: string
   deliveryCycle?: string
   description?: string
+}
+
+export function parsePrice(price: number | string): number {
+  if (typeof price === "number") return price
+  const match = String(price).match(/[\d.]+/)
+  return match ? parseFloat(match[0]) : 0
 }
 
 interface CjListResponse {
@@ -163,14 +169,15 @@ export interface EnrichedCjProduct {
 }
 
 export function enrichProduct(product: CjProduct): EnrichedCjProduct {
-  const markedUpPrice = applyMarkup(product.sellPrice, 150)
+  const sellPrice = parsePrice(product.sellPrice)
+  const markedUpPrice = applyMarkup(sellPrice, 150)
   const delivery = estimateDelivery(product.deliveryCycle)
 
   return {
     id: `cj-${product.pid}`,
     name: product.productNameEn,
     price: markedUpPrice,
-    originalPrice: product.sellPrice,
+    originalPrice: sellPrice,
     image: product.productImage,
     category: product.categoryName,
     sales: product.listedNum,
