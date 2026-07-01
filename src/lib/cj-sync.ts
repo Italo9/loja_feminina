@@ -58,6 +58,46 @@ async function ensureCategory(slug: string): Promise<string> {
   return cat.id
 }
 
+const FASHION_TRANSLATIONS: Record<string, string> = {
+  dress: "Vestido", dresses: "Vestidos",
+  blouse: "Blusa", blouses: "Blusas",
+  skirt: "Saia", skirts: "Saias",
+  top: "Top", tops: "Tops",
+  shirt: "Camisa", shirts: "Camisas",
+  pant: "Calça", pants: "Calças", trouser: "Calça",
+  short: "Shorts", bikini: "Biquíni",
+  swimwear: "Moda Praia", swimsuit: "Maiô",
+  jacket: "Jaqueta", coat: "Casaco", hoodie: "Moletom",
+  sweater: "Suéter", cardigan: "Cardigã",
+  bag: "Bolsa", bags: "Bolsas", handbag: "Bolsa", purse: "Bolsa",
+  shoe: "Sapato", shoes: "Sapatos", sandal: "Sandália",
+  necklace: "Colar", earring: "Brinco", bracelet: "Pulseira",
+  ring: "Anel", jewel: "Joia",
+  lingerie: "Lingerie", bodysuit: "Body",
+  romper: "Macacão", jumpsuit: "Macacão",
+  set: "Conjunto", sets: "Conjuntos", suit: "Conjunto",
+  sexy: "Sexy", elegant: "Elegante", casual: "Casual",
+  summer: "Verão", winter: "Inverno", spring: "Primavera",
+  party: "Festa", fashion: "Moda",
+  women: "Feminino", womens: "Feminino",
+  backless: "Costas Nuas", sleeveless: "Sem Mangas",
+  strap: "Alça", solid: "Liso", leopard: "Leopardo",
+  satin: "Cetim", lace: "Renda",
+  mini: "Curto", long: "Longo", midi: "Midi",
+  slim: "Slim", loose: "Solto", oversized: "Oversized",
+  crop: "Cropped", halter: "Halter",
+}
+
+function translateName(productName: string, categoryName: string): string {
+  const words = productName.toLowerCase().split(/[\s,]+/)
+  const translated = words.map((w) => FASHION_TRANSLATIONS[w] || w)
+  let name = translated.join(" ")
+  name = name.replace(/\b\w/g, (c) => c.toUpperCase())
+  name = name.replace(/\s+/g, " ").trim()
+  if (name.length < 10) return `${FASHION_TRANSLATIONS[categoryName.toLowerCase().split("/").pop()?.trim() || ""] || categoryName} ${name}`
+  return name
+}
+
 export async function syncCjProducts(): Promise<SyncResult> {
   const result: SyncResult = { total: 0, filtered: 0, created: 0, updated: 0, errors: 0, messages: [] }
 
@@ -69,6 +109,10 @@ export async function syncCjProducts(): Promise<SyncResult> {
 
     while (hasMore && page <= 2) {
       try {
+        // CJ rate limit: 1 req/s
+        if (page > 1 || keywords.indexOf(keyword) > 0) {
+          await new Promise((r) => setTimeout(r, 1200))
+        }
         const res = await getProducts(page, 30, keyword)
         if (res.code !== 200) { result.errors++; break }
 
@@ -84,7 +128,8 @@ export async function syncCjProducts(): Promise<SyncResult> {
             const sku = `cj-${cp.pid}`
             const categorySlug = mapCategory(cp.productNameEn, cp.categoryName)
             const categoryId = await ensureCategory(categorySlug)
-            const slug = `${slugify(cp.productNameEn)}-${cp.pid.slice(0, 8)}`
+            const translatedName = translateName(cp.productNameEn, cp.categoryName)
+            const slug = `${slugify(translatedName)}-${cp.pid.slice(0, 8)}`
 
             const existing = await prisma.product.findFirst({ where: { sku } })
 
@@ -104,7 +149,7 @@ export async function syncCjProducts(): Promise<SyncResult> {
 
             const product = await prisma.product.create({
               data: {
-                name: enriched.name.slice(0, 180),
+                name: translatedName.slice(0, 180),
                 slug,
                 description: enriched.deliveryText,
                 price: enriched.price,
@@ -125,7 +170,7 @@ export async function syncCjProducts(): Promise<SyncResult> {
                 data: {
                   productId: product.id,
                   url: enriched.image,
-                  alt: enriched.name,
+                  alt: translatedName,
                   position: 0,
                 },
               })
