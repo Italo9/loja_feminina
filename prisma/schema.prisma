@@ -203,6 +203,11 @@ model Newsletter {
   createdAt DateTime @default(now())
 }
 
+model Setting {
+  key   String @id
+  value String
+}
+
 model DropshipOrder {
   id             String   @id @default(cuid())
   orderId        String

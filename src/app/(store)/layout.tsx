@@ -3,6 +3,7 @@ import { Footer } from "@/components/store/Footer"
 import { CartProvider } from "@/providers/CartProvider"
 import { CartSheet } from "@/components/store/CartSheet"
 import { auth } from "@/lib/auth"
+import { getFreeShippingThreshold, getFreeShippingMessage } from "@/lib/settings"
 
 export default async function StoreLayout({
   children,
@@ -17,12 +18,15 @@ export default async function StoreLayout({
       }
     : null
 
+  const freeShippingThreshold = await getFreeShippingThreshold()
+  const freeShippingMsg = await getFreeShippingMessage()
+
   return (
     <CartProvider>
-      <Header user={user} />
+      <Header user={user} freeShippingThreshold={freeShippingThreshold} freeShippingMsg={freeShippingMsg} />
       <main className="flex-1">{children}</main>
       <Footer />
-      <CartSheet />
+      <CartSheet freeShippingThreshold={freeShippingThreshold} freeShippingMsg={freeShippingMsg} />
     </CartProvider>
   )
 }

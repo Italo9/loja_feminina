@@ -46,7 +46,7 @@ interface HeaderUser {
   role: string
 }
 
-export function Header({ user }: { user?: HeaderUser | null }) {
+export function Header({ user, freeShippingThreshold, freeShippingMsg }: { user?: HeaderUser | null; freeShippingThreshold?: number; freeShippingMsg?: string }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -76,7 +76,7 @@ export function Header({ user }: { user?: HeaderUser | null }) {
         {/* Top bar */}
         <div className="flex items-center justify-center gap-3 bg-pearl-100 text-plum-600/50 text-[10px] tracking-[0.22em] uppercase py-2 border-b border-gold-400/15">
           <span className="text-gold-400/50">✦</span>
-          Frete grátis acima de R$ 250
+          {freeShippingMsg || "Frete grátis acima de"} R$ {freeShippingThreshold || 250}
           <span className="text-gold-400/50">✦</span>
           <span className="text-gold-400/20">|</span>
           <LocationBar />

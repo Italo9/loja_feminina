@@ -5,9 +5,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { ShoppingBag, X, Minus, Plus, Trash2, ArrowRight, Sparkles } from "lucide-react"
 import { useCartStore } from "@/lib/cart-store"
-import { FREE_SHIPPING_THRESHOLD } from "@/lib/shipping"
 
-export function CartSheet() {
+export function CartSheet({ freeShippingThreshold = 250, freeShippingMsg = "Frete grátis acima de" }: { freeShippingThreshold?: number; freeShippingMsg?: string }) {
   const [open, setOpen] = useState(false)
   const { items, removeItem, updateQuantity, subtotal } = useCartStore()
 
@@ -27,8 +26,8 @@ export function CartSheet() {
 
   const total = subtotal()
   const count = items.reduce((s, i) => s + i.quantity, 0)
-  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total)
-  const progress = Math.min(100, (total / FREE_SHIPPING_THRESHOLD) * 100)
+  const remaining = Math.max(0, freeShippingThreshold - total)
+  const progress = Math.min(100, (total / freeShippingThreshold) * 100)
 
   if (!open) return null
 

@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, type FormEvent } from "react"
+import { useState, useEffect, type FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import { ChevronLeft, Lock, CreditCard, Banknote, Truck, ShoppingBag, Ticket } from "lucide-react"
 import Link from "next/link"
 import { useCartStore } from "@/lib/cart-store"
 import { createCheckoutOrder } from "@/lib/checkout"
-import { getAddressByCep, FREE_SHIPPING_THRESHOLD } from "@/lib/shipping"
+import { getAddressByCep } from "@/lib/shipping"
 
 const PAYMENT_METHODS = [
   { value: "pix", label: "Pix", icon: Banknote, description: "Pagamento instantâneo" },
@@ -29,6 +29,7 @@ export default function CheckoutPage() {
   const [couponValidating, setCouponValidating] = useState(false)
   const [couponError, setCouponError] = useState<string | null>(null)
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null)
+  const [freeThreshold, setFreeThreshold] = useState(250)
 
   const [address, setAddress] = useState({
     receiver: "",
@@ -45,6 +46,12 @@ export default function CheckoutPage() {
   const shippingCost = shipping?.cost ?? 0
   const total = Math.max(subtotalValue + shippingCost - couponDiscount, 0)
   const dropshipItems = items.filter((i) => i.source === "dropship")
+
+  useEffect(() => {
+    fetch("/api/admin/settings").then(r => r.json()).then(d => {
+      if (d.free_shipping_threshold) setFreeThreshold(Number(d.free_shipping_threshold))
+    }).catch(() => {})
+  }, [])
 
   const handleCepBlur = async () => {
     const cep = address.zipCode.replace(/\D/g, "")
@@ -374,9 +381,9 @@ export default function CheckoutPage() {
                 )}
               </span>
             </div>
-            {shipping && shipping.cost > 0 && subtotalValue < FREE_SHIPPING_THRESHOLD && (
-              <p className="text-[11px] text-cream-500">
-                Adicione mais R$ {(FREE_SHIPPING_THRESHOLD - subtotalValue).toFixed(2)} para ganhar frete grátis
+            {shipping && shipping.cost > 0 && subtotalValue < freeThreshold && (
+              <p className="text-xs text-rose-500 mt-2">
+                Adicione mais R$ {(freeThreshold - subtotalValue).toFixed(2)} para ganhar frete grátis
               </p>
             )}
             {couponDiscount > 0 && (
