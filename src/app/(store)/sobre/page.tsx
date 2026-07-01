@@ -1,6 +1,18 @@
+import type { Metadata } from "next"
 import { Breadcrumbs } from "@/components/store/Breadcrumbs"
+import { store } from "@/lib/config"
 
 export const dynamic = "force-static"
+
+export const metadata: Metadata = {
+  title: "Sobre",
+  description: `Conheça a história da ${store.name}. ${store.tagline}. Moda feminina premium com curadoria especial em ${store.city}.`,
+  openGraph: {
+    title: `Sobre — ${store.name}`,
+    description: store.tagline,
+    type: "website",
+  },
+}
 
 export default function GenericPage() {
   return (
