@@ -1,12 +1,29 @@
 import Link from "next/link"
+import type { Metadata } from "next"
 import { getCatalogProducts, getCategories } from "@/lib/products"
 import { getUserRegionCookie } from "@/lib/location-server"
 import { ProductCard } from "@/components/store/ProductCard"
 import { Pagination } from "@/components/store/Pagination"
 import { FilterBar } from "@/components/store/FilterBar"
 import { Breadcrumbs } from "@/components/store/Breadcrumbs"
+import { store } from "@/lib/config"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+  title: "Catálogo",
+  description: `Confira nosso catálogo completo de moda feminina. Vestidos, blusas, calças, moda praia e acessórios exclusivos. ${store.name} — ${store.tagline}`,
+  openGraph: {
+    title: `Catálogo — ${store.name}`,
+    description: store.tagline,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Catálogo — ${store.name}`,
+    description: store.tagline,
+  },
+}
 
 interface Props {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
