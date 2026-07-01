@@ -9,7 +9,6 @@ RUN npm ci --no-audit --no-fund --loglevel=error
 
 # Layer 2: prisma — cached unless schema.prisma changes
 COPY prisma/schema.prisma ./prisma/schema.prisma
-RUN sed -i 's/provider = "sqlite"/provider = "postgresql"/' prisma/schema.prisma
 RUN npx prisma generate --no-hints
 
 # Layer 3: source + build — only rebuilds when source changes
