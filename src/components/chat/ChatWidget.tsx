@@ -169,6 +169,9 @@ export function ChatWidget() {
       drag.current.originX = rect.left
       drag.current.originY = rect.top
     }
+    // Captura o ponteiro: o drag continua recebendo eventos mesmo se o dedo
+    // sair do launcher, e o navegador nao transforma o gesto em scroll.
+    launcherRef.current?.setPointerCapture(e.pointerId)
   }, [])
 
   useEffect(() => {
@@ -178,15 +181,23 @@ export function ChatWidget() {
       const dy = e.clientY - drag.current.startY
       if (Math.abs(dx) > 3 || Math.abs(dy) > 3) drag.current.moved = true
       if (drag.current.moved) {
-        setPos({ x: drag.current.originX + dx, y: drag.current.originY + dy })
+        const rect = launcherRef.current?.getBoundingClientRect()
+        const w = rect?.width ?? 56
+        const h = rect?.height ?? 56
+        const margin = 8
+        const x = Math.min(Math.max(drag.current.originX + dx, margin), window.innerWidth - w - margin)
+        const y = Math.min(Math.max(drag.current.originY + dy, margin), window.innerHeight - h - margin)
+        setPos({ x, y })
       }
     }
-    const onUp = () => { drag.current.active = false }
+    const onEnd = () => { drag.current.active = false }
     window.addEventListener("pointermove", onMove)
-    window.addEventListener("pointerup", onUp)
+    window.addEventListener("pointerup", onEnd)
+    window.addEventListener("pointercancel", onEnd)
     return () => {
       window.removeEventListener("pointermove", onMove)
-      window.removeEventListener("pointerup", onUp)
+      window.removeEventListener("pointerup", onEnd)
+      window.removeEventListener("pointercancel", onEnd)
     }
   }, [])
 
@@ -267,7 +278,7 @@ export function ChatWidget() {
           ref={launcherRef}
           onPointerDown={onPointerDown}
           onClick={() => { if (!drag.current.moved) { setOpen(true); setMinimized(false); setUnread(0) } }}
-          className="fixed z-[80] flex items-center gap-2 cursor-pointer group"
+          className="fixed z-[80] flex items-center gap-2 cursor-pointer group touch-none select-none"
           style={
             pos
               ? { left: pos.x, top: pos.y, right: "auto", bottom: "auto" }
