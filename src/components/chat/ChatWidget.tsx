@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react"
 import { X, Send, UserRound, Sparkles } from "lucide-react"
+import { useSession } from "next-auth/react"
 import type { ChatMessage } from "@/types"
 import { assistant, store } from "@/lib/config"
 
@@ -38,6 +39,8 @@ function JadeAvatar() {
 export function ChatWidget() {
   const mountedRef = useRef(false)
   const [ready, setReady] = useState(false)
+  const { data: session } = useSession()
+  const userName = session?.user?.name?.split(" ")[0]
 
   useEffect(() => {
     mountedRef.current = true
@@ -61,6 +64,23 @@ export function ChatWidget() {
       timestamp: new Date(),
     },
   ])
+
+  // Personaliza saudação quando sessão carrega
+  useEffect(() => {
+    if (userName && userName.length > 1) {
+      setMessages((prev) =>
+        prev[0]?.id === "welcome"
+          ? [
+              {
+                ...prev[0],
+                content: `Oi, ${userName}! Eu sou a ${assistant.name} ✨, ${assistant.role} da ${store.name}.\n\nPosso te ajudar a encontrar a peça perfeita, conferir preços, tamanhos disponíveis e montar looks incríveis. O que você procura hoje?`,
+              },
+              ...prev.slice(1),
+            ]
+          : prev,
+      )
+    }
+  }, [userName])
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
   const [pillIndex, setPillIndex] = useState(0)

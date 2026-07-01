@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Cormorant_Garamond, Jost } from "next/font/google"
 import "./globals.css"
 import { ChatWidget } from "@/components/chat/ChatWidget"
+import { SessionProvider } from "@/providers/SessionProvider"
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/store/JsonLd"
 import { CookieConsent } from "@/components/store/CookieConsent"
 import { store } from "@/lib/config"
@@ -55,9 +56,11 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col antialiased">
         <OrganizationJsonLd />
         <WebSiteJsonLd />
-        <ChatWidget />
-        <CookieConsent />
-        {children}
+        <SessionProvider>
+          <ChatWidget />
+          <CookieConsent />
+          {children}
+        </SessionProvider>
       </body>
     </html>
   )

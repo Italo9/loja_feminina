@@ -160,9 +160,14 @@ export function Header({ user }: { user?: HeaderUser | null }) {
             </Link>
             <Link
               href="/conta"
-              className="p-2 text-plum-600/50 hover:text-plum-600 transition-colors hidden md:flex"
+              className="p-2 text-plum-600/50 hover:text-plum-600 transition-colors hidden md:flex items-center gap-2"
               aria-label={user ? `Conta de ${user.name ?? "cliente"}` : "Entrar na conta"}
             >
+              {user?.name ? (
+                <span className="text-[10px] tracking-[0.08em] text-plum-500/60">
+                  Olá, {user.name.split(" ")[0]}
+                </span>
+              ) : null}
               <UserRound className="w-[17px] h-[17px]" />
             </Link>
             <button
