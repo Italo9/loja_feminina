@@ -1,7 +1,8 @@
 import Link from "next/link"
 import { Camera } from "lucide-react"
-import { store, whatsappUrl } from "@/lib/config"
+import { store } from "@/lib/config"
 import { OpenChatButton } from "./OpenChatButton"
+import { ContactLink } from "./ContactLink"
 
 const COL_LOJA = [
   { label: "Catálogo", href: "/catalogo" },
@@ -13,7 +14,6 @@ const COL_AJUDA = [
   { label: "Entrega", href: "/entrega" },
   { label: "Trocas e Devoluções", href: "/trocas" },
   { label: "Guia de Medidas", href: "/guia-de-medidas" },
-  { label: "Contato", href: whatsappUrl() },
 ]
 
 const COL_INSTITUCIONAL = [
@@ -72,6 +72,9 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <ContactLink />
+              </li>
             </ul>
           </div>
 
