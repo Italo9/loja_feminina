@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { ChevronRight, Home } from "lucide-react"
+import { BreadcrumbListJsonLd } from "./JsonLd"
 
 export interface BreadcrumbItem {
   label: string
@@ -7,24 +8,29 @@ export interface BreadcrumbItem {
 }
 
 export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
+  const allItems = [{ label: "Início", href: "/" }, ...items]
+
   return (
-    <nav aria-label="Breadcrumb" className="mb-6">
-      <ol className="flex flex-wrap items-center gap-1.5 text-sm">
-        <BreadcrumbLink item={{ label: "Início", href: "/" }} isHome />
-        {items.map((item, i) => (
-          <li key={i} className="flex items-center gap-1.5">
-            <ChevronRight className="w-3.5 h-3.5 text-espresso-300 flex-shrink-0" />
-            {item.href ? (
-              <BreadcrumbLink item={item} />
-            ) : (
-              <span className="text-espresso-700 font-medium truncate max-w-[200px]">
-                {item.label}
-              </span>
-            )}
-          </li>
-        ))}
-      </ol>
-    </nav>
+    <>
+      <BreadcrumbListJsonLd items={allItems} />
+      <nav aria-label="Breadcrumb" className="mb-6">
+        <ol className="flex flex-wrap items-center gap-1.5 text-sm">
+          <BreadcrumbLink item={allItems[0]} isHome />
+          {items.map((item, i) => (
+            <li key={i} className="flex items-center gap-1.5">
+              <ChevronRight className="w-3.5 h-3.5 text-espresso-300 flex-shrink-0" />
+              {item.href ? (
+                <BreadcrumbLink item={item} />
+              ) : (
+                <span className="text-espresso-700 font-medium truncate max-w-[200px]">
+                  {item.label}
+                </span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </>
   )
 }
 
