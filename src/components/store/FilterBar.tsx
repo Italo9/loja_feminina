@@ -56,18 +56,18 @@ export function FilterBar({
   const hasPriceFilter = currentMinPrice !== undefined || currentMaxPrice !== undefined
 
   return (
-    <div className="flex flex-wrap items-end gap-4 mb-6 p-4 bg-white rounded-xl border border-cream-200">
+    <div className="flex flex-wrap items-end gap-4 mb-6 p-4 bg-white rounded-2xl border border-pearl-200 shadow-soft">
       <div className="flex flex-col gap-1.5 min-w-[180px]">
         <label
           htmlFor="sort"
-          className="text-[10px] uppercase tracking-[0.15em] font-semibold text-espresso-400"
+          className="text-[10px] uppercase tracking-[0.15em] font-semibold text-gold-600"
         >
           Ordenar por
         </label>
         <select
           id="sort"
           defaultValue={currentSort}
-          className="w-full px-3 py-2 rounded-lg border border-cream-200 bg-cream-50 text-sm text-espresso-700 focus:outline-none focus:border-rose-300"
+          className="w-full px-3 py-2 rounded-lg border border-pearl-200 bg-pearl-50 text-sm text-plum-600 focus:outline-none focus:border-gold-400/60"
           onChange={(e) => updateUrl({ sort: e.target.value })}
         >
           <option value="newest">Mais novos</option>
@@ -78,7 +78,7 @@ export function FilterBar({
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <span className="text-[10px] uppercase tracking-[0.15em] font-semibold text-espresso-400">
+        <span className="text-[10px] uppercase tracking-[0.15em] font-semibold text-gold-600">
           Faixa de preço
         </span>
         <div className="flex items-center gap-2">
@@ -87,26 +87,26 @@ export function FilterBar({
             placeholder="Min"
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
-            className="w-24 px-3 py-2 rounded-lg border border-cream-200 bg-cream-50 text-sm text-espresso-700 focus:outline-none focus:border-rose-300"
+            className="w-24 px-3 py-2 rounded-lg border border-pearl-200 bg-pearl-50 text-sm text-plum-600 focus:outline-none focus:border-gold-400/60"
           />
-          <span className="text-espresso-300">-</span>
+          <span className="text-plum-300">até</span>
           <input
             type="number"
             placeholder="Max"
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            className="w-24 px-3 py-2 rounded-lg border border-cream-200 bg-cream-50 text-sm text-espresso-700 focus:outline-none focus:border-rose-300"
+            className="w-24 px-3 py-2 rounded-lg border border-pearl-200 bg-pearl-50 text-sm text-plum-600 focus:outline-none focus:border-gold-400/60"
           />
           <button
             onClick={handlePriceFilter}
-            className="px-4 py-2 rounded-lg bg-rose-500 text-white text-sm font-semibold hover:bg-rose-600 transition-colors"
+            className="px-5 py-2 rounded-full bg-plum-600 text-white text-sm font-medium tracking-wide hover:bg-plum-700 transition-colors"
           >
             Filtrar
           </button>
           {hasPriceFilter && (
             <button
               onClick={handleClearPrice}
-              className="px-3 py-2 rounded-lg border border-cream-200 text-sm text-espresso-400 hover:text-rose-500 transition-colors"
+              className="px-4 py-2 rounded-full border border-pearl-300 text-sm text-plum-400 hover:text-plum-600 hover:border-plum-300 transition-colors"
             >
               Limpar
             </button>

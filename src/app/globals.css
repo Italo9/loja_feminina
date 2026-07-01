@@ -12,11 +12,33 @@
   --color-pearl-200: #f5e9e0;
   --color-pearl-300: #e8d5c8;
 
-  /* Rose — hover e superfícies */
+  /* Rose — hover e superfícies. 400-600 sobrescrevem o rose vivo
+     padrão do Tailwind com um rosé queimado da paleta Lumière. */
   --color-rose-50: #fff5f4;
   --color-rose-100: #fde8e7;
   --color-rose-200: #F6D8D6;
   --color-rose-300: #edc0be;
+  --color-rose-400: #d8a3a1;
+  --color-rose-500: #c68d8b;
+  --color-rose-600: #ad7472;
+
+  /* Cream — alias legado, mapeado em Pearl para reconciliar
+     componentes antigos com a paleta atual. */
+  --color-cream-50: #fffaf7;
+  --color-cream-100: #FFF6F2;
+  --color-cream-200: #f5e9e0;
+  --color-cream-300: #e8d5c8;
+
+  /* Espresso — alias legado, mapeado em Plum. */
+  --color-espresso-100: #e8e3e3;
+  --color-espresso-200: #d2c8c9;
+  --color-espresso-300: #b5a6a8;
+  --color-espresso-400: #988587;
+  --color-espresso-500: #7d6b6d;
+  --color-espresso-600: #6B4A4F;
+  --color-espresso-700: #54393d;
+  --color-espresso-800: #3d282b;
+  --color-espresso-900: #2a1a1c;
 
   /* Blush — botões primários */
   --color-blush-50: #fdf7f7;
