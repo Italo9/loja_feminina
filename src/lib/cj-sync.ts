@@ -13,6 +13,7 @@ interface SyncResult {
   created: number
   updated: number
   errors: number
+  messages: string[]
 }
 
 const PORTUGUESE_CATEGORIES: Record<string, string> = {
@@ -58,7 +59,7 @@ async function ensureCategory(slug: string): Promise<string> {
 }
 
 export async function syncCjProducts(): Promise<SyncResult> {
-  const result: SyncResult = { total: 0, filtered: 0, created: 0, updated: 0, errors: 0 }
+  const result: SyncResult = { total: 0, filtered: 0, created: 0, updated: 0, errors: 0, messages: [] }
 
   const keywords = ["dress", "blouse", "skirt", "bikini", "top women", "bag women", "necklace women"]
 
@@ -131,15 +132,15 @@ export async function syncCjProducts(): Promise<SyncResult> {
 
             result.created++
           } catch (e) {
-            console.error(`[CJ Sync] Erro ${cp.pid}:`, e instanceof Error ? e.message : e)
             result.errors++
+            result.messages.push(`Erro ${cp.pid.slice(-8)}: ${e instanceof Error ? e.message : String(e)}`)
           }
         }
 
         page++
       } catch (e) {
-        console.error(`[CJ Sync] Erro página ${keyword}:`, e instanceof Error ? e.message : e)
         result.errors++
+        result.messages.push(`Página ${keyword}: ${e instanceof Error ? e.message : String(e)}`)
         break
       }
     }
