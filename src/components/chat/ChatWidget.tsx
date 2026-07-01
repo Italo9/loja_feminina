@@ -49,6 +49,9 @@ export function ChatWidget() {
 
   const [open, setOpen] = useState(false)
   const [minimized, setMinimized] = useState(false)
+  const [closed, setClosed] = useState(false)
+  const [showReminder, setShowReminder] = useState(false)
+  const reminderRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [mode, setMode] = useState<Mode>("bot")
   const modeRef = useRef<Mode>("bot")
   const [sessionId, setSessionId] = useState("")
@@ -60,7 +63,7 @@ export function ChatWidget() {
     {
       id: "welcome",
       role: "assistant",
-      content: `Oi! Eu sou a ${assistant.name} ✨, ${assistant.role} da ${store.name}.\n\nPosso te ajudar a encontrar a peça perfeita, conferir preços, tamanhos disponíveis e montar looks incríveis. O que você procura hoje?`,
+      content: `Olá! Eu sou a ${assistant.name}, assistente virtual da ${store.name}. Estou aqui para ajudar você a encontrar o look perfeito.`,
       timestamp: new Date(),
     },
   ])
@@ -73,7 +76,7 @@ export function ChatWidget() {
           ? [
               {
                 ...prev[0],
-                content: `Oi, ${userName}! Eu sou a ${assistant.name} ✨, ${assistant.role} da ${store.name}.\n\nPosso te ajudar a encontrar a peça perfeita, conferir preços, tamanhos disponíveis e montar looks incríveis. O que você procura hoje?`,
+                content: `Olá, ${userName}! Eu sou a ${assistant.name}, assistente virtual da ${store.name}. Estou aqui para ajudar você a encontrar o look perfeito.`,
               },
               ...prev.slice(1),
             ]
@@ -293,7 +296,7 @@ export function ChatWidget() {
 
   return (
     <>
-      {!open && (
+      {!open && !closed && (
         <div
           ref={launcherRef}
           onPointerDown={onPointerDown}
@@ -350,7 +353,18 @@ export function ChatWidget() {
                   Encerrar
                 </button>
               )}
-              <button onClick={() => { setOpen(false); setMinimized(false) }} className="p-1.5 rounded-full hover:bg-white/20 transition-colors">
+              <button onClick={() => { setOpen(false); setMinimized(false) }} className="p-1.5 rounded-full hover:bg-white/20 transition-colors hidden md:block">
+                <X className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => {
+                  setOpen(false)
+                  setMinimized(false)
+                  setClosed(true)
+                  reminderRef.current = setTimeout(() => setShowReminder(true), 60000)
+                }}
+                className="p-1.5 rounded-full hover:bg-white/20 transition-colors md:hidden"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -486,6 +500,19 @@ export function ChatWidget() {
           )}
         </div>
         </>
+      )}
+      {closed && showReminder && (
+        <button
+          onClick={() => {
+            setClosed(false)
+            setShowReminder(false)
+            setOpen(true)
+            if (reminderRef.current) clearTimeout(reminderRef.current)
+          }}
+          className="fixed z-[82] bottom-20 right-4 md:hidden px-4 py-2.5 rounded-2xl bg-white shadow-lift border border-rose-100 text-sm text-plum-600 animate-slide-up"
+        >
+          💬 Falar com a {assistant.name}
+        </button>
       )}
     </>
   )

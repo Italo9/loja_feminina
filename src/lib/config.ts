@@ -42,7 +42,7 @@ export const store = {
 }
 
 export const assistant = {
-  name: readEnv("NEXT_PUBLIC_ASSISTANT_NAME", "Jade"),
+  name: readEnv("NEXT_PUBLIC_ASSISTANT_NAME", "Lumi"),
   role: readEnv("NEXT_PUBLIC_ASSISTANT_ROLE", "sua stylist virtual"),
   availability: readEnv("NEXT_PUBLIC_ASSISTANT_AVAILABILITY", "Atendimento 24 horas"),
 }

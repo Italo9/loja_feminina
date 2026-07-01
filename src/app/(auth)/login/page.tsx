@@ -26,13 +26,13 @@ export default function LoginPage() {
     }
     const session = await fetch("/api/auth/session").then(r => r.json())
     const role = (session?.user as { role?: string })?.role
-    router.push(role === "ADMIN" ? "/admin" : "/")
+    router.push(role === "ADMIN" ? "/escolher-perfil" : "/")
     router.refresh()
   }
 
   const handleGoogle = async () => {
     setGoogleLoading(true)
-    await signIn("google", { callbackUrl: "/" })
+    await signIn("google", { callbackUrl: "/escolher-perfil" })
   }
 
   return (

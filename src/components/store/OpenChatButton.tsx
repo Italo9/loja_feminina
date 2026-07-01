@@ -24,7 +24,7 @@ export function OpenChatButton({
   return (
     <button
       onClick={() => window.dispatchEvent(new Event("chat:open"))}
-      className="fixed z-[75] bottom-8 right-6 md:right-8 flex items-center gap-2.5 bg-gradient-to-br from-[#DCA7A7] to-[#F6D8D6] text-[#6B4A4F] rounded-full pl-3 pr-5 py-3 shadow-lift hover:shadow-xl hover:scale-105 transition-all duration-300 animate-[pulse-subtle_2.5s_ease-in-out_infinite] border border-white/20"
+      className="fixed z-[75] bottom-8 right-6 md:right-8 flex items-center gap-2.5 bg-gradient-to-br from-[#DCA7A7] to-[#F6D8D6] text-[#6B4A4F] rounded-full pl-3 pr-5 py-3 shadow-lift hover:shadow-xl hover:scale-105 transition-all duration-300 md:animate-[pulse-subtle_2.5s_ease-in-out_infinite] border border-white/20"
     >
       <span className="w-9 h-9 rounded-full bg-white/30 flex items-center justify-center flex-shrink-0">
         <MessageCircle className="w-4 h-4 text-[#6B4A4F]" />
