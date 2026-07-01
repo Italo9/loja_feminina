@@ -103,7 +103,7 @@ export default async function ProductPage({ params }: Props) {
 
             <div className="flex flex-col gap-3 mt-6">
               <AddToCartButton product={product} />
-              <OpenChatButton label="Falar com a Jade" />
+              <OpenChatButton label="Falar com a Lumi" />
             </div>
 
             <div className="flex items-center gap-4 mt-8 text-xs text-espresso-400">

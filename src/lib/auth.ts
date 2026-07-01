@@ -5,7 +5,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "./db"
 import bcrypt from "bcryptjs"
 
-const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "contatoemillysl@gmail.com").split(",").map((e) => e.trim().toLowerCase())
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "contatoemillysl@gmail.com,carolinamoura767@gmail.com").split(",").map((e) => e.trim().toLowerCase())
 
 function getRole(email: string | null | undefined, existingRole?: string | null): string {
   if (existingRole === "ADMIN") return "ADMIN"

@@ -10,7 +10,7 @@ const FAQS = [
   },
   {
     question: "Como faço para trocar ou devolver um produto?",
-    answer: `Você tem até 7 dias corridos após o recebimento para solicitar troca ou devolução. O produto deve estar em perfeito estado, sem uso, com etiqueta e na embalagem original. Fale com a Jade (nossa assistente virtual) para iniciar o processo.`,
+    answer: `Você tem até 7 dias corridos após o recebimento para solicitar troca ou devolução. O produto deve estar em perfeito estado, sem uso, com etiqueta e na embalagem original. Fale com a Lumi (nossa assistente virtual) para iniciar o processo.`,
   },
   {
     question: "Quais formas de pagamento são aceitas?",
@@ -18,7 +18,7 @@ const FAQS = [
   },
   {
     question: "Como sei qual é meu tamanho?",
-    answer: `Disponibilizamos um Guia de Medidas completo com tabela de tamanhos (PP ao 5G) e instruções de como tirar suas medidas. Acesse a página Guia de Medidas no menu Ajuda ou fale com a Jade para assistência personalizada.`,
+    answer: `Disponibilizamos um Guia de Medidas completo com tabela de tamanhos (PP ao 5G) e instruções de como tirar suas medidas. Acesse a página Guia de Medidas no menu Ajuda ou fale com a Lumi para assistência personalizada.`,
   },
   {
     question: "Vocês têm loja física?",
@@ -32,7 +32,7 @@ const FAQS = [
 
 export const metadata: Metadata = {
   title: "FAQ — Perguntas Frequentes",
-  description: `Tire suas dúvidas sobre entregas, trocas, pagamentos e tamanhos na ${store.name}. Atendimento humanizado com a Jade.`,
+  description: `Tire suas dúvidas sobre entregas, trocas, pagamentos e tamanhos na ${store.name}. Atendimento humanizado com a Lumi.`,
   openGraph: {
     title: `FAQ — ${store.name}`,
     description: `Perguntas frequentes sobre a ${store.name}. Entrega, trocas, pagamentos e mais.`,

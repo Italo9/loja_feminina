@@ -12,11 +12,26 @@ const nextId = () => String(++msgId)
 type Mode = "bot" | "askName" | "human"
 
 const PILL_PHRASES = [
+  `Oi, eu sou a ${assistant.name}! ✨`,
   `Fale com a ${assistant.name}`,
   `Tire dúvidas com a ${assistant.name}`,
   `Veja preços com a ${assistant.name}`,
   `Peça ajuda à ${assistant.name}`,
   `Monte seu look com a ${assistant.name}`,
+  `${assistant.name} pode te ajudar`,
+  `Precisa de ajuda?`,
+  `Está procurando algo?`,
+  `Vamos montar seu look?`,
+  `Descubra novidades com a ${assistant.name}`,
+  `${assistant.name} está online! 💬`,
+  `Qual seu estilo hoje?`,
+  `Achou o que queria?`,
+  `Posso te ajudar a escolher`,
+  `Tem dúvidas sobre tamanhos?`,
+  `Frete grátis acima de R$250!`,
+  `Novidades toda semana ✨`,
+  `Looks que combinam com você`,
+  `Peças exclusivas te esperando`,
 ]
 
 const SUGGESTIONS = [
@@ -26,9 +41,15 @@ const SUGGESTIONS = [
   { label: "Looks para festa", prompt: "Me ajuda a montar um look para festa?" },
   { label: "Formas de pagamento", prompt: "Quais são as formas de pagamento?" },
   { label: "Frete e entrega", prompt: "Como funciona o frete e prazo de entrega?" },
+  { label: "Trocas e devoluções", prompt: "Como funciona a política de trocas?" },
+  { label: "Looks casuais", prompt: "Me ajuda a montar um look casual?" },
+  { label: "Peças em promoção", prompt: "Quais peças estão em promoção?" },
+  { label: "Tamanho PP disponível?", prompt: "Vocês têm peças no tamanho PP?" },
+  { label: "Moda praia", prompt: "Quais opções de moda praia vocês têm?" },
+  { label: "Acessórios", prompt: "Quais acessórios vocês têm disponíveis?" },
 ]
 
-function JadeAvatar() {
+function LumiAvatar() {
   return (
     <div className="w-8 h-8 rounded-full bg-[#DCA7A7] flex items-center justify-center flex-shrink-0 shadow-sm">
       <Sparkles className="w-4 h-4 text-[#C9A66B]" />
@@ -288,7 +309,7 @@ export function ChatWidget() {
     setModeAndRef("bot")
   }
 
-  const placeholder = loading ? "Jade está escrevendo..." : mode === "human" ? "Digite sua mensagem..." : "Digite sua mensagem..."
+  const placeholder = loading ? `${assistant.name} está escrevendo...` : mode === "human" ? "Digite sua mensagem..." : "Digite sua mensagem..."
 
   if (!ready) return null
 
@@ -380,7 +401,7 @@ export function ChatWidget() {
                       <UserRound className="w-4 h-4 text-white" />
                     </div>
                   ) : (
-                    <JadeAvatar />
+                    <LumiAvatar />
                   )
                 )}
                 <div className={
@@ -406,7 +427,7 @@ export function ChatWidget() {
                     <UserRound className="w-4 h-4 text-white" />
                   </div>
                 ) : (
-                  <JadeAvatar />
+                  <LumiAvatar />
                 )}
                 <div className="px-4 py-3 flex items-center gap-1 bg-rose-50 border border-[#F6D8D6] rounded-2xl rounded-bl-md">
                   <span className="w-2 h-2 rounded-full bg-[#C9A66B] animate-[pulse-glow_1.4s_ease-in-out_infinite]" />
@@ -419,7 +440,7 @@ export function ChatWidget() {
             {/* Name input */}
             {mode === "askName" && (
               <form onSubmit={handleNameSubmit} className="flex items-end gap-2">
-                <JadeAvatar />
+                <LumiAvatar />
                 <div className="bg-rose-50 border border-[#F6D8D6] max-w-[85%] px-4 py-3 space-y-2 rounded-2xl rounded-bl-md">
                   <p className="text-sm text-[#6B4A4F]">Como você gostaria de ser chamada?</p>
                   <div className="flex gap-2">

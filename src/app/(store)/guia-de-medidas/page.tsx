@@ -87,7 +87,7 @@ export default function SizeGuidePage() {
           </div>
 
           <p className="body-sm text-espresso-400 text-center pt-2">
-            Em caso de dúvidas, fale com a Jade pelo chat. Ela vai te ajudar a escolher
+            Em caso de dúvidas, fale com a Lumi pelo chat. Ela vai te ajudar a escolher
             o tamanho ideal!
           </p>
         </div>

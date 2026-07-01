@@ -165,7 +165,7 @@ describe('config', () => {
   describe('assistant defaults', () => {
     it('uses default assistant name', async () => {
       const { assistant } = await import('@/lib/config')
-      expect(assistant.name).toBe('Jade')
+      expect(assistant.name).toBe('Lumi')
     })
 
     it('uses default assistant role', async () => {

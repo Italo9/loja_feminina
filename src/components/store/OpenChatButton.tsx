@@ -14,7 +14,7 @@ export function OpenChatButton({
       <button
         onClick={() => window.dispatchEvent(new Event("chat:open"))}
         className="w-9 h-9 rounded-full border border-[#C9A66B]/30 flex items-center justify-center text-[#C9A66B] hover:bg-[#F6D8D6]/30 hover:border-[#DCA7A7] transition-all"
-        aria-label="Falar com a Jade"
+        aria-label="Falar com a Lumi"
       >
         <MessageCircle className="w-4 h-4" />
       </button>
@@ -30,7 +30,7 @@ export function OpenChatButton({
         <MessageCircle className="w-4 h-4 text-[#6B4A4F]" />
       </span>
       <span className="text-sm font-medium tracking-wide whitespace-nowrap">
-        {label ?? "Falar com a Jade"}
+        {label ?? "Falar com a Lumi"}
       </span>
     </button>
   )
