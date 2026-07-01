@@ -22,15 +22,17 @@ export default function LoginPage() {
     if (result?.error) {
       setError("Email ou senha inválidos")
       setLoading(false)
-    } else {
-      router.push("/admin")
-      router.refresh()
+      return
     }
+    const session = await fetch("/api/auth/session").then(r => r.json())
+    const role = (session?.user as { role?: string })?.role
+    router.push(role === "ADMIN" ? "/admin" : "/")
+    router.refresh()
   }
 
   const handleGoogle = async () => {
     setGoogleLoading(true)
-    await signIn("google", { callbackUrl: "/admin" })
+    await signIn("google", { callbackUrl: "/" })
   }
 
   return (
@@ -38,7 +40,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <span className="font-[family-name:var(--font-display)] text-4xl tracking-wider text-espresso-800">{store.name}</span>
-          <p className="body-sm text-espresso-400 mt-2">Acesse o painel administrativo</p>
+            <p className="body-sm text-espresso-400 mt-2">Acesse sua conta</p>
         </div>
 
         <div className="surface p-6 space-y-4">
