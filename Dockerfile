@@ -23,6 +23,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN apk add --no-cache libc6-compat openssl
+RUN npm install prisma@5.22.0 --no-audit --no-fund --loglevel=error
 RUN addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 nextjs
 
@@ -38,4 +39,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["node", "server.js"]
+CMD sh -c "npx prisma db push --skip-generate --accept-data-loss && node server.js"
