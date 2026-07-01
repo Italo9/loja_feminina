@@ -1,5 +1,12 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronLeft, ShoppingBag } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Carrinho",
+  description: "Seu carrinho de compras na Lumière. Finalize seu pedido com segurança.",
+  robots: { index: false },
+}
 
 export default function CartPage() {
   return (
