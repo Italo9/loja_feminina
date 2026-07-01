@@ -23,9 +23,10 @@ export async function createProduct(formData: FormData) {
   const badge = (formData.get("badge") as string) || null
   const featured = formData.get("featured") === "true"
   const sku = (formData.get("sku") as string) || null
+  const regions = (formData.get("regions") as string) || ""
 
   await prisma.product.create({
-    data: { name, slug, description, price, compareAt, cost, markup, categoryId, source, supplierId, badge, featured, sku },
+    data: { name, slug, description, price, compareAt, cost, markup, categoryId, source, supplierId, badge, featured, sku, regions },
   })
 
   revalidatePath("/admin/produtos")
