@@ -23,12 +23,14 @@ steps:
       - --cache-from=southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest
       - .
 
-  # Push
+  # Push (composite steps: push both tags)
   - name: gcr.io/cloud-builders/docker
+    entrypoint: bash
     args:
-      - push
-      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID
-      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest
+      - -c
+      - |
+        docker push southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID
+        docker push southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest
 
   # Deploy
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
@@ -59,6 +61,8 @@ steps:
       - --set-secrets=DATABASE_URL=lumiere-database-url:latest
       - --set-secrets=MP_ACCESS_TOKEN=lumiere-mp-access-token:latest
       - --set-secrets=NVIDIA_API_KEY=lumiere-nvidia-api-key:latest
+      - --set-secrets=GOOGLE_CLIENT_ID=lumiere-google-client-id:latest
+      - --set-secrets=GOOGLE_CLIENT_SECRET=lumiere-google-client-secret:latest
 
 images:
   - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID
