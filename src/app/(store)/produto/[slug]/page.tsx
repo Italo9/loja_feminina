@@ -13,6 +13,7 @@ import { OpenChatButton } from "@/components/store/OpenChatButton"
 import { ProductCard } from "@/components/store/ProductCard"
 import { ProductJsonLd } from "@/components/store/JsonLd"
 import { Breadcrumbs } from "@/components/store/Breadcrumbs"
+import { ProductReviews } from "@/components/store/ProductReviews"
 
 export const dynamic = "force-dynamic"
 
@@ -134,6 +135,7 @@ export default async function ProductPage({ params }: Props) {
             </section>
           </>
         )}
+        <ProductReviews productId={product.id} />
       </div>
       <StickyAddToCart product={product} />
     </div>

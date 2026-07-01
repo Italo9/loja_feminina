@@ -35,6 +35,7 @@ const ADMIN_LINKS = [
   { label: "Painel", href: "/admin" },
   { label: "Produtos", href: "/admin/produtos" },
   { label: "Pedidos", href: "/admin/pedidos" },
+  { label: "Avaliações", href: "/admin/avaliacoes" },
   { label: "Cupons", href: "/admin/cupons" },
   { label: "Fornecedores", href: "/admin/fornecedores" },
   { label: "WhatsApp", href: "/admin/whatsapp" },
