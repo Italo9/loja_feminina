@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ChevronLeft, Search } from "lucide-react"
 import { searchProducts } from "@/lib/products"
+import { getUserRegionCookie } from "@/lib/location-server"
 import { ProductCard } from "@/components/store/ProductCard"
 
 export default async function BuscaPage({
@@ -9,7 +10,8 @@ export default async function BuscaPage({
   searchParams: Promise<{ q?: string }>
 }) {
   const { q } = await searchParams
-  const products = q ? await searchProducts(q) : []
+  const region = await getUserRegionCookie()
+  const products = q ? await searchProducts(q, region ?? undefined) : []
 
   return (
     <div className="bg-cream-100 min-h-screen">
