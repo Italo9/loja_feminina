@@ -50,6 +50,7 @@ steps:
       - --concurrency=80
       - --timeout=300
       - --set-env-vars=^:^NODE_ENV=production
+      - --set-env-vars=^:^AUTH_URL=https://lumiere-web-573565000697.southamerica-east1.run.app
       - --set-env-vars=^:^NEXT_PUBLIC_STORE_NAME=Lumière
       - --set-env-vars=^:^NEXT_PUBLIC_STORE_TAGLINE=Para mulheres que brilham naturalmente
       - --set-env-vars=^:^NEXT_PUBLIC_STORE_SHORT_NAME=Lumière
