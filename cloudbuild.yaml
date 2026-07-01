@@ -50,20 +50,14 @@ steps:
       - --min-instances=0
       - --max-instances=3
       - --concurrency=80
-      - --set-env-vars=NODE_ENV=production
-      - --set-env-vars=NEXT_PUBLIC_SITE_URL=_(definido_no_deploy)_
-      - --set-env-vars=NEXT_PUBLIC_STORE_NAME="Lumière"
-      - --set-env-vars=NEXT_PUBLIC_STORE_TAGLINE="Para mulheres que brilham naturalmente"
-      - --set-env-vars=NEXT_PUBLIC_STORE_SHORT_NAME="Lumière"
-      - --set-env-vars=NEXT_PUBLIC_STORE_DESCRIPTION="Lumière — boutique feminina premium."
-      - --set-env-vars=NEXT_PUBLIC_STORE_CITY="Salvador, BA"
-      - --set-env-vars=NEXT_PUBLIC_STORE_WHATSAPP=5571997006042
-      - --set-env-vars=NEXT_PUBLIC_STORE_EMAIL="contato@lumiere.com.br"
-      - --set-env-vars=NEXT_PUBLIC_STORE_INSTAGRAM="lumiere"
-      - --set-env-vars=NEXT_PUBLIC_ASSISTANT_NAME="Jade"
-      - --set-env-vars=NEXT_PUBLIC_ASSISTANT_ROLE="sua stylist virtual"
-      - --set-env-vars=NEXT_PUBLIC_DEVELOPER_NAME="Lumière"
-      - --set-env-vars=NEXT_PUBLIC_DEVELOPER_URL="https://lumiere.com.br"
+      - --set-env-vars=^:^NODE_ENV=production
+      - --set-env-vars=^:^NEXT_PUBLIC_STORE_NAME=Lumière
+      - --set-env-vars=^:^NEXT_PUBLIC_STORE_TAGLINE=Para mulheres que brilham naturalmente
+      - --set-env-vars=^:^NEXT_PUBLIC_STORE_SHORT_NAME=Lumière
+      - --set-env-vars=^:^NEXT_PUBLIC_STORE_CITY=Salvador, BA
+      - --set-env-vars=^:^NEXT_PUBLIC_STORE_WHATSAPP=5571997006042
+      - --set-env-vars=^:^NEXT_PUBLIC_ASSISTANT_NAME=Jade
+      - --set-env-vars=^:^NEXT_PUBLIC_ASSISTANT_ROLE=sua stylist virtual
       - --set-secrets=AUTH_SECRET=lumiere-auth-secret:latest
       - --set-secrets=DATABASE_URL=lumiere-database-url:latest
       - --set-secrets=MP_ACCESS_TOKEN=lumiere-mp-access-token:latest
