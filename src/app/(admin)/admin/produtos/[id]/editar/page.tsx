@@ -45,6 +45,7 @@ export default async function EditProductPage({ params }: Props) {
             badge: (formData.get("badge") as string) || null,
             featured: formData.get("featured") === "true",
             active: formData.get("active") === "true",
+            regions: (formData.get("regions") as string) || "",
           },
         })
         revalidatePath("/admin/produtos")
@@ -58,6 +59,13 @@ export default async function EditProductPage({ params }: Props) {
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Descrição</label>
           <textarea name="description" required rows={4} defaultValue={product.description} className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px] resize-none" />
+        </div>
+
+        {/* Estados onde o produto aparece */}
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Regiões (siglas, ex: SP,RJ,MG — vazio = todo Brasil)</label>
+          <input name="regions" defaultValue={product.regions} placeholder="SP,RJ,MG" className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px] font-mono uppercase tracking-widest" />
+          <p className="text-xs text-espresso-300 mt-1">Digite as siglas dos estados separadas por vírgula. Deixe em branco para vender em todo Brasil.</p>
         </div>
 
         {/* Origem do produto */}
