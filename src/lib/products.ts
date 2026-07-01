@@ -15,11 +15,16 @@ export interface CatalogOptions {
   minPrice?: number
   maxPrice?: number
   categorySlug?: string
+  region?: string
 }
 
-export const getFeaturedProducts = cache(async (): Promise<Product[]> => {
+export const getFeaturedProducts = cache(async (region?: string): Promise<Product[]> => {
+  const where: Record<string, unknown> = { active: true, featured: true }
+  if (region) {
+    where.OR = [{ regions: "" }, { regions: { contains: region } }]
+  }
   return prisma.product.findMany({
-    where: { active: true, featured: true },
+    where,
     include: { images: true, variants: true, category: true },
     orderBy: { createdAt: "desc" },
     take: 12,
@@ -36,9 +41,17 @@ export const getCatalogProducts = cache(async (
     minPrice,
     maxPrice,
     categorySlug,
+    region,
   } = options
 
   const where: Record<string, unknown> = { active: true }
+
+  if (region) {
+    where.OR = [
+      { regions: "" },
+      { regions: { contains: region } },
+    ]
+  }
 
   if (minPrice !== undefined || maxPrice !== undefined) {
     where.price = {
@@ -99,8 +112,8 @@ export const getCatalogProducts = cache(async (
   }
 })
 
-export const getNewProducts = cache(async (): Promise<Product[]> => {
-  const result = await getCatalogProducts({ perPage: 12, sort: "newest" })
+export const getNewProducts = cache(async (region?: string): Promise<Product[]> => {
+  const result = await getCatalogProducts({ perPage: 12, sort: "newest", region })
   return result.products
 })
 
@@ -146,17 +159,21 @@ export const getCategories = cache(async (): Promise<
   })
 })
 
-export const searchProducts = cache(async (query: string): Promise<Product[]> => {
+export const searchProducts = cache(async (query: string, region?: string): Promise<Product[]> => {
   if (!query.trim()) return []
+  const where: Record<string, unknown> = {
+    active: true,
+    OR: [
+      { name: { contains: query } },
+      { description: { contains: query } },
+      { tags: { contains: query } },
+    ],
+  }
+  if (region) {
+    where.AND = [{ OR: [{ regions: "" }, { regions: { contains: region } }] }]
+  }
   return prisma.product.findMany({
-    where: {
-      active: true,
-      OR: [
-        { name: { contains: query } },
-        { description: { contains: query } },
-        { tags: { contains: query } },
-      ],
-    },
+    where,
     include: { images: true, variants: true, category: true },
     orderBy: { createdAt: "desc" },
     take: 20,
