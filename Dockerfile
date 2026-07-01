@@ -3,7 +3,7 @@ FROM node:22-alpine AS deps
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev --no-audit --no-fund
+RUN npm ci --omit=dev --no-audit --no-fund --loglevel=error
 
 # Stage 2: builder
 FROM node:22-alpine AS builder
@@ -11,9 +11,9 @@ WORKDIR /app
 RUN apk add --no-cache libc6-compat openssl
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm ci --no-audit --no-fund
+RUN npm ci --no-audit --no-fund --loglevel=error
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN npx prisma generate
+RUN npx prisma generate --no-hints
 RUN npm run build
 
 # Stage 3: runner
