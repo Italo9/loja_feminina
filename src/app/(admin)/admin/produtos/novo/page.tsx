@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db"
 import { createProduct } from "@/lib/admin-actions"
+import { PriceCalculator } from "@/components/admin/PriceCalculator"
 import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
 
@@ -79,6 +80,8 @@ export default async function NewProductPage() {
             <input name="markup" type="number" step="0.01" className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px] text-espresso-900 focus:outline-none focus:ring-2 focus:ring-berry-200" placeholder="100 a 1550" />
           </div>
         </div>
+
+        <PriceCalculator />
 
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">SKU</label>

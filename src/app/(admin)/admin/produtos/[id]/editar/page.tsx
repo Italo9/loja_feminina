@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
+import { PriceCalculator } from "@/components/admin/PriceCalculator"
 
 interface Props { params: Promise<{ id: string }> }
 
@@ -115,6 +116,8 @@ export default async function EditProductPage({ params }: Props) {
             <input name="markup" type="number" step="0.01" defaultValue={product.markup ?? ""} className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px]" placeholder="100 a 1550" />
           </div>
         </div>
+
+        <PriceCalculator />
 
         <div>
           <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">SKU</label>
