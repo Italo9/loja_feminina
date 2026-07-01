@@ -137,6 +137,7 @@ export async function syncCjProducts(): Promise<SyncResult> {
               await prisma.product.update({
                 where: { id: existing.id },
                 data: {
+                  name: translatedName.slice(0, 180),
                   price: enriched.price,
                   cost: enriched.originalPrice,
                   active: true,
