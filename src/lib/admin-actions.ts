@@ -42,6 +42,15 @@ export async function updateProductStatus(productId: string, active: boolean) {
   revalidatePath("/admin/produtos")
 }
 
+export async function deleteProduct(productId: string) {
+  const session = await auth()
+  const role = (session?.user as { role?: string })?.role
+  if (role !== "ADMIN") throw new Error("Unauthorized")
+
+  await prisma.product.delete({ where: { id: productId } })
+  revalidatePath("/admin/produtos")
+}
+
 export async function updateOrderStatus(orderId: string, status: string, trackingCode?: string) {
   const session = await auth()
   const role = (session?.user as { role?: string })?.role

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { MapPin, X, Loader2 } from "lucide-react"
+import { MapPin, X, Loader2, Navigation } from "lucide-react"
 import { REGION_COOKIE, type LocationData, normalizeCep } from "@/lib/location"
 
 const STORAGE_KEY = "lumiere_location"
@@ -26,18 +26,96 @@ function removeLocation() {
   document.cookie = `${REGION_COOKIE}=;path=/;max-age=0`
 }
 
+async function reverseGeo(lat: number, lng: number): Promise<{ city: string; state: string } | null> {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=pt-BR`,
+      { signal: AbortSignal.timeout(5000) },
+    )
+    if (!res.ok) return null
+    const data = await res.json()
+    const address = data.address || {}
+    const state = address.state || ""
+    const city = address.city || address.town || address.municipality || address.county || ""
+
+    const brStates: Record<string, string> = {
+      acre: "AC", alagoas: "AL", amapá: "AP", amazonas: "AM", bahia: "BA",
+      ceará: "CE", "distrito federal": "DF", "espírito santo": "ES", goiás: "GO",
+      maranhão: "MA", "mato grosso": "MT", "mato grosso do sul": "MS",
+      "minas gerais": "MG", pará: "PA", paraíba: "PB", paraná: "PR",
+      pernambuco: "PE", piauí: "PI", "rio de janeiro": "RJ",
+      "rio grande do norte": "RN", "rio grande do sul": "RS", rondônia: "RO",
+      roraima: "RR", "santa catarina": "SC", "são paulo": "SP",
+      sergipe: "SE", tocantins: "TO",
+    }
+    const sigla = brStates[state.toLowerCase()] || state.slice(0, 2).toUpperCase()
+    return { city: city || state, state: sigla }
+  } catch {
+    return null
+  }
+}
+
+async function detectLocation(): Promise<LocationData | null> {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) return resolve(null)
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const geo = await reverseGeo(pos.coords.latitude, pos.coords.longitude)
+        if (geo) {
+          resolve({ city: geo.city, state: geo.state, cep: "" })
+        } else {
+          resolve(null)
+        }
+      },
+      () => resolve(null),
+      { timeout: 8000, maximumAge: 600000 },
+    )
+  })
+}
+
 export function LocationBar() {
   const [location, setLocationState] = useState<LocationData | null>(null)
   const [loaded, setLoaded] = useState(false)
   const [open, setOpen] = useState(false)
   const [cep, setCep] = useState("")
   const [fetching, setFetching] = useState(false)
+  const [geoLoading, setGeoLoading] = useState(false)
   const [error, setError] = useState("")
 
   useEffect(() => {
-    setLocationState(getSavedLocation())
-    setLoaded(true)
+    const saved = getSavedLocation()
+    if (saved) {
+      setLocationState(saved)
+      setLoaded(true)
+      return
+    }
+    detectLocation().then((detected) => {
+      if (detected) {
+        setLocationState(detected)
+        saveLocation(detected)
+      }
+      setLoaded(true)
+    })
   }, [])
+
+  const handleGeo = async () => {
+    setGeoLoading(true)
+    setError("")
+    try {
+      const detected = await detectLocation()
+      if (detected) {
+        setLocationState(detected)
+        saveLocation(detected)
+        setOpen(false)
+      } else {
+        setError("Não foi possível detectar sua localização")
+      }
+    } catch {
+      setError("Erro ao detectar localização")
+    } finally {
+      setGeoLoading(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -101,9 +179,29 @@ export function LocationBar() {
             <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#6B4A4F] mb-1">
               Calcular frete e prazo
             </h3>
-            <p className="text-xs text-[#6B4A4F]/50 mb-4">
-              Informe seu CEP para ver ofertas exclusivas da sua região
+            <p className="text-xs text-plum-500/50 mb-4">
+              Informe seu CEP ou use sua localização atual
             </p>
+
+            <button
+              type="button"
+              onClick={handleGeo}
+              disabled={geoLoading}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-blush-50 border border-blush-200 text-plum-600 text-sm font-medium hover:bg-blush-100 transition-colors disabled:opacity-50 mb-3"
+            >
+              {geoLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Navigation className="w-4 h-4" />
+              )}
+              Usar localização atual
+            </button>
+
+            <div className="flex items-center gap-2 mb-3">
+              <div className="flex-1 h-px bg-pearl-200" />
+              <span className="text-[10px] text-plum-300 uppercase tracking-[0.1em]">ou</span>
+              <div className="flex-1 h-px bg-pearl-200" />
+            </div>
 
             {location && (
               <div className="flex items-center gap-2 mb-4 p-3 bg-cream-50 rounded-xl">

@@ -2,6 +2,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { Plus, Pencil, EyeOff, Package } from "lucide-react"
 import { prisma } from "@/lib/db"
+import { DeleteProductButton } from "./DeleteProductButton"
+import { ToggleActiveButton } from "./ToggleActiveButton"
 
 export default async function AdminProductsPage() {
   const products = await prisma.product.findMany({
@@ -52,9 +54,11 @@ export default async function AdminProductsPage() {
                     )}
                   </div>
                 </div>
-                <Link href={`/admin/produtos/${product.id}/editar`} className="p-2 text-espresso-400 hover:text-rose-500 transition-colors">
+                <Link href={`/admin/produtos/${product.id}/editar`} className="p-2 text-plum-400 hover:text-rose-500 transition-colors">
                   <Pencil className="w-4 h-4" />
                 </Link>
+                <ToggleActiveButton productId={product.id} active={product.active} />
+                <DeleteProductButton productId={product.id} />
               </div>
             )
           })}
