@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
+import { createCjOrder } from "@/lib/cj"
 
 const STATUS_MAP: Record<string, string> = {
   approved: "paid",
@@ -52,12 +53,51 @@ export async function POST(req: Request) {
       data: { paymentStatus: newPaymentStatus },
     })
 
-    // Se pagamento aprovado, atualizar status do pedido para confirmed
+    // Se pagamento aprovado, atualizar status e criar pedido no CJ
     if (newPaymentStatus === "paid") {
       await prisma.order.update({
         where: { id: orderId },
         data: { status: "confirmed" },
       })
+
+      // Se tem itens dropship, criar pedido no CJ
+      try {
+        const order = await prisma.order.findUnique({
+          where: { id: orderId },
+          include: { items: { include: { product: true } } },
+        })
+
+        if (order) {
+          const cjItems = order.items.filter(
+            (i) => i.product?.tags?.includes("cjdropship"),
+          )
+
+          if (cjItems.length > 0) {
+            const address = JSON.parse(order.shippingAddress || "{}")
+
+            await createCjOrder({
+              items: cjItems.map((i) => ({
+                pid: i.product?.sku?.replace("cj-", "") ?? "",
+                quantity: i.quantity,
+              })),
+              shippingAddress: {
+                name: address.receiver || "",
+                phone: "",
+                country: "BR",
+                state: address.state || "",
+                city: address.city || "",
+                address: `${address.street || ""}, ${address.number || ""} - ${address.neighborhood || ""}`,
+                zipCode: (address.zipCode || "").replace(/\D/g, ""),
+              },
+              remark: `Pedido Lumière #${orderId}`,
+            })
+
+            console.log(`[CJ] Pedido ${orderId} enviado para CJ: ${cjItems.length} itens`)
+          }
+        }
+      } catch (err) {
+        console.error(`[CJ] Erro ao criar pedido ${orderId}:`, err)
+      }
     }
 
     console.log(`[MP Webhook] Pedido ${orderId}: ${mpStatus} → ${newPaymentStatus}`)
