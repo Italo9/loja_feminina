@@ -54,7 +54,7 @@ steps:
       - --max-instances=3
       - --concurrency=80
       - --timeout=300
-      - --set-env-vars=^~^NODE_ENV=production~AUTH_URL=https://lumiere-web-573565000697.southamerica-east1.run.app~NEXT_PUBLIC_STORE_NAME=Lumière~NEXT_PUBLIC_STORE_TAGLINE=Para mulheres que brilham naturalmente~NEXT_PUBLIC_STORE_SHORT_NAME=Lumière~NEXT_PUBLIC_STORE_CITY=Salvador, BA~NEXT_PUBLIC_STORE_WHATSAPP=5571997006042~NEXT_PUBLIC_ASSISTANT_NAME=Lumi~NEXT_PUBLIC_ASSISTANT_ROLE=sua stylist virtual
+      - --set-env-vars=^~^NODE_ENV=production~AUTH_URL=https://lumiere-web-573565000697.southamerica-east1.run.app~NEXT_PUBLIC_STORE_NAME=Lumière~NEXT_PUBLIC_STORE_TAGLINE=Para mulheres que brilham naturalmente~NEXT_PUBLIC_STORE_SHORT_NAME=Lumière~NEXT_PUBLIC_STORE_CITY=Salvador, BA~NEXT_PUBLIC_STORE_WHATSAPP=5571997006042~NEXT_PUBLIC_ASSISTANT_NAME=Lumi~NEXT_PUBLIC_ASSISTANT_ROLE=sua stylist virtual~WHATSAPP_ENABLED=true~WHATSAPP_ATTENDANT_NUMBER=5571997006042
       - --set-secrets=AUTH_SECRET=lumiere-auth-secret:latest
       - --set-secrets=DATABASE_URL=lumiere-database-url:latest
       - --set-secrets=MP_ACCESS_TOKEN=lumiere-mp-access-token:latest
