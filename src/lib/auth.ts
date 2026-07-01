@@ -5,6 +5,14 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "./db"
 import bcrypt from "bcryptjs"
 
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "contatoemillysl@gmail.com").split(",").map((e) => e.trim().toLowerCase())
+
+function getRole(email: string | null | undefined, existingRole?: string | null): string {
+  if (existingRole === "ADMIN") return "ADMIN"
+  if (email && ADMIN_EMAILS.includes(email.toLowerCase())) return "ADMIN"
+  return existingRole || "CUSTOMER"
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
@@ -53,7 +61,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id as string
-        token.role = (user as { role?: string }).role ?? "CUSTOMER"
+        token.email = (user as { email?: string }).email ?? undefined
+        const dbUser = await prisma.user.findUnique({ where: { id: user.id as string } })
+        token.role = dbUser?.role ?? getRole((user as { email?: string }).email ?? null)
       }
       return token
     },

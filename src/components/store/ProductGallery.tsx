@@ -27,6 +27,13 @@ export function ProductGallery({ images, productName }: Props) {
   return (
     <div>
       <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-cream-100 border border-rose-100 mb-4">
+        {images[active].url.startsWith("http") ? (
+          <img
+            src={images[active].url}
+            alt={images[active].alt ?? productName}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
         <Image
           src={images[active].url}
           alt={images[active].alt ?? productName}
@@ -35,6 +42,7 @@ export function ProductGallery({ images, productName }: Props) {
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover"
         />
+        )}
         {hasMultiple && (
           <>
             <button onClick={() => setActive((active - 1 + images.length) % images.length)} className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-soft hover:bg-white transition-colors">

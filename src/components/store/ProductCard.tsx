@@ -44,6 +44,14 @@ export function ProductCard({ product }: { product: Product }) {
         onMouseLeave={() => setImgIdx(0)}
       >
         {mainImage && !imgError ? (
+          mainImage.startsWith("http") ? (
+            <img
+              src={mainImage}
+              alt={product.name}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              onError={() => setImgError(true)}
+            />
+          ) : (
           <Image
             src={mainImage}
             alt={product.name}
@@ -52,6 +60,7 @@ export function ProductCard({ product }: { product: Product }) {
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
             onError={() => setImgError(true)}
           />
+          )
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-cream-100">
             <span className="font-[family-name:var(--font-display)] text-2xl text-cream-400">

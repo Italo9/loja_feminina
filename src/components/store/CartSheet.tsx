@@ -87,6 +87,13 @@ export function CartSheet() {
                 >
                   <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-pearl-200 flex-shrink-0">
                     {item.image && (
+                      item.image.startsWith("http") ? (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ) : (
                       <Image
                         src={item.image}
                         alt={item.name}
@@ -94,6 +101,7 @@ export function CartSheet() {
                         sizes="80px"
                         className="object-cover"
                       />
+                      )
                     )}
                   </div>
                   <div className="flex-1 min-w-0 flex flex-col">
