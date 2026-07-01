@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getCatalogProducts, getCategories } from "@/lib/products"
 import { getUserRegionCookie } from "@/lib/location-server"
@@ -30,9 +29,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   ])
 
   const { products, total, pages: totalPages } = result
-  const category = allCategories.find((c) => c.slug === slug)
-
-  if (!category && products.length === 0) notFound()
+  const category = allCategories.find(
+    (c) =>
+      c.slug === slug ||
+      c.children?.some((sub) => sub.slug === slug)
+  )
 
   const currentSearch = new URLSearchParams()
   if (sort !== "newest") currentSearch.set("sort", sort)
