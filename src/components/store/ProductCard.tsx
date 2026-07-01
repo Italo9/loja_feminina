@@ -29,7 +29,9 @@ export function ProductCard({ product }: { product: Product }) {
         ? `-${discountPercent}%`
         : product.badge === "destaque"
           ? "Destaque"
-          : null
+          : product.badge === "mais-vendido"
+            ? "Mais vendido"
+            : null
 
   return (
     <div className="group">
