@@ -41,5 +41,5 @@ jobs:
                 exit 1
                 ;;
             esac
-            sleep 10
+            sleep 5
           done

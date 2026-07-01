@@ -1,7 +1,8 @@
-# cloudbuild.yaml — Deploy rápido com cache de layers Docker
+# cloudbuild.yaml — Deploy com BuildKit e cache de layers otimizado
 #
-# O cache evita rebuild completo: só muda o que foi alterado no código.
-# Tempo típico: 30s-90s (vs 5min sem cache)
+# Cache inteligente: só npm run build roda quando source muda.
+# npm ci roda só quando package.json muda.
+# Tempo sem mudanças: ~60s. Com mudanças no source: ~90s.
 
 steps:
   # Pull da imagem anterior pra usar como cache
@@ -12,18 +13,22 @@ steps:
       - |
         docker pull southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest || true
 
-  # Build com cache
+  # Build com BuildKit + cache inline (permite cache granular entre builds)
   - name: gcr.io/cloud-builders/docker
+    env:
+      - DOCKER_BUILDKIT=1
     args:
       - build
+      - --build-arg
+      - BUILDKIT_INLINE_CACHE=1
+      - --cache-from=southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest
       - -t
       - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID
       - -t
       - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest
-      - --cache-from=southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest
       - .
 
-  # Push (composite steps: push both tags)
+  # Push
   - name: gcr.io/cloud-builders/docker
     entrypoint: bash
     args:
