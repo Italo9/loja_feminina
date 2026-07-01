@@ -1,41 +1,37 @@
-# cloudbuild.yaml — Deploy da Lumiére no Google Cloud Run
-# 
-# Uso:
-#   gcloud builds submit --config cloudbuild.yaml .
+# cloudbuild.yaml — Deploy rápido com cache de layers Docker
 #
-# Pré-requisitos (execute uma vez):
-#   gcloud services enable cloudbuild.googleapis.com run.googleapis.com artifactregistry.googleapis.com secretmanager.googleapis.com
-#   gcloud artifacts repositories create lumiere --repository-format=docker --location=southamerica-east1
-#
-# Secrets necessários no Secret Manager (crie com nomes isolados):
-#   gcloud secrets create lumiere-auth-secret --data-file=- <<< "sua-chave-64-chars"
-#   gcloud secrets create lumiere-database-url --data-file=- <<< "postgresql://..."
-#   gcloud secrets create lumiere-mp-access-token --data-file=- <<< "APP_USR-..."
-#   gcloud secrets create lumiere-nvidia-api-key --data-file=- <<< "nvapi-..."
-#   gcloud secrets create lumiere-google-client-id --data-file=- <<< "..."
-#   gcloud secrets create lumiere-google-client-secret --data-file=- <<< "..."
-#
-#   # Dar permissão pro Cloud Run acessar os secrets:
-#   gcloud secrets add-iam-policy-binding lumiere-auth-secret \
-#     --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
-#     --role="roles/secretmanager.secretAccessor"
+# O cache evita rebuild completo: só muda o que foi alterado no código.
+# Tempo típico: 30s-90s (vs 5min sem cache)
 
 steps:
-  - name: "gcr.io/cloud-builders/docker"
+  # Pull da imagem anterior pra usar como cache
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        docker pull southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest || true
+
+  # Build com cache
+  - name: gcr.io/cloud-builders/docker
     args:
       - build
       - -t
-      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID"
+      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID
       - -t
-      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest"
+      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest
+      - --cache-from=southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest
       - .
 
-  - name: "gcr.io/cloud-builders/docker"
+  # Push
+  - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID"
+      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID
+      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest
 
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  # Deploy
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: gcloud
     args:
       - run
@@ -63,10 +59,9 @@ steps:
       - --set-secrets=DATABASE_URL=lumiere-database-url:latest
       - --set-secrets=MP_ACCESS_TOKEN=lumiere-mp-access-token:latest
       - --set-secrets=NVIDIA_API_KEY=lumiere-nvidia-api-key:latest
-      # OAuth Google (crie os secrets depois: gcloud secrets create lumiere-google-client-id ...)
 
 images:
-  - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID"
-  - "southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest"
+  - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:$BUILD_ID
+  - southamerica-east1-docker.pkg.dev/$PROJECT_ID/lumiere/web:latest
 
 timeout: 1200s
