@@ -8,6 +8,7 @@ import { InstagramSection } from "@/components/store/InstagramSection"
 import { TestimonialsSection } from "@/components/store/TestimonialsSection"
 import { NewsletterForm } from "@/components/store/NewsletterForm"
 import { getFeaturedProducts, getNewProducts } from "@/lib/products"
+import { getUserRegionCookie } from "@/lib/location-server"
 import { store } from "@/lib/config"
 import { Truck, Shield, CreditCard } from "lucide-react"
 
@@ -22,9 +23,10 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
+  const region = await getUserRegionCookie()
   const [featured, newProducts] = await Promise.all([
-    getFeaturedProducts().catch(() => []),
-    getNewProducts().catch(() => []),
+    getFeaturedProducts(region ?? undefined).catch(() => []),
+    getNewProducts(region ?? undefined).catch(() => []),
   ])
 
   return (
