@@ -1,6 +1,13 @@
+import type { Metadata } from "next"
 import { Breadcrumbs } from "@/components/store/Breadcrumbs"
 
 export const dynamic = "force-static"
+
+export const metadata: Metadata = {
+  title: "Entrega",
+  description: "Política de entrega e frete. Enviamos para todo Brasil com frete grátis acima de R$ 250. Prazo de processamento de 1 a 2 dias úteis.",
+  openGraph: { title: "Política de Entrega — Lumière", type: "website" },
+}
 
 export default function GenericPage() {
   return (
