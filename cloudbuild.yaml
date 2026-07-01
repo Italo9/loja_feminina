@@ -50,6 +50,7 @@ steps:
       - --min-instances=0
       - --max-instances=3
       - --concurrency=80
+      - --timeout=300
       - --set-env-vars=^:^NODE_ENV=production
       - --set-env-vars=^:^NEXT_PUBLIC_STORE_NAME=Lumière
       - --set-env-vars=^:^NEXT_PUBLIC_STORE_TAGLINE=Para mulheres que brilham naturalmente
