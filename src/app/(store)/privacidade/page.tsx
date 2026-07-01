@@ -1,7 +1,14 @@
+import type { Metadata } from "next"
 import { Breadcrumbs } from "@/components/store/Breadcrumbs"
 import { store } from "@/lib/config"
 
 export const dynamic = "force-static"
+
+export const metadata: Metadata = {
+  title: "Privacidade",
+  description: `Política de privacidade da ${store.name}. Saiba como tratamos seus dados pessoais de acordo com a LGPD. Compromisso com transparência e segurança.`,
+  openGraph: { title: "Política de Privacidade — Lumière", type: "website" },
+}
 
 export default function PrivacyPage() {
   return (
