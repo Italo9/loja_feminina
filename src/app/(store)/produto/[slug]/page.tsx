@@ -13,17 +13,7 @@ import { ProductCard } from "@/components/store/ProductCard"
 import { ProductJsonLd } from "@/components/store/JsonLd"
 import { Breadcrumbs } from "@/components/store/Breadcrumbs"
 
-export const revalidate = 60
-
-export async function generateStaticParams() {
-  const products = await prisma.product.findMany({
-    where: { active: true },
-    select: { slug: true },
-    orderBy: { createdAt: "desc" },
-    take: 50,
-  })
-  return products.map((p) => ({ slug: p.slug }))
-}
+export const dynamic = "force-dynamic"
 
 interface Props { params: Promise<{ slug: string }> }
 
