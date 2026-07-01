@@ -8,6 +8,7 @@ import { store } from "@/lib/config"
 import { ProductGallery } from "@/components/store/ProductGallery"
 import { ProductVariants } from "@/components/store/ProductVariants"
 import { AddToCartButton } from "@/components/store/AddToCartButton"
+import { StickyAddToCart } from "@/components/store/StickyAddToCart"
 import { OpenChatButton } from "@/components/store/OpenChatButton"
 import { ProductCard } from "@/components/store/ProductCard"
 import { ProductJsonLd } from "@/components/store/JsonLd"
@@ -134,6 +135,7 @@ export default async function ProductPage({ params }: Props) {
           </>
         )}
       </div>
+      <StickyAddToCart product={product} />
     </div>
   )
 }
