@@ -60,73 +60,89 @@ async function ensureCategory(slug: string): Promise<string> {
 export async function syncCjProducts(): Promise<SyncResult> {
   const result: SyncResult = { total: 0, filtered: 0, created: 0, updated: 0, errors: 0 }
 
-  for (let page = 1; page <= 3; page++) {
-    try {
-      const res = await getProducts(page, 50)
-      if (res.code !== 200) { result.errors++; break }
+  const keywords = ["dress", "blouse", "skirt", "bikini", "top women", "bag women", "necklace women"]
 
-      const products = res.data?.list ?? []
-      result.total += products.length
-      if (products.length < 50) break
+  for (const keyword of keywords) {
+    let page = 1
+    let hasMore = true
 
-      for (const cp of products) {
-        try {
-          if (!isFeminineProduct(cp)) { result.filtered++; continue }
+    while (hasMore && page <= 2) {
+      try {
+        const res = await getProducts(page, 30, keyword)
+        if (res.code !== 200) { result.errors++; break }
 
-          const enriched = enrichProduct(cp)
-          const sku = `cj-${cp.pid}`
-          const categorySlug = mapCategory(cp.productNameEn, cp.categoryName)
-          const categoryId = await ensureCategory(categorySlug)
-          const slug = `${slugify(cp.productNameEn)}-${cp.pid.slice(0, 8)}`
+        const products = res.data?.list ?? []
+        result.total += products.length
+        if (products.length < 30) hasMore = false
 
-          const existing = await prisma.product.findFirst({ where: { sku } })
+        for (const cp of products) {
+          try {
+            if (!isFeminineProduct(cp)) { result.filtered++; continue }
 
-          if (existing) {
-            await prisma.product.update({
-              where: { id: existing.id },
+            const enriched = enrichProduct(cp)
+            const sku = `cj-${cp.pid}`
+            const categorySlug = mapCategory(cp.productNameEn, cp.categoryName)
+            const categoryId = await ensureCategory(categorySlug)
+            const slug = `${slugify(cp.productNameEn)}-${cp.pid.slice(0, 8)}`
+
+            const existing = await prisma.product.findFirst({ where: { sku } })
+
+            if (existing) {
+              await prisma.product.update({
+                where: { id: existing.id },
+                data: {
+                  price: enriched.price,
+                  cost: enriched.originalPrice,
+                  active: true,
+                  tags: `cjdropship,${categorySlug}`,
+                },
+              })
+              result.updated++
+              continue
+            }
+
+            const product = await prisma.product.create({
               data: {
+                name: enriched.name.slice(0, 180),
+                slug,
+                description: enriched.deliveryText,
                 price: enriched.price,
                 cost: enriched.originalPrice,
+                markup: 150,
+                categoryId,
+                source: "dropship",
+                badge: enriched.sales > 50 ? "mais-vendido" : "novidade",
+                sku,
+                tags: `cjdropship,${categorySlug}`,
                 active: true,
-                tags: `affiliate:${enriched.affiliateLink},cjdropship,${categorySlug}`,
               },
             })
-            result.updated++
-            continue
+
+            if (enriched.image) {
+              await prisma.productImage.create({
+                data: {
+                  productId: product.id,
+                  url: enriched.image,
+                  alt: enriched.name,
+                  position: 0,
+                },
+              })
+            }
+
+            result.created++
+          } catch (e) {
+            console.error(`[CJ Sync] Erro ${cp.pid}:`, e instanceof Error ? e.message : e)
+            result.errors++
           }
+        }
 
-          const product = await prisma.product.create({
-            data: {
-              name: enriched.name.slice(0, 180),
-              slug,
-              description: enriched.deliveryText,
-              price: enriched.price,
-              cost: enriched.originalPrice,
-              markup: 150,
-              categoryId,
-              source: "dropship",
-              badge: enriched.sales > 50 ? "mais-vendido" : "novidade",
-              sku,
-              tags: `affiliate:${enriched.affiliateLink},cjdropship,${categorySlug}`,
-              active: true,
-            },
-          })
-
-          if (enriched.image) {
-            await prisma.productImage.create({
-              data: {
-                productId: product.id,
-                url: enriched.image,
-                alt: enriched.name,
-                position: 0,
-              },
-            })
-          }
-
-          result.created++
-        } catch { result.errors++ }
+        page++
+      } catch (e) {
+        console.error(`[CJ Sync] Erro página ${keyword}:`, e instanceof Error ? e.message : e)
+        result.errors++
+        break
       }
-    } catch { result.errors++; break }
+    }
   }
 
   return result

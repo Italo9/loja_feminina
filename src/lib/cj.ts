@@ -136,13 +136,16 @@ async function cjGet<T>(path: string, params: Record<string, string | number> = 
 export async function getProducts(
   page = 1,
   pageSize = 50,
+  keyword?: string,
 ): Promise<CjListResponse> {
-  return cjGet<CjListResponse>("/product/list", {
+  const params: Record<string, string | number> = {
     pageNum: page,
     pageSize,
     sort: "desc",
     orderBy: "listedNum",
-  })
+  }
+  if (keyword) params.productNameEn = keyword
+  return cjGet<CjListResponse>("/product/list", params)
 }
 
 export interface EnrichedCjProduct {
