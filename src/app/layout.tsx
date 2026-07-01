@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Jost } from "next/font/google"
 import "./globals.css"
 import { ChatWidget } from "@/components/chat/ChatWidget"
 import { OrganizationJsonLd } from "@/components/store/JsonLd"
+import { CookieConsent } from "@/components/store/CookieConsent"
 import { store } from "@/lib/config"
 
 const cormorant = Cormorant_Garamond({
@@ -54,6 +55,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col antialiased">
         <OrganizationJsonLd />
         <ChatWidget />
+        <CookieConsent />
         {children}
       </body>
     </html>
