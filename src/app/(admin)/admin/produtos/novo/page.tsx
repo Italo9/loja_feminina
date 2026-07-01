@@ -106,6 +106,7 @@ export default async function NewProductPage() {
             <option value="novidade">Novidade</option>
             <option value="oferta">Oferta</option>
             <option value="destaque">Destaque</option>
+            <option value="mais-vendido">Mais vendido</option>
           </select>
         </div>
 
