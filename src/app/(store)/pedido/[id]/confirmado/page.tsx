@@ -91,7 +91,7 @@ export default async function OrderConfirmedPage({ params }: Props) {
             {order.dropshipItems.map((di) => (
               <div key={di.id} className="text-xs text-espresso-500 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-gold-400" />
-                {di.supplier.name} — Status: {di.status}
+                {di.supplier.name} | Status: {di.status}
               </div>
             ))}
           </div>

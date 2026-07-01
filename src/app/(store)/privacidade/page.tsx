@@ -7,7 +7,7 @@ export const dynamic = "force-static"
 export const metadata: Metadata = {
   title: "Privacidade",
   description: `Política de privacidade da ${store.name}. Saiba como tratamos seus dados pessoais de acordo com a LGPD. Compromisso com transparência e segurança.`,
-  openGraph: { title: "Política de Privacidade — Lumière", type: "website" },
+  openGraph: { title: "Política de Privacidade | Lumière", type: "website" },
 }
 
 export default function PrivacyPage() {
@@ -24,7 +24,7 @@ export default function PrivacyPage() {
             <p>
               A {store.name} valoriza sua privacidade. Esta política explica como coletamos,
               usamos e protegemos suas informações pessoais, em conformidade com a{" "}
-              <strong>Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018)</strong>.
+              <strong>Lei Geral de Proteção de Dados (LGPD, Lei 13.709/2018)</strong>.
             </p>
           </section>
 

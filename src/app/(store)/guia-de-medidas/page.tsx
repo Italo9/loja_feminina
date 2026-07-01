@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 }
 
 const SIZE_CHART = [
-  { size: "PP", busto: "80–84", cintura: "62–66", quadril: "88–92" },
-  { size: "P", busto: "84–88", cintura: "66–70", quadril: "92–96" },
-  { size: "M", busto: "88–92", cintura: "70–74", quadril: "96–100" },
-  { size: "G", busto: "92–98", cintura: "74–80", quadril: "100–106" },
-  { size: "GG", busto: "98–104", cintura: "80–86", quadril: "106–112" },
+  { size: "PP", busto: "80 a 84", cintura: "62 a 66", quadril: "88 a 92" },
+  { size: "P", busto: "84 a 88", cintura: "66 a 70", quadril: "92 a 96" },
+  { size: "M", busto: "88 a 92", cintura: "70 a 74", quadril: "96 a 100" },
+  { size: "G", busto: "92 a 98", cintura: "74 a 80", quadril: "100 a 106" },
+  { size: "GG", busto: "98 a 104", cintura: "80 a 86", quadril: "106 a 112" },
 ]
 
 export default function SizeGuidePage() {

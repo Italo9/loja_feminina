@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Sobre",
   description: `Conheça a história da ${store.name}. ${store.tagline}. Moda feminina premium com curadoria especial em ${store.city}.`,
   openGraph: {
-    title: `Sobre — ${store.name}`,
+    title: `Sobre | ${store.name}`,
     description: store.tagline,
     type: "website",
   },

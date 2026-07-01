@@ -13,10 +13,10 @@ import { store } from "@/lib/config"
 import { Truck, Shield, CreditCard } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: `${store.name} — ${store.tagline}`,
+  title: `${store.name} | ${store.tagline}`,
   description: store.description,
   openGraph: {
-    title: `${store.name} — ${store.tagline}`,
+    title: `${store.name} | ${store.tagline}`,
     description: store.description,
     type: "website",
   },

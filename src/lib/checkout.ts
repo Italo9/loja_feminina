@@ -187,7 +187,7 @@ export async function createCheckoutOrder(input: {
     })
     initPoint = mp.initPoint ?? null
   } catch {
-    // Mercado Pago pode não estar configurado — pedido fica como pendente
+    // Mercado Pago pode não estar configurado | pedido fica como pendente
   }
 
   return { ok: true, orderId: order.id, initPoint }

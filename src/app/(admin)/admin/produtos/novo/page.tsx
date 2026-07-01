@@ -89,7 +89,7 @@ export default async function NewProductPage() {
         </div>
 
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Regiões (siglas, ex: SP,RJ,MG — vazio = todo Brasil)</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-espresso-400 mb-2">Regiões (siglas, ex: SP,RJ,MG | vazio = todo Brasil)</label>
           <input name="regions" className="w-full px-4 py-3 rounded-xl bg-white border border-pearl-200 text-[16px] font-mono uppercase tracking-widest text-espresso-900 placeholder:text-espresso-300 focus:outline-none focus:ring-2 focus:ring-berry-200" placeholder="SP,RJ,MG" />
           <p className="text-xs text-espresso-300 mt-1">Digite as siglas dos estados separadas por vírgula. Deixe em branco para vender em todo Brasil.</p>
         </div>

@@ -26,13 +26,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description: `Confira nossa coleção de ${title.toLowerCase()} na ${store.name}. Peças exclusivas e selecionadas com curadoria especial. ${store.tagline}`,
     openGraph: {
-      title: `${title} — ${store.name}`,
+      title: `${title} | ${store.name}`,
       description: store.tagline,
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} — ${store.name}`,
+      title: `${title} | ${store.name}`,
       description: store.tagline,
     },
   }

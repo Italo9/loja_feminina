@@ -4,12 +4,16 @@ import { Plus, Pencil, EyeOff, Package } from "lucide-react"
 import { prisma } from "@/lib/db"
 import { DeleteProductButton } from "./DeleteProductButton"
 import { ToggleActiveButton } from "./ToggleActiveButton"
+import { InlineCategoryEdit } from "./InlineCategoryEdit"
 
 export default async function AdminProductsPage() {
-  const products = await prisma.product.findMany({
-    include: { images: true, variants: true, category: { select: { name: true } } },
-    orderBy: { createdAt: "desc" },
-  })
+  const [products, categories] = await Promise.all([
+    prisma.product.findMany({
+      include: { images: true, variants: true, category: { select: { id: true, name: true } } },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.category.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } }),
+  ])
 
   return (
     <div>
@@ -43,7 +47,13 @@ export default async function AdminProductsPage() {
                     <p className="text-sm font-medium text-espresso-800 truncate">{product.name}</p>
                     {!product.active && <EyeOff className="w-3.5 h-3.5 text-espresso-300 flex-shrink-0" />}
                   </div>
-                  <p className="text-xs text-espresso-400">{product.category?.name ?? "Sem categoria"}</p>
+                  <p className="text-xs text-plum-400">
+                    <InlineCategoryEdit
+                      productId={product.id}
+                      currentCategoryId={product.categoryId}
+                      categories={categories}
+                    />
+                  </p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="price-sm text-espresso-700">R$ {product.price.toFixed(2)}</span>
                     <span className="text-[10px] text-espresso-400">• Estoque: {totalStock}</span>

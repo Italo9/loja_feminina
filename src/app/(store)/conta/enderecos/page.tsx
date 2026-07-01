@@ -128,10 +128,10 @@ export default async function AddressesPage({ searchParams }: Props) {
                   <p className="text-sm text-espresso-500">{addr.receiver}</p>
                   <p className="text-sm text-espresso-400">
                     {addr.street}, {addr.number}
-                    {addr.complement ? ` — ${addr.complement}` : ""}
+                    {addr.complement ? ` | ${addr.complement}` : ""}
                   </p>
                   <p className="text-sm text-espresso-400">
-                    {addr.neighborhood} — {addr.city}/{addr.state}
+                    {addr.neighborhood} | {addr.city}/{addr.state}
                   </p>
                   <p className="text-xs text-espresso-300 mt-1">CEP: {addr.zipCode}</p>
                 </div>

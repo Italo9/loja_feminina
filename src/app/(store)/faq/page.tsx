@@ -26,15 +26,15 @@ const FAQS = [
   },
   {
     question: "Meus dados estão seguros?",
-    answer: `Sim. Utilizamos criptografia SSL em todo o site. Seus dados de pagamento são processados pelo Mercado Pago — nunca armazenamos dados de cartão. Consulte nossa Política de Privacidade para mais detalhes sobre a LGPD.`,
+    answer: `Sim. Utilizamos criptografia SSL em todo o site. Seus dados de pagamento são processados pelo Mercado Pago | nunca armazenamos dados de cartão. Consulte nossa Política de Privacidade para mais detalhes sobre a LGPD.`,
   },
 ]
 
 export const metadata: Metadata = {
-  title: "FAQ — Perguntas Frequentes",
+  title: "FAQ | Perguntas Frequentes",
   description: `Tire suas dúvidas sobre entregas, trocas, pagamentos e tamanhos na ${store.name}. Atendimento humanizado com a Lumi.`,
   openGraph: {
-    title: `FAQ — ${store.name}`,
+    title: `FAQ | ${store.name}`,
     description: `Perguntas frequentes sobre a ${store.name}. Entrega, trocas, pagamentos e mais.`,
     type: "website",
   },

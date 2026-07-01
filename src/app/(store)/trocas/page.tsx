@@ -6,7 +6,7 @@ export const dynamic = "force-static"
 export const metadata: Metadata = {
   title: "Trocas e Devoluções",
   description: "Política de trocas e devoluções. Você tem até 7 dias para solicitar troca ou devolução. Fale com a Lumi para assistência.",
-  openGraph: { title: "Trocas e Devoluções — Lumière", type: "website" },
+  openGraph: { title: "Trocas e Devoluções | Lumière", type: "website" },
 }
 
 export default function GenericPage() {

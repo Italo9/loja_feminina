@@ -9,6 +9,8 @@ interface FilterBarProps {
   currentMaxPrice?: number
   baseUrl: string
   currentSearch: string
+  categories?: { id: string; name: string; slug: string }[]
+  currentCategorySlug?: string
 }
 
 export function FilterBar({

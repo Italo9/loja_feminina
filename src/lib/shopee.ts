@@ -93,7 +93,7 @@ export async function getOpenCampaignProducts(
   })
 }
 
-// Categorias femininas da Shopee (IDs aproximados — ajustar conforme API)
+// Categorias femininas da Shopee (IDs aproximados | ajustar conforme API)
 const FEMININE_CATEGORIES = [
   "Vestidos",
   "Blusas",

@@ -77,7 +77,7 @@ export default function CheckoutPage() {
         setShipping({ cost: result.cost, days: result.days })
       }
     } catch {
-      // silently fail — user can type address manually
+      // silently fail | user can type address manually
     } finally {
       setCepLoading(false)
     }
@@ -370,7 +370,7 @@ export default function CheckoutPage() {
                     `R$ ${shipping.cost.toFixed(2)}`
                   )
                 ) : (
-                  <span className="text-espresso-400">—</span>
+                  <span className="text-espresso-400">, </span>
                 )}
               </span>
             </div>

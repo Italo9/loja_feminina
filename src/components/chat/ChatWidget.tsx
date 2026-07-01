@@ -262,17 +262,19 @@ export function ChatWidget() {
       return
     }
 
-    setTimeout(() => {
-      const responses = [
-        `Que legal! 🥰 Temos várias opções que combinam com o que você procura. Posso te mostrar alguns modelos?\n\nNossos vestidos estão a partir de R$ 49,90 e temos em diversos tamanhos e cores.`,
-        `Olha que maravilha! ✨ Acabaram de chegar peças novas na coleção Verão 2026. Temos vestidos, conjuntos e moda praia com estampas exclusivas.\n\nQuer ver algo específico?`,
-        `Claro! 🛍️ Trabalhamos com cartão de crédito em até 3x sem juros, PIX com desconto e boleto bancário. O frete é grátis para compras acima de R$ 250!\n\nPosso te ajudar a encontrar algo especial?`,
-        `Ótima escolha! 💫 Nossas peças são selecionadas com muito carinho. Temos do P ao G e algumas peças no tamanho 44 e 46 também.\n\nQual estilo você prefere? Casual, festa, praia?`,
-      ]
-      const reply = responses[Math.floor(Math.random() * responses.length)]
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: content.trim() }),
+      })
+      const data = await res.json()
+      const reply = data.reply || "Como posso ajudar? ✨"
       setMessages((prev) => [...prev, { id: nextId(), role: "assistant", content: reply, timestamp: new Date() }])
-      setLoading(false)
-    }, 1500)
+    } catch {
+      setMessages((prev) => [...prev, { id: nextId(), role: "assistant", content: `Desculpe, estou com dificuldade no momento. Tente de novo ou veja nosso catálogo! ✨`, timestamp: new Date() }])
+    }
+    setLoading(false)
   }, [loading])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -361,7 +363,7 @@ export function ChatWidget() {
               )}
               <div>
                 <p className="font-[family-name:var(--font-display)] text-base font-medium tracking-wide">
-                  {isHumanMode ? "Atendente" : `${assistant.name} — sua stylist virtual`}
+                  {isHumanMode ? "Atendente" : `${assistant.name} | sua stylist virtual`}
                 </p>
                 <p className="text-[10px] opacity-70 font-light tracking-wide">
                   {isHumanMode ? "Modo humano · WhatsApp" : assistant.role}

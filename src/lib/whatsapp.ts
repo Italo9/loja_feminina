@@ -1,4 +1,4 @@
-// Gerenciador WhatsApp (Baileys) — roda in-process no Next.js (Cloud Run).
+// Gerenciador WhatsApp (Baileys) | roda in-process no Next.js (Cloud Run).
 // Mantém a conexão WebSocket viva e gerencia sessões de atendimento humano.
 // Iniciado via instrumentation.ts no boot do servidor.
 
@@ -156,7 +156,7 @@ export async function connectWhatsApp() {
     const { qr, connection, lastDisconnect } = raw
     if (qr) {
       latestQR = qr
-      console.log("[WHATSAPP] QR code gerado — acesse /admin/whatsapp para escanear")
+      console.log("[WHATSAPP] QR code gerado | acesse /admin/whatsapp para escanear")
     }
     if (connection === "open") {
       connectionState = "open"

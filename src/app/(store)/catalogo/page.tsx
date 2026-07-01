@@ -12,15 +12,15 @@ export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Catálogo",
-  description: `Confira nosso catálogo completo de moda feminina. Vestidos, blusas, calças, moda praia e acessórios exclusivos. ${store.name} — ${store.tagline}`,
+  description: `Confira nosso catálogo completo de moda feminina. Vestidos, blusas, calças, moda praia e acessórios exclusivos. ${store.name} | ${store.tagline}`,
   openGraph: {
-    title: `Catálogo — ${store.name}`,
+    title: `Catálogo | ${store.name}`,
     description: store.tagline,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `Catálogo — ${store.name}`,
+    title: `Catálogo | ${store.name}`,
     description: store.tagline,
   },
 }

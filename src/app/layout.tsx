@@ -23,7 +23,7 @@ const jost = Jost({
 
 export const metadata: Metadata = {
   title: {
-    default: `${store.name} — ${store.tagline}`,
+    default: `${store.name} | ${store.tagline}`,
     template: `%s | ${store.name}`,
   },
   description: store.description,

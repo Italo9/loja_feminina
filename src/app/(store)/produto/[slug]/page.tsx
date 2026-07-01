@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProductBySlug(slug)
   if (!product) return {}
 
-  const title = `${product.name} — ${store.name}`
+  const title = `${product.name} | ${store.name}`
   const description = product.description.slice(0, 160)
   const firstImage = product.images?.[0]?.url
 

@@ -1,5 +1,5 @@
 // Configuração white-label da loja.
-// Tudo é sobrescrito por variável de ambiente — mesmo código, múltiplas lojas.
+// Tudo é sobrescrito por variável de ambiente | mesmo código, múltiplas lojas.
 
 function readEnv(key: string, fallback: string): string {
   const value = process.env[key]
@@ -20,7 +20,7 @@ export const store = {
   tagline: readEnv("NEXT_PUBLIC_STORE_TAGLINE", "Para mulheres que brilham naturalmente"),
   description: readEnv(
     "NEXT_PUBLIC_STORE_DESCRIPTION",
-    "Lumière — boutique feminina premium. Peças exclusivas com curadoria especial. Luz que vem de você ♡",
+    "Lumière, boutique feminina premium. Peças exclusivas com curadoria especial. Luz que vem de você ♡",
   ),
   city: readEnv("NEXT_PUBLIC_STORE_CITY", "Salvador, BA"),
   whatsapp: readEnv("NEXT_PUBLIC_STORE_WHATSAPP", "5571991673902"),
