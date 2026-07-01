@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { getCatalogProducts, getCategories } from "@/lib/products"
+import { getUserRegionCookie } from "@/lib/location-server"
 import { ProductCard } from "@/components/store/ProductCard"
 import { Pagination } from "@/components/store/Pagination"
 import { FilterBar } from "@/components/store/FilterBar"
@@ -17,9 +18,10 @@ export default async function CatalogPage({ searchParams }: Props) {
   const sort = (sp.sort as string) || "newest"
   const minPrice = sp.minPrice ? Number(sp.minPrice) : undefined
   const maxPrice = sp.maxPrice ? Number(sp.maxPrice) : undefined
+  const region = await getUserRegionCookie()
 
   const [result, categories] = await Promise.all([
-    getCatalogProducts({ page, perPage: 12, sort, minPrice, maxPrice }),
+    getCatalogProducts({ page, perPage: 12, sort, minPrice, maxPrice, region: region ?? undefined }),
     getCategories(),
   ])
 
