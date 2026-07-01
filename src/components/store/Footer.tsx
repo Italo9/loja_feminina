@@ -14,6 +14,7 @@ const COL_AJUDA = [
   { label: "Entrega", href: "/entrega" },
   { label: "Trocas e Devoluções", href: "/trocas" },
   { label: "Guia de Medidas", href: "/guia-de-medidas" },
+  { label: "FAQ", href: "/faq" },
 ]
 
 const COL_INSTITUCIONAL = [
@@ -119,6 +120,22 @@ export function Footer() {
               <li>{store.city}</li>
               <li className="text-[#6B4A4F]/40">{store.hours}</li>
             </ul>
+
+            <div className="mt-5 pt-5 border-t border-cream-100">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C9A66B] mb-3">
+                Pagamento
+              </p>
+              <div className="flex items-center gap-2 flex-wrap">
+                {store.payments.map((p) => (
+                  <span
+                    key={p}
+                    className="px-2.5 py-1 rounded-lg bg-cream-50 border border-cream-200 text-[10px] font-medium text-espresso-500"
+                  >
+                    {p}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
