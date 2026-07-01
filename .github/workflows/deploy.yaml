@@ -25,4 +25,21 @@ jobs:
           project_id: lumiere-loja-1782864547
 
       - name: Deploy
-        run: gcloud builds submit --config cloudbuild.yaml
+        run: |
+          BUILD_ID=$(gcloud builds submit --config cloudbuild.yaml --async --format='value(id)')
+          echo "Build ID: $BUILD_ID"
+          echo "Logs: https://console.cloud.google.com/cloud-build/builds/$BUILD_ID?project=573565000697"
+
+          while true; do
+            STATUS=$(gcloud builds describe "$BUILD_ID" --format='value(status)')
+            echo "[$(date +%H:%M:%S)] Status: $STATUS"
+            case "$STATUS" in
+              SUCCESS) exit 0 ;;
+              FAILURE|INTERNAL_ERROR|TIMEOUT|CANCELLED)
+                echo "::error::Build failed: $STATUS"
+                gcloud builds log "$BUILD_ID" 2>&1 | tail -100 || true
+                exit 1
+                ;;
+            esac
+            sleep 10
+          done
