@@ -5,6 +5,7 @@ import { Search, Heart, ShoppingBag, Menu, X } from "lucide-react"
 import Link from "next/link"
 import { store } from "@/lib/config"
 import { useCartStore } from "@/lib/cart-store"
+import { LocationBar } from "./LocationBar"
 
 const NAV_LINKS = [
   { label: "Vestidos", href: "/categoria/vestidos" },
@@ -42,10 +43,12 @@ export function Header() {
         }`}
       >
         {/* Top bar */}
-        <div className="flex items-center justify-center gap-2 bg-[#FFF6F2] text-[#6B4A4F]/50 text-[10px] tracking-[0.22em] uppercase py-2 border-b border-gold-400/15">
+        <div className="flex items-center justify-center gap-3 bg-[#FFF6F2] text-[#6B4A4F]/50 text-[10px] tracking-[0.22em] uppercase py-2 border-b border-gold-400/15">
           <span className="text-gold-400/50">✦</span>
           Frete grátis acima de R$ 250
           <span className="text-gold-400/50">✦</span>
+          <span className="text-gold-400/20">|</span>
+          <LocationBar />
         </div>
 
         <div className="container-narrow flex items-center justify-between h-16 md:h-20">
