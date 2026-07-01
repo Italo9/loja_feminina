@@ -18,6 +18,7 @@ export interface Product {
   images: ProductImage[]
   variants: ProductVariant[]
   tags: string
+  regions: string
   badge: string | null
   createdAt: Date
   updatedAt: Date
